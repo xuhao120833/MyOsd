@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2018 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="65dp"
+    android:height="65dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+
+    <path android:fillColor="#0676F1" android:pathData="M20,0L140,0A20,20 0,0 1,160 20L160,140A20,20 0,0 1,140 160L20,160A20,20 0,0 1,0 140L0,20A20,20 0,0 1,20 0z"/>
+    <group>
+        <clip-path android:pathData="M59.5,28L101.5,28A7,7 0,0 1,108.5 35L108.5,77A7,7 0,0 1,101.5 84L59.5,84A7,7 0,0 1,52.5 77L52.5,35A7,7 0,0 1,59.5 28z"/>
+        <path android:fillColor="#00000000"
+            android:pathData="M54.5,44.33C54.5,44.15 54.65,44 54.83,44H106.17C106.35,44 106.5,44.15 106.5,44.33L106.5,64.33L98.5,70.33L62.5,70.33L54.5,64.33L54.5,44.33Z"
+            android:strokeColor="#ffffff" android:strokeWidth="4"/>
+        <path android:fillColor="#ffffff" android:pathData="M99.17,53.67l-0,4.67l-37.33,0l-0,-4.67z"/>
+    </group>
+    <path android:fillColor="#ffffff" android:pathData="M34.2,120V96.54H37.18V106.37H48.12V96.54H51.06V120H48.12V108.93H37.18V120H34.2ZM57.48,120V96.54H63.37C70.57,96.54 74.44,100.74 74.44,108.19C74.44,115.62 70.57,120 63.5,120H57.48ZM60.46,117.57H63.11C68.65,117.57 71.37,114.11 71.37,108.19C71.37,102.24 68.65,98.94 63.11,98.94H60.46V117.57ZM79.45,120V96.54H83.03L87.55,109.09C88.09,110.72 88.63,112.35 89.21,113.98H89.37C89.91,112.35 90.43,110.72 90.97,109.09L95.45,96.54H99.03V120H96.25V107.01C96.25,104.99 96.47,102.14 96.63,100.1H96.51L94.65,105.44L90.2,117.63H88.22L83.77,105.44L81.91,100.1H81.79C81.91,102.14 82.14,104.99 82.14,107.01V120H79.45ZM105.42,120V96.54H108.39V120H105.42ZM113,120V118.27C120.36,111.84 123.75,107.17 123.75,103.14C123.75,100.45 122.35,98.5 119.43,98.5C117.51,98.5 115.85,99.68 114.57,101.22L112.87,99.55C114.79,97.47 116.81,96.1 119.79,96.1C123.98,96.1 126.6,98.85 126.6,103.04C126.6,107.71 122.92,112.48 117.42,117.7C118.63,117.6 120.07,117.47 121.26,117.47H127.75V120H113Z"/>
+</vector>
