@@ -1,91 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@drawable/shapetop2"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="290dp"
+    android:layout_gravity="center"
+    android:background="@drawable/shapetop1"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
-        android:textSize="28px"
-        android:text="信号源切换" />
+        android:layout_marginTop="15dp"
+        android:text="信号源切换"
+        android:textColor="#FFFFFF"
+        android:textSize="28px" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/i1"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="23dp"
-            android:focusable="true"
+
+        <FrameLayout
+            android:id="@+id/r1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="25dp"
             android:clickable="true"
+            android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/signal1"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:background="@drawable/image_focus"
+            app:layout_constraintEnd_toStartOf="@+id/r2"
+            app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints,SpeakableTextPresentCheck">
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/i1"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/signal1"></ImageView>
 
-        <ImageView
-            android:id="@+id/i2"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="23dp"
-            android:layout_marginEnd="75dp"
-            android:focusable="true"
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/r2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="72dp"
             android:clickable="true"
+            android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/signal2_slect_useful"
+            android:background="@drawable/image_focus"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints,SpeakableTextPresentCheck">
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/i2"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/signal2_slect_useful"></ImageView>
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/i3"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginStart="75dp"
-            android:layout_marginBottom="42dp"
-            android:focusable="true"
+        <FrameLayout
+            android:id="@+id/r3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginBottom="38dp"
             android:clickable="true"
+            android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/signal3"
+            android:background="@drawable/image_focus"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/r4"
+            app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.157">
+            app:layout_constraintTop_toBottomOf="@+id/r1"
+            app:layout_constraintVertical_bias="0.913"
+            tools:ignore="MissingConstraints,SpeakableTextPresentCheck">
 
-        </ImageView>
+            <ImageView
+                android:id="@+id/i3"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/signal3"></ImageView>
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/i4"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginEnd="75dp"
-            android:layout_marginBottom="42dp"
-            android:focusable="true"
+        <FrameLayout
+            android:id="@+id/r4"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="72dp"
+            android:layout_marginBottom="38dp"
             android:clickable="true"
+            android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/signal4"
+            android:background="@drawable/image_focus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.165">
+            app:layout_constraintTop_toBottomOf="@+id/r2"
+            app:layout_constraintVertical_bias="0.913"
+            tools:ignore="MissingConstraints,SpeakableTextPresentCheck">
 
-        </ImageView>
+
+            <ImageView
+                android:id="@+id/i4"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/signal4"></ImageView>
+
+        </FrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

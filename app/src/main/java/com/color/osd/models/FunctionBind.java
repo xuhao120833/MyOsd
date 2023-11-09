@@ -31,7 +31,7 @@ public class FunctionBind {
 //        menu_volume = new Menu_volume(mycontext);
 //        menu_eye = new Menu_eye(mycontext);
 //        menu_screenshot = new Menu_screenshot(mycontext);
-//        menu_comments = new Menu_comments(mycontext);
+        menu_comments = new Menu_comments(mycontext);
 
     }
 
@@ -42,7 +42,7 @@ public class FunctionBind {
 //        Menu_volume = dMenu_volume;
 //        Menu_eye = dMenu_eye;
 //        Menu_screenshot = dMenu_screenshot;
-//        Menu_comments = dMenu_comments;
+        Menu_comments = dMenu_comments;
 
         //按键点击功能添加
         menu_source.setOnclick(Menu_source);
@@ -50,7 +50,7 @@ public class FunctionBind {
 //        menu_volume.setOnclick(Menu_volume);
 //        menu_eye.setOnclick(Menu_eye);
 //        menu_screenshot.setOnclick(Menu_screenshot);
-//        menu_comments.setOnclick(Menu_comments);
+        menu_comments.setOnclick(Menu_comments);
 
     }
 

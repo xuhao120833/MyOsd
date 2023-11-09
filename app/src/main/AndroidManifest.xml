@@ -25,6 +25,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Osd"
         tools:targetApi="33">
+        <receiver
+            android:name=".broadcast.SourceReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
         <!-- <meta-data -->
         <!-- android:name="com.google.android.actions" -->
         <!-- android:resource="@xml/keyevent_access" -->
