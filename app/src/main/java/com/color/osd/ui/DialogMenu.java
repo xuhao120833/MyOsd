@@ -83,8 +83,7 @@ public class DialogMenu extends Dialog {
         wm.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         wm.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND
                 | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR);
-        wm.addFlags(WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE
-                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+        wm.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                 | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);

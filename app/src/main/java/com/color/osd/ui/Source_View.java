@@ -26,7 +26,7 @@ public class Source_View {
     private static Context mycontext;
     static LayoutInflater inflater;
 
-    static ImageView i1, i2, i3, i4;
+    public static ImageView i1, i2, i3, i4;
 
     static FrameLayout r1, r2, r3, r4;
 
@@ -40,7 +40,7 @@ public class Source_View {
 
     private static final String HDMI_IN_PLUG = "com.color.hdmi_in_camera.hdmi_in_plug";
 
-    private static final String OPEN_OTHER_SOURCE = "open_other_source";
+    private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
 
     public Source_View(Context context) {
         mycontext =context;
@@ -116,10 +116,6 @@ public class Source_View {
                         i1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal1_slect));
                     }
                     msetDrawable(select);
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "0");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     select = 1;
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -127,7 +123,7 @@ public class Source_View {
                     DialogMenu.mydialog.dismiss();//切换其它信源，收起菜单
                     MenuService.menuOn = false;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,1);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,1);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
                     //StatusBarfloat.myframe.setVisibility(View.GONE);
                 } else {
                     if(SourceReceiver.volume_image1){
@@ -136,15 +132,11 @@ public class Source_View {
                         i1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal1));
                     }
                     select = 2;
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "3");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
                     //StatusBarfloat.myframe.setVisibility(View.VISIBLE);
                 }
             }
@@ -155,15 +147,11 @@ public class Source_View {
                 if (select != 2) {
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     msetDrawable(select);
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "3");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     select = 2;
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
                     //StatusBarfloat.myframe.setVisibility(View.VISIBLE);
                 } else {
                     //i2.setImageDrawable(mcontext.getResources().getDrawable(R.drawable.signal2_useful));
@@ -171,7 +159,7 @@ public class Source_View {
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
                 }
             }
         });
@@ -185,10 +173,6 @@ public class Source_View {
                         i3.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal3_slect));
                     }
                     msetDrawable(select);
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "1");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     select = 3;
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -196,7 +180,7 @@ public class Source_View {
                     DialogMenu.mydialog.dismiss();//切换其它信源，收起菜单
                     MenuService.menuOn = false;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,3);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,3);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
                     //StatusBarfloat.myframe.setVisibility(View.GONE);
                 } else {
                     if(SourceReceiver.volume_image3){
@@ -205,15 +189,11 @@ public class Source_View {
                         i3.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal3));
                     }
                     select = 2;
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "3");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
                     //StatusBarfloat.myframe.setVisibility(View.VISIBLE);
                 }
             }
@@ -228,10 +208,6 @@ public class Source_View {
                         i4.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal4_slect));
                     }
                     msetDrawable(select);
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "2");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     select = 4;
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -239,7 +215,7 @@ public class Source_View {
                     DialogMenu.mydialog.dismiss();//切换其它信源，收起菜单
                     MenuService.menuOn = false;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,4);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,4);//通知SystemUI已切换非Android信源。1 3 4代表三个图标。
                     //StatusBarfloat.myframe.setVisibility(View.GONE);
                 } else {
                     if(SourceReceiver.volume_image4){
@@ -248,15 +224,11 @@ public class Source_View {
                         i4.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal4));
                     }
                     select = 2;
-                    intent.setAction("com.color.systemui");
-                    intent.putExtra("data", "3");
-                    intent.setPackage("com.color.webserver");
-                    mycontext.sendBroadcast(intent);
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
-                    Settings.System.putInt(mycontext.getContentResolver(),OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
+                    Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,2);//通知SystemUI恢复状态栏
                     //StatusBarfloat.myframe.setVisibility(View.VISIBLE);
                 }
             }

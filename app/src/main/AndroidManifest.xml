@@ -26,23 +26,24 @@
         android:theme="@style/Theme.Osd"
         tools:targetApi="33">
         <receiver
-            android:name=".broadcast.SourceReceiver"
+            android:name=".broadcast.ScreenShotOverReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.actions" -->
-        <!-- android:resource="@xml/keyevent_access" -->
-        <!-- tools:ignore="Deprecated" /> -->
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+                <action android:name="com.colorlight.SCREENSHOT_OVER" />
             </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".ScreenShotActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:exported="true">
         </activity>
 
+        <receiver
+            android:name=".broadcast.SourceReceiver"
+            android:enabled="true"
+            android:exported="true" />
         <receiver
             android:name=".broadcast.BootCompleteReceiver"
             android:enabled="true"

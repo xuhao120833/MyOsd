@@ -1,7 +1,9 @@
 package com.color.osd.models.service;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
@@ -19,14 +21,15 @@ public class MenuService extends AccessibilityService {
     Context mycontext;
 
     String TAG = "MenuService";
-    ArrayList<Integer> myarrylist = new ArrayList<>();
-    static int number = -1;
+    //ArrayList<Integer> myarrylist = new ArrayList<>();
+    static int number = 0;
+    //static int Menumber = 0;
     public static boolean menuOn = false;
+
+    public static boolean lastMenuOn;
 
     DialogMenu dialogMenu;
 
-    //解决第一次开机，Menu第一次出来，按键launcher、Menu都响应的问题。
-    int Menu_source_back = 0;
 
 
     @Override
@@ -42,6 +45,7 @@ public class MenuService extends AccessibilityService {
 
     }
 
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
@@ -52,70 +56,106 @@ public class MenuService extends AccessibilityService {
 
     }
 
+    //按键的处理和拦截
     @Override
-    protected boolean onKeyEvent(KeyEvent event) {//现在没有蓝牙遥控器,无法测试菜单键，先设置成Home+向上键唤出Menu，Home+向下键或者BACK键隐藏Menu。
-        Log.d(TAG, "onKeyEvent");
-        Log.d(TAG, String.valueOf(event.getKeyCode()));
-        Log.d(TAG, "menuOn 的值"+String.valueOf(menuOn));
+    protected boolean onKeyEvent(KeyEvent event) {//Menu 键 keyCode = 82
 
-        myarrylist.add(event.getKeyCode());
         number++;
 
-        if(number < 1) {
-            return true;
+        //奇数keyevent不做处理
+        if (!isEven(number) || isLeftOrRight(event)) {
+//            Log.d(TAG, "奇数 number 的值" + String.valueOf(number));
+//            Log.d(TAG, String.valueOf(event.getKeyCode()));
+//            Log.d(TAG, " ");
+//            Log.d(TAG, " ");
+//            Log.d(TAG, " ");
+            return false;
+        } else {//偶数处理
+//            Log.d(TAG, "偶数 number 的值" + String.valueOf(number));
+//            Log.d(TAG, String.valueOf(event.getKeyCode()));
+//            Log.d(TAG, "menuOn 的值" + String.valueOf(menuOn));
+            disPatchKeyEvent(event);
+            return false;
         }
 
-        if (myarrylist.get(number) == 19 && myarrylist.get(number - 2) == 3 && menuOn == false) {
+    }
+
+    private void disPatchKeyEvent(KeyEvent event) {
+        Log.d(TAG, "进入 disPatchKeyEvent");
+
+        //1、菜单键唤起、隐藏
+        isMenuOnByKeyEvent(event);
+
+        //2、Home键
+        isHomeKeyEvent(event);
+
+        //3、Back键，后续和Back键有关的逻辑在这里加
+        isBackKeyEvent(event);
+
+
+    }
+
+    private void isMenuOnByKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && menuOn == false) {
 
             Log.d(TAG, "启动Menu");
 
             DialogMenu.mydialog.show();//展示Osd 菜单
-            //Menumber++;
-
-
             menuOn = true;
 
-            return true; //按钮事件在这里被消费，不会再传送到上层
-
-        }
-        if (myarrylist.get(number) == 20 && myarrylist.get(number - 2) == 3 && menuOn == true) {
+        } else if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && menuOn == true) {
 
             Log.d(TAG, "关闭Menu");
 
             DialogMenu.mydialog.dismiss();//收起菜单
-
             menuOn = false;
 
-            return true; //按钮事件在这里被消费，不会再传送到上层
-
         }
+    }
 
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == false ) {
-
-            DialogMenu.mydialog.dismiss();
-
-            menuOn = false;
-
-            return true;
-        }
-
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && Menu_source.sourceon == true) {
-            Menu_source_back++;
-            if(Menu_source_back == 2) {
+    private void isHomeKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME && menuOn == true) {
+            if(Menu_source.sourceon == true) {
                 FunctionBind.mavts.clearView(Source_View.source);
                 Menu_source.sourceon = false;
-                Menu_source_back = 0;
             }
-            return true;
+
+            Log.d(TAG, "关闭Menu");
+
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
+
         }
 
-//        if(event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT && menuOn ==true) {
-//
-//            return  true;
-//
-//        }
+    }
 
+    private void isBackKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == true) {
+            FunctionBind.mavts.clearView(Source_View.source);
+            Menu_source.sourceon = false;
+            return;
+        }
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == false) {
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
+            return;
+        }
+    }
+
+    private boolean isLeftOrRight(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT || event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            return true;
+        }
         return false;
+    }
+
+    //判断奇偶性
+    public boolean isEven(int mynumber) {
+        if (mynumber % 2 == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
