@@ -50,6 +50,9 @@ public class Menu_source implements DispatchKeyEventInterface {
         //2、判断Back键
         //isBackKeyEvent(event);
 
+        if(!menuState.equals(MenuState.MENU_SOURCE))
+            return false;
+
         if(isHomeKeyEvent(event) || isBackKeyEvent(event)) {
             return true;
         }
@@ -86,11 +89,11 @@ public class Menu_source implements DispatchKeyEventInterface {
             MenuService.menuState = MenuState.NULL;
             return true;
         }
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == false) {
-            DialogMenu.mydialog.dismiss();//收起菜单
-            menuOn = false;
-            return true;
-        }
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == false) {
+//            DialogMenu.mydialog.dismiss();//收起菜单
+//            menuOn = false;
+//            return true;
+//        }
         return false;
     }
 

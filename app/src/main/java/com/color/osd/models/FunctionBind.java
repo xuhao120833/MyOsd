@@ -21,6 +21,7 @@ public class FunctionBind {
     Menu_comments menu_comments;
     ColorSystemUiContentOberver systemUiContentOberver;
     private static final String SYSTEMUI_OPEN_OTHER_SOURCE = "systemui_open_other_source";
+    private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
 
     public static AddViewToScreen mavts = new AddViewToScreen();
 

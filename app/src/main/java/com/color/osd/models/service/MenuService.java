@@ -1,5 +1,7 @@
 package com.color.osd.models.service;
 
+import static com.color.osd.models.Enum.MenuState.NULL;
+
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.util.Log;
@@ -36,7 +38,7 @@ public class MenuService extends AccessibilityService {
         Log.d(TAG, "服务启动: !!!!");
         super.onCreate();
         mycontext = this;
-        menuState = MenuState.NULL;
+        menuState = NULL;
 
         //Menu 初始化
         dialogMenu = new DialogMenu(this);
@@ -82,11 +84,23 @@ public class MenuService extends AccessibilityService {
         //1、菜单键唤起、隐藏
         isMenuOnByKeyEvent(event);
 
-        //子菜单 KeyEvent判断处理
+        if(menuState == NULL && menuOn == true){
+            //2、二级菜单没有打开，Home键处理
+            firstHomeKeyEvent(event);
+
+            //3、二级菜单没有打开，Back键处理
+            firstBackKeyEvent(event);
+
+            return false;
+        }
+
+        //4、二级菜单 KeyEvent判断处理
         return whichOne(event);
 
 
     }
+
+
 
     private void isMenuOnByKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && menuOn == false) {
@@ -125,6 +139,21 @@ public class MenuService extends AccessibilityService {
             return false;
         }
     }
+
+    private void firstHomeKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_HOME) {
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
+        }
+    }
+
+    private void firstBackKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
+        }
+    }
+
 
 }
 

@@ -46,8 +46,8 @@ public class ColorSystemUiContentOberver extends ContentObserver {
         }
 
         if (fswitch == 2) {
-            i2.setImageDrawable(mcontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
             Source_View.msetDrawable(Source_View.select);
+            i2.setImageDrawable(mcontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
             Source_View.select = 2;
         }
 

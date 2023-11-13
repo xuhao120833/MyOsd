@@ -47,6 +47,8 @@ public class Source_View {
 
         inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,5);
+
         initView();
 
         initLp();
@@ -120,6 +122,11 @@ public class Source_View {
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "0");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     DialogMenu.mydialog.dismiss();//切换其它信源，收起菜单
                     MenuService.menuOn = false;
 
@@ -132,6 +139,12 @@ public class Source_View {
                         i1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal1));
                     }
                     select = 2;
+
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "3");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -148,6 +161,12 @@ public class Source_View {
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     msetDrawable(select);
                     select = 2;
+
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "3");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
@@ -173,6 +192,12 @@ public class Source_View {
                         i3.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal3_slect));
                     }
                     msetDrawable(select);
+
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "1");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     select = 3;
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -189,6 +214,12 @@ public class Source_View {
                         i3.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal3));
                     }
                     select = 2;
+
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "3");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
@@ -209,6 +240,10 @@ public class Source_View {
                     }
                     msetDrawable(select);
                     select = 4;
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "2");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
 
@@ -224,6 +259,12 @@ public class Source_View {
                         i4.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal4));
                     }
                     select = 2;
+
+                    intent.setAction("com.color.systemui");
+                    intent.putExtra("data", "3");
+                    intent.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(intent);
+
                     i2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.signal2_slect_useful));
                     FunctionBind.mavts.clearView(source);
                     Menu_source.sourceon = true;
