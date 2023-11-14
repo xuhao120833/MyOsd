@@ -75,8 +75,9 @@
 
         </ImageView>
 
+
         <ImageView
-            android:id="@+id/Menu_eye"
+            android:id="@+id/Menu_recent"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="6dp"
@@ -84,12 +85,44 @@
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/menu_eye"
-            android:background="@drawable/eye_focus_select_press"
+            android:src="@drawable/menu_recent"
+            android:background="@drawable/recent_focus_select_press"
             android:visibility="visible"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
         </ImageView>
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/Menu_eye_off"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginLeft="6dp"-->
+        <!--            android:layout_marginRight="6dp"-->
+        <!--            android:focusable="true"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusableInTouchMode="true"-->
+        <!--            android:src="@drawable/menu_eye"-->
+        <!--            android:background="@drawable/eye_focus_select_press"-->
+        <!--            android:visibility="visible"-->
+        <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
+
+        <!--        </ImageView>-->
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/Menu_eye_on"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginLeft="6dp"-->
+        <!--            android:layout_marginRight="6dp"-->
+        <!--            android:focusable="true"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusableInTouchMode="true"-->
+        <!--            android:src="@drawable/menu_eye"-->
+        <!--            android:background="@drawable/eye_focus_select_press"-->
+        <!--            android:visibility="visible"-->
+        <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
+
+        <!--        </ImageView>-->
 
         <ImageView
             android:id="@+id/Menu_screenshot"

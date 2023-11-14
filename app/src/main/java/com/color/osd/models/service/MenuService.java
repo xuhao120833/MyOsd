@@ -15,6 +15,10 @@ import com.color.osd.ui.DialogMenu;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.color.osd.broadcast.VolumeChangeReceiver;
+import com.color.osd.models.interfaces.VolumeChangeListener;
+
+
 
 public class MenuService extends AccessibilityService {
 
@@ -30,6 +34,8 @@ public class MenuService extends AccessibilityService {
     public List<DispatchKeyEventInterface> listenerList = new ArrayList<>();  // 初始化keyEvent的监听list集合
 
     DialogMenu dialogMenu;
+
+    VolumeChangeReceiver volumeChangeReceiver;
 
 
     @Override

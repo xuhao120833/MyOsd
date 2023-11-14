@@ -26,7 +26,7 @@ public class DialogMenu extends Dialog {
 
     WindowManager.LayoutParams lp;
 
-    public View Menu, Menu_source, Menu_brightness, Menu_volume, Menu_eye, Menu_screenshot, Menu_comments;
+    public View Menu, Menu_source, Menu_brightness, Menu_volume, Menu_recent, Menu_eye_off, Menu_eye_on, Menu_screenshot, Menu_comments;
     public static CustomDialog mydialog;
 
     public DialogMenu(Context context) {
@@ -72,7 +72,10 @@ public class DialogMenu extends Dialog {
         Menu_source = mydialog.findViewById(R.id.Menu_source);
         Menu_brightness = mydialog.findViewById(R.id.Menu_brightness);
         Menu_volume = mydialog.findViewById(R.id.Menu_volume);
-        Menu_eye = mydialog.findViewById(R.id.Menu_eye);
+        Menu_recent = mydialog.findViewById(R.id.Menu_recent);
+
+        //Menu_eye = mydialog.findViewById(R.id.Menu_eye_off);
+        //Menu_eye = mydialog.findViewById(R.id.Menu_eye_on);
         Menu_screenshot = mydialog.findViewById(R.id.Menu_screenshot);
         Menu_comments = mydialog.findViewById(R.id.Menu_comments);
 
@@ -114,7 +117,7 @@ public class DialogMenu extends Dialog {
     }
 
     private void functionBind() {
-        mybind.Bind(Menu, Menu_source, Menu_brightness, Menu_volume, Menu_eye, Menu_screenshot, Menu_comments);
+        mybind.Bind(Menu, Menu_source, Menu_brightness, Menu_volume, Menu_recent ,Menu_eye_off ,Menu_eye_on , Menu_screenshot, Menu_comments);
 
     }
 
