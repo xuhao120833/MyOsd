@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.os.Handler;
 
+import com.color.osd.models.Menu_source;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
 
@@ -15,9 +16,7 @@ public class ColorSystemUiContentOberver extends ContentObserver {
     Context mcontext;
 
 
-
-
-    public ColorSystemUiContentOberver( Context mContext) {
+    public ColorSystemUiContentOberver(Context mContext) {
         super(new Handler());
         mcontext = mContext;
     }
@@ -30,8 +29,11 @@ public class ColorSystemUiContentOberver extends ContentObserver {
         Log.d("ColorSystemUiContentOberver ", String.valueOf(fswitch));
 
         if (fswitch == 2) {
-            DialogMenu.mydialog.show();//展示Osd 菜单
-            MenuService.menuOn = true;
+            if (Menu_source.fromOsd == true) {
+                DialogMenu.mydialog.show();//展示Osd 菜单
+                MenuService.menuOn = true;
+                Menu_source.fromOsd = false;
+            }
         }
 
     }

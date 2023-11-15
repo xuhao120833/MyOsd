@@ -5,10 +5,7 @@ import static com.color.osd.utils.ConstantProperties.SCREENSHOT_SAVE_PATH;
 
 import android.graphics.Bitmap;
 import android.media.Image;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,7 +41,7 @@ public class CltBitmapUtil {
         return bitmap;
     }
 
-    public static boolean saveBitmap(String name, Bitmap bm) {
+    public static File saveBitmap(String name, Bitmap bm) {
         //指定我们想要存储文件的地址
         String targetPath = SCREENSHOT_SAVE_PATH;
         File picDir = new File(targetPath);
@@ -64,10 +61,10 @@ public class CltBitmapUtil {
             saveImgOut.flush();
             saveImgOut.close();
             if(DEBUG) Log.d("CltBitmapUtil", "saveBitmap: The picture is save to your phone!");
-            return true;
+            return saveFile;
         } catch (IOException ex) {
             ex.printStackTrace();
-            return false;
+            return saveFile;
         }
     }
 

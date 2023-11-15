@@ -25,6 +25,8 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     public static boolean sourceon = false;
 
+    public static boolean fromOsd;
+
     Menu_source(Context context) {
         mycontext = context;
 
@@ -42,6 +44,7 @@ public class Menu_source implements DispatchKeyEventInterface {
 
             DialogMenu.mydialog.dismiss();//收起菜单
             menuOn = false;
+            fromOsd = true;
 
         });
     }

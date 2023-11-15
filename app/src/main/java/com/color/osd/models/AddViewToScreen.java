@@ -11,6 +11,12 @@ public class AddViewToScreen {
     private Context mcontext;
 
     public void addView(View v, WindowManager.LayoutParams p) {
+        // 添加一个view之前先尝试删除这个view, 避免重复添加
+        try{
+            wm.removeViewImmediate(v);
+        }catch (Exception e){
+            Log.d("AddViewToScreen", "addView : removeView has Error： " + e.getMessage());
+        }
         wm.addView(v, p);
     }
 

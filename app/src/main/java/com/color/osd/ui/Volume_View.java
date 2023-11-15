@@ -1,7 +1,6 @@
 package com.color.osd.ui;
 
 import android.content.Context;
-import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.util.Log;
@@ -12,9 +11,11 @@ import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
 import com.color.osd.broadcast.VolumeChangeReceiver;
+import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.interfaces.AbstractMenuBrightnessAndVolume;
-import com.color.osd.models.interfaces.VolumeChangeListener;
+import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.views.CltTouchBarBaseView;
+import com.color.osd.utils.ConstantProperties;
 
 public class Volume_View extends AbstractMenuBrightnessAndVolume {
     private static final String TAG = "Volume_View";
@@ -28,32 +29,38 @@ public class Volume_View extends AbstractMenuBrightnessAndVolume {
     public Volume_View(Context context) {
         this.mContext = context;
         // 初始化当前类的时候先取出当前系统的声音
-        // volume = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
         if (audioManager == null) {
-            audioManager = (AudioManager) context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
         volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         // volume = 10;
         Log.d("TAG", "Volume_View: volume=" + volume);
         initView();
         initLp();
+        // addVolumeChangedReceiver();
     }
 
     public void initView(){
         source = new CltTouchBarBaseView(mContext);
         source.setParentView(this);   // 双向依赖
+        source.baseValue = 15;   // 设置基底
         source.setProgress(volume);
         source.setSeekBarIconPositive(ContextCompat.getDrawable(mContext, R.drawable.volume_positive));
         source.setSeekBarIconNegative(ContextCompat.getDrawable(mContext, R.drawable.volume_negative));
-        source.baseValue = 15;   // 设置基底
+
+        // 设置一个聚焦状态监听回调
+        source.setOnFocusChangeListener((v, hasFocus) -> {
+            Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
+            MenuService.menuState = MenuState.MENU_VOLUME_FOCUS;    // 声音被聚焦了（被选择了）
+        });
     }
 
     private void initLp() {
         lp = new WindowManager.LayoutParams();
-        lp.width = 303;
-        lp.height = 70;
+        lp.width = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP;
+        lp.height = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP;
         lp.gravity = Gravity.TOP;
-        lp.y = 32;
+        lp.y = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP;
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
                 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
@@ -92,4 +99,27 @@ public class Volume_View extends AbstractMenuBrightnessAndVolume {
         source.reRenderView();
     }
 
+//    private void addVolumeChangedReceiver() {
+//        if (volumeChangeReceiver == null) {
+//            volumeChangeReceiver = new VolumeChangeReceiver();
+//        }
+//        //volumeChangeReceiver.setVolumeChangeListener();
+//        volumeChangeReceiver.setVolumeChangeListener(new VolumeChangeListener() {
+//            @Override
+//            public void onVolumeChange(int volume) {
+//                onVolumeChanged(volume);
+//            }
+//        });
+//        IntentFilter volumeChangeFilter = new IntentFilter();
+//        volumeChangeFilter.addAction(volumeChangeReceiver.VOLUME_CHANGE_ACTION);
+//        mContext.registerReceiver(volumeChangeReceiver, volumeChangeFilter);
+//    }
+
+    public void initSystemVolume(){
+        if (audioManager != null){
+            volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            source.baseValue = 15;   // 设置基底
+            source.setProgress(volume);
+        }
+    }
 }

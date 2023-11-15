@@ -10,10 +10,14 @@ import android.view.WindowManager;
 import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
+import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.interfaces.AbstractMenuBrightnessAndVolume;
+import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.views.CltTouchBarBaseView;
+import com.color.osd.utils.ConstantProperties;
 
 public class Brightness_View extends AbstractMenuBrightnessAndVolume {
+    private static final String TAG = Brightness_View.class.getSimpleName();
     private Context mContext;
     public CltTouchBarBaseView source;
     public WindowManager.LayoutParams lp;
@@ -35,18 +39,22 @@ public class Brightness_View extends AbstractMenuBrightnessAndVolume {
     public void initView(){
         source = new CltTouchBarBaseView(mContext);
         source.setParentView(this);   // 把当前对象赋值给BrightnessView 这样Brightness_View和BrightnessView双向依赖
+        source.baseValue = 255;   // 设置基底
         source.setProgress(brightness);
         source.setSeekBarIconPositive(ContextCompat.getDrawable(mContext, R.drawable.white_brightness));
         source.setSeekBarIconNegative(ContextCompat.getDrawable(mContext, R.drawable.dark_brightness));
-        source.baseValue = 255;   // 设置基底
+        source.setOnFocusChangeListener((v, hasFocus) -> {
+            Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
+            MenuService.menuState = MenuState.MENU_BRIGHTNESS_FOCUS;    // 亮度被聚焦了（被选择了）
+        });
     }
 
     private void initLp() {
         lp = new WindowManager.LayoutParams();
-        lp.width = 303;
-        lp.height = 70;
+        lp.width = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP;
+        lp.height = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP;
         lp.gravity = Gravity.TOP;
-        lp.y = 32;
+        lp.y = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP;
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
                 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
@@ -67,6 +75,17 @@ public class Brightness_View extends AbstractMenuBrightnessAndVolume {
     public void setProgressFromTouchEvent(int progress) {
         this.brightness = progress;
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+    }
+
+    public void initSystemBrightness(){
+        try {
+            // 初始化当前类的时候先取出当前系统的亮度
+            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            source.baseValue = 255;   // 设置基底
+            source.setProgress(brightness);
+        } catch (Settings.SettingNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

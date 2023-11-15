@@ -25,6 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Osd"
         tools:targetApi="33">
+
+        <receiver
+            android:name=".broadcast.SettingVolumeChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.color.settings.VOLUME_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
         <receiver
             android:name=".broadcast.ScreenShotOverReceiver"
             android:enabled="true"

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.color.osd.models.interfaces.AbstractMenuBrightnessAndVolume;
+import com.color.osd.utils.ConstantProperties;
 
 public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMoveEvent {
 
@@ -30,7 +31,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     private int circleRightMargin;
     private int circleLeftMargin;
     private int mProgress;   // 亮度值/声音值
-    private float mProgressPercent;   // 比例
+    private int mProgressPercent;   // 比例
     public float baseValue = 255;     // 比值的基底  如果是亮度，基底是255；如果是音量，基底15  给个默认值，避免被除数为0
 
     private AbstractMenuBrightnessAndVolume parentView;
@@ -54,19 +55,19 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     public CltTouchBarBaseView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setWillNotDraw(false);
-        mDotRadius = 15;
+        mDotRadius = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP;
         mPaginationPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaginationPaint.setStyle(Paint.Style.FILL);
         mPaginationPaint.setColor(Color.BLACK);
 
         // seekbar的宽高
-        seekBarHeight = 46;
-        seekBarWidth = 197;
+        seekBarHeight = ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_HEIGHT_DP;
+        seekBarWidth = ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_WIDTH_DP;
 
         // 圆形的大小
-        circleViewSize = 46;
-        circleRightMargin = 16;
-        circleLeftMargin = 22;
+        circleViewSize = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_HEIGHT_DP;
+        circleRightMargin = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_RIGHT_MARGIN_DP;
+        circleLeftMargin = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_LEFT_MARGIN_DP;
 
         // 添加seek bar
         seekBar = new CltSeekBar(context);
@@ -134,6 +135,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     public void setProgress(int progress){
         mProgress = progress;
         mProgressPercent = toPercent(progress);   // 转化成百分比
+        Log.d(TAG, "setProgress: " + mProgressPercent);
         updateUI();
     }
 
@@ -149,12 +151,12 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         invalidate();
     }
 
-    private float toPercent(int brightness){
-        // 映射到0-100之间的值
-        return (brightness / baseValue) * 100.0f;
+    private int toPercent(int brightness){
+        // 映射到百分比, 四舍五入取整
+        return Math.round((brightness / baseValue) * 100.0f);
     }
 
-    private int toNumber(double percentage) {
+    private int toNumber(int percentage) {
         return (int) ((percentage / 100.0) * baseValue);
     }
 
@@ -163,7 +165,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
      * @param percent    百分比
      */
     @Override
-    public void onMovePercent(float percent) {
+    public void onMovePercent(int percent) {
         mProgressPercent = percent;
         mProgress = toNumber(mProgressPercent);      // 根据百分比再转数值
         parentView.setProgressFromTouchEvent(mProgress);   // 更新下Brightness_View的brightness，否则遥控的时候还是用的旧的值

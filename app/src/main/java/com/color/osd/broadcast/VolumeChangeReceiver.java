@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.FunctionBind;
-import com.color.osd.models.Menu_volume;
 import com.color.osd.models.interfaces.VolumeChangeListener;
 import com.color.osd.models.service.MenuService;
 
@@ -27,7 +26,9 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive: intent");
         // 监听媒体音量的改变
-        if (VOLUME_CHANGE_ACTION.equals(intent.getAction()) && intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1) == AudioManager.STREAM_MUSIC) {
+        if (VOLUME_CHANGE_ACTION.equals(intent.getAction())
+                && intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1) == AudioManager.STREAM_MUSIC
+                && !MenuService.settingVolumeChange) {
             // 调节媒体音量
             changeVolume(context, AudioManager.STREAM_MUSIC);
         }
@@ -38,17 +39,20 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
         int volume;
         if (audioManager != null) {
             volume = audioManager.getStreamVolume(volumeType);
-            Log.d(TAG, "changeVolume: volType=" + volumeType + ", volume=" + volume);
+            Log.d(TAG, "changeVolume: volType=" + volumeType + ", volume=" + volume + ", " + MenuService.menuState);
 
 //            ((Menu_volume) FunctionBind.Menu_volume).onVolumeChange();
-            if (MenuService.menuState == MenuState.MENU_VOLUME) {
+            if (MenuService.menuState == MenuState.MENU_VOLUME ||
+                    MenuService.menuState == MenuState.MENU_BRIGHTNESS_VOLUME ||
+                    MenuService.menuState == MenuState.MENU_VOLUME_DIRECT) {
                 // 音量调节窗口已经显示
                 FunctionBind.menu_volume.onVolumeChanged(volume);
             } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS) {
                 // TODO: 亮度和音量一起显示。暂时只显示亮度
                 FunctionBind.Menu_volume.performClick();
-            } else {
+            } else if (MenuService.menuState == MenuState.NULL){
                 // 显示亮度窗口
+                MenuService.menuState = MenuState.MENU_VOLUME_DIRECT;    // 这里直接进入声音状态
                 FunctionBind.Menu_volume.performClick();
             }
 

@@ -7,24 +7,28 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.color.osd.utils.ConstantProperties;
 
 
 /**
  * 绘制圆形背景+文字
  */
-public class CltCircleView extends View {
+public class CltCircleView extends ViewGroup {
     private static final String TAG = CltCircleView.class.getSimpleName();
 
     private float mRightCircleRadius;
 
-    private float mRightCirclePaddingRight;
     private Paint mRightCirclePaint;
 
     private String progressText;
-    private Paint mProgressTextPaint;
+//    private Paint mProgressTextPaint;
 
     private int textSize;
+    private TextView textView;
 
     private int bgColor;
     public CltCircleView(Context context) {
@@ -37,20 +41,33 @@ public class CltCircleView extends View {
 
     public CltCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setWillNotDraw(false);
         bgColor = Color.argb(255, 39, 39, 39);
-        mRightCircleRadius = 15;
-        mRightCirclePaddingRight = 16;
+        mRightCircleRadius = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP;
         mRightCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRightCirclePaint.setStyle(Paint.Style.FILL);
         mRightCirclePaint.setColor(bgColor);
 
         progressText = "0%";
-        textSize = 20;
-        mProgressTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mProgressTextPaint.setStyle(Paint.Style.FILL);
-        mProgressTextPaint.setColor(Color.WHITE);
-        mProgressTextPaint.setTextSize(textSize);
+        textSize = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_TEXT_SIZE_DP;
+        textView = new TextView(context);
+        textView.setTextSize(textSize);
+        textView.setText(progressText);
+        textView.setTextColor(Color.WHITE);
+        textView.setGravity(Gravity.CENTER);
+        addView(textView);
 
+//        textSize = 20;
+//        mProgressTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        mProgressTextPaint.setStyle(Paint.Style.FILL);
+//        mProgressTextPaint.setColor(Color.WHITE);
+//        mProgressTextPaint.setTextSize(textSize);
+
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        textView.layout(0, 0, getWidth(), getHeight());
     }
 
     public void setDrawBgColor(int bgColor) {
@@ -65,6 +82,9 @@ public class CltCircleView extends View {
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
         Log.d(TAG, "onMeasure: " + width + ", " + height);
+        // 直接给textView设置宽高(当前布局有多大就给textView设多大)
+        textView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
         setMeasuredDimension(width, height);
     }
 
@@ -80,12 +100,13 @@ public class CltCircleView extends View {
         canvas.drawRoundRect(rect, mRightCircleRadius, mRightCircleRadius, mRightCirclePaint);
 
         // 绘制文字
-        canvas.drawText(progressText, (getWidth() - textSize) / 2, (getHeight()) / 2 + textSize/2, mProgressTextPaint);
+        // canvas.drawText(progressText, (getWidth() - textSize) / 2, (getHeight()) / 2 + textSize/2, mProgressTextPaint);
     }
 
-    public void setPercent(float percent){
-        progressText = String.valueOf(percent);
-        Log.d(TAG, "setPercent: " + progressText);
+    public void setPercent(int percent){
+        progressText = percent + "%";
+//        Log.d(TAG, "setPercent: " + progressText);
+        textView.setText(progressText);
         invalidate();
     }
 }

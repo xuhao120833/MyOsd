@@ -31,6 +31,8 @@ public class MenuService extends AccessibilityService {
     //static int Menumber = 0;
     public static boolean menuOn = false;
 
+    public static boolean settingVolumeChange = false;
+
     public static MenuState menuState;
     public List<DispatchKeyEventInterface> listenerList = new ArrayList<>();  // 初始化keyEvent的监听list集合
 
@@ -117,7 +119,7 @@ public class MenuService extends AccessibilityService {
             return true;
         }
 
-        if(menuState == NULL && menuOn == true){
+        if((menuState == NULL || menuState == MenuState.MENU_VOLUME_DIRECT) && menuOn == true){
             //2、二级菜单没有打开，Home键处理
             firstHomeKeyEvent(event);
 

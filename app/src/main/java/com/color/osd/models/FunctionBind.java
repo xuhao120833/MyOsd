@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.color.osd.ContentObserver.ColorSystemUiContentOberver;
 import com.color.osd.R;
+import com.color.osd.models.Enum.MenuState;
 
 public class FunctionBind {
 
@@ -87,6 +88,12 @@ public class FunctionBind {
         //5、批注
         menu_comments.setOnclick(Menu_comments);
 
+    }
+
+    public static void removeItemViewByMenuState(MenuState menuState){
+        if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT){
+            menu_volume.removeView();
+        }
     }
 
 

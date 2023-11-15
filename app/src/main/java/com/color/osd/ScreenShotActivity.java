@@ -17,26 +17,25 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 
@@ -125,7 +124,20 @@ public class ScreenShotActivity extends Activity{
             @Override
             public void run() {
                 String saveName = System.currentTimeMillis() + ".png";
-                saveBitmap(saveName, screenShotBitmap);
+                // 1 先保存到本地
+                File file = saveBitmap(saveName, screenShotBitmap);
+
+                // 2 通知相册
+                try {
+                    MediaStore.Images.Media.insertImage(mContext.getContentResolver(),
+                            file.getAbsolutePath(), saveName, null);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                // 最后通知图库更新
+                String path = Environment.getExternalStorageDirectory().getPath();
+                mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+
             }
         });
 
