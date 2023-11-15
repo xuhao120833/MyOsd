@@ -5,12 +5,12 @@ import static com.color.osd.models.Enum.MenuState.NULL;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.color.osd.models.Enum.MenuState;
-import com.color.osd.models.FunctionBind;
 import com.color.osd.models.Menu_source;
 import com.color.osd.models.interfaces.DispatchKeyEventInterface;
 import com.color.osd.ui.DialogMenu;
@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.color.osd.broadcast.VolumeChangeReceiver;
-import com.color.osd.models.interfaces.VolumeChangeListener;
-import com.color.osd.ui.Source_View;
 
 
 public class MenuService extends AccessibilityService {
@@ -39,6 +37,10 @@ public class MenuService extends AccessibilityService {
     DialogMenu dialogMenu;
 
     VolumeChangeReceiver volumeChangeReceiver;
+
+    private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
+
+    boolean ceshi ;
 
 
     @Override
@@ -126,6 +128,8 @@ public class MenuService extends AccessibilityService {
         }
 
         //4、二级菜单 KeyEvent判断处理
+        //ceshi = whichOne(event);
+//        Log.d("Menu_source","返回值"+ String.valueOf(ceshi));
         return whichOne(event);
 
 
@@ -146,7 +150,8 @@ public class MenuService extends AccessibilityService {
             Log.d(TAG, "关闭Menu");
 
             if(Menu_source.sourceon == true) {
-                FunctionBind.mavts.clearView(Source_View.source);
+                //FunctionBind.mavts.clearView(Source_View.source);
+                Settings.System.putInt(mycontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,0);
                 Menu_source.sourceon = false;
                 if(MenuService.menuState == MenuState.MENU_SOURCE) {
                     MenuService.menuState = MenuState.NULL;

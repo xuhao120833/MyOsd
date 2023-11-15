@@ -41,10 +41,6 @@
         </activity>
 
         <receiver
-            android:name=".broadcast.SourceReceiver"
-            android:enabled="true"
-            android:exported="true" />
-        <receiver
             android:name=".broadcast.BootCompleteReceiver"
             android:enabled="true"
             android:exported="true">

@@ -3,6 +3,7 @@ package com.color.osd.models;
 import static com.color.osd.models.service.MenuService.menuOn;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,21 +12,23 @@ import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.interfaces.DispatchKeyEventInterface;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
-import com.color.osd.ui.Source_View;
 
 public class Menu_source implements DispatchKeyEventInterface {
 
     Context mycontext;
 
-    Source_View source_view;
+    //Source_View source_view;
 
     static String TAG = "Menu_source";
 
+    private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
+
     public static boolean sourceon = false;
-    Menu_source (Context context) {
+
+    Menu_source(Context context) {
         mycontext = context;
 
-        source_view = new Source_View(mycontext);
+        Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 5);
 
         ((MenuService) mycontext).addKeyEventListener(this);   // 注册观察者
     }
@@ -33,10 +36,12 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     public void setOnclick(View menu_source) {
         menu_source.setOnClickListener(v -> {
-            //添加信源切换界面
-            FunctionBind.mavts.addView(source_view.source , source_view.lp);
+            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 1);
             sourceon = true;
             MenuService.menuState = MenuState.MENU_SOURCE;
+
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
 
         });
     }
@@ -50,10 +55,10 @@ public class Menu_source implements DispatchKeyEventInterface {
         //2、判断Back键
         //isBackKeyEvent(event);
 
-        if(!menuState.equals(MenuState.MENU_SOURCE))
+        if (!menuState.equals(MenuState.MENU_SOURCE))
             return false;
 
-        if(isHomeKeyEvent(event) || isBackKeyEvent(event)) {
+        if (isHomeKeyEvent(event) || isBackKeyEvent(event)) {
             return true;
         }
 
@@ -63,17 +68,14 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     @Override
     public boolean isHomeKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME && menuOn == true) {
-            if(Menu_source.sourceon == true) {
-                FunctionBind.mavts.clearView(Source_View.source);
-                Menu_source.sourceon = false;
-                MenuService.menuState = MenuState.NULL;
-            }
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME && sourceon == true) {
+
+            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
+            Menu_source.sourceon = false;
+            MenuService.menuState = MenuState.NULL;
+
 
             Log.d(TAG, "关闭Menu");
-
-            DialogMenu.mydialog.dismiss();//收起菜单
-            menuOn = false;
 
             return true;
         }
@@ -83,17 +85,18 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     @Override
     public boolean isBackKeyEvent(KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == true) {
-            FunctionBind.mavts.clearView(Source_View.source);
-            Menu_source.sourceon = false;
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && sourceon == true) {
+
+            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
+            Log.d("Menu_source", "发消息");
+            sourceon = false;
             MenuService.menuState = MenuState.NULL;
+            //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 2);
+            DialogMenu.mydialog.show();//展示Osd 菜单
+            MenuService.menuOn = true;
             return true;
         }
-//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && menuOn == true && Menu_source.sourceon == false) {
-//            DialogMenu.mydialog.dismiss();//收起菜单
-//            menuOn = false;
-//            return true;
-//        }
+
         return false;
     }
 
