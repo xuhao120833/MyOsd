@@ -76,4 +76,8 @@ public class Menu_volume implements DispatchKeyEventInterface {
     public boolean isBackKeyEvent(KeyEvent event) {
         return false;
     }
+
+    public void onVolumeChanged(int volume) {
+        volumeView.onVolumeChanged(volume);
+    }
 }

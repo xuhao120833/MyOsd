@@ -37,7 +37,6 @@ public class Volume_View extends AbstractMenuBrightnessAndVolume {
         Log.d("TAG", "Volume_View: volume=" + volume);
         initView();
         initLp();
-        addVolumeChangedReceiver();
     }
 
     public void initView(){
@@ -93,20 +92,4 @@ public class Volume_View extends AbstractMenuBrightnessAndVolume {
         source.reRenderView();
     }
 
-    // 暂时先放这边，进行一个测试使用
-    private void addVolumeChangedReceiver() {
-        if (volumeChangeReceiver == null) {
-            volumeChangeReceiver = new VolumeChangeReceiver();
-        }
-        //volumeChangeReceiver.setVolumeChangeListener();
-        volumeChangeReceiver.setVolumeChangeListener(new VolumeChangeListener() {
-            @Override
-            public void onVolumeChange(int volume) {
-                onVolumeChanged(volume);
-            }
-        });
-        IntentFilter volumeChangeFilter = new IntentFilter();
-        volumeChangeFilter.addAction(volumeChangeReceiver.VOLUME_CHANGE_ACTION);
-        mContext.registerReceiver(volumeChangeReceiver, volumeChangeFilter);
-    }
 }

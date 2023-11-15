@@ -11,11 +11,13 @@ public class FunctionBind {
 
     Context mycontext;
 
-    public View Menu, Menu_source, Menu_brightness, Menu_volume, Menu_recent , Menu_eye_off , Menu_eye_on , Menu_screenshot, Menu_comments;
+    public View Menu, Menu_source, Menu_brightness, Menu_recent , Menu_eye_off , Menu_eye_on , Menu_screenshot, Menu_comments;
+
+    public static View Menu_volume;
 
     Menu_source menu_source;
     Menu_brightness menu_brightness;
-    Menu_volume menu_volume;
+    public static Menu_volume menu_volume;
 
     Menu_recent menu_recent;
     Menu_eye menu_eye;
