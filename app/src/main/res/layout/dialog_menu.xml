@@ -16,23 +16,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Menu"
-    android:layout_width="390dp"
-    android:layout_height="70dp"
+    android:layout_width="350dp"
+    android:layout_height="52dp"
     android:background="@drawable/shapebuttom">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal">
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
         <ImageView
             android:id="@+id/Menu_source"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="21dp"
-            android:layout_marginRight="6dp"
+            android:layout_width="55dp"
+            android:layout_height="33.9dp"
+            android:layout_marginLeft="10dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
@@ -40,15 +42,19 @@
             android:background="@drawable/source_focus_select_press"
             android:visibility="visible"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
-
         </ImageView>
+
+<!--        <TextView-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp" >-->
+
+<!--        </TextView>-->
+<!--        </LinearLayout>-->
 
         <ImageView
             android:id="@+id/Menu_brightness"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_width="55dp"
+            android:layout_height="33.9dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
@@ -61,10 +67,8 @@
 
         <ImageView
             android:id="@+id/Menu_volume"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_width="55dp"
+            android:layout_height="33.9dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
@@ -78,10 +82,8 @@
 
         <ImageView
             android:id="@+id/Menu_recent"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_width="55dp"
+            android:layout_height="33.9dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
@@ -126,10 +128,8 @@
 
         <ImageView
             android:id="@+id/Menu_screenshot"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+            android:layout_width="55dp"
+            android:layout_height="33.9dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"
@@ -143,9 +143,8 @@
         <ImageView
             android:id="@+id/Menu_comments"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="21dp"
+            android:layout_height="30.8dp"
+            android:layout_marginRight="10dp"
             android:focusable="true"
             android:clickable="true"
             android:focusableInTouchMode="true"

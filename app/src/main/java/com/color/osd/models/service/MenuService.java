@@ -4,7 +4,9 @@ import static com.color.osd.models.Enum.MenuState.NULL;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,7 +38,7 @@ public class MenuService extends AccessibilityService {
     public static MenuState menuState;
     public List<DispatchKeyEventInterface> listenerList = new ArrayList<>();  // 初始化keyEvent的监听list集合
 
-    DialogMenu dialogMenu;
+    public static DialogMenu dialogMenu;
 
     VolumeChangeReceiver volumeChangeReceiver;
 
@@ -83,8 +85,28 @@ public class MenuService extends AccessibilityService {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;//返回START_STICKY，确保Service被意外杀死后能够自动重启
+    }
+
+    @Override
     public void onInterrupt() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+
+    //语言变化回调
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d("onConfigurationChanged","收到语言变化");
+
+        onCreate();
     }
 
     //按键的处理和拦截

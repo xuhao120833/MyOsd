@@ -4,6 +4,10 @@
     android:height="33.9dp"
     android:viewportWidth="120"
     android:viewportHeight="74">
+  <path
+      android:pathData="M10.67,0L109.33,0A10.67,10.67 0,0 1,120 10.67L120,63.33A10.67,10.67 0,0 1,109.33 74L10.67,74A10.67,10.67 0,0 1,0 63.33L0,10.67A10.67,10.67 0,0 1,10.67 0z"
+      android:fillColor="#ffffff"
+      android:fillAlpha="0.3"/>
   <group>
     <clip-path
         android:pathData="M44.41,7.91h32v32h-32z"/>
