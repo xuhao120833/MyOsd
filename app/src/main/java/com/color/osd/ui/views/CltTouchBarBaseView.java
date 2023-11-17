@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.color.osd.models.interfaces.AbstractMenuBrightnessAndVolume;
+import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.utils.ConstantProperties;
 
 public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMoveEvent {
@@ -34,9 +34,9 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     private int mProgressPercent;   // 比例
     public float baseValue = 255;     // 比值的基底  如果是亮度，基底是255；如果是音量，基底15  给个默认值，避免被除数为0
 
-    private AbstractMenuBrightnessAndVolume parentView;
+    private MenuBrightnessAndVolumeInterface parentView;
 
-    public void setParentView(AbstractMenuBrightnessAndVolume parentView) {
+    public void setParentView(MenuBrightnessAndVolumeInterface parentView) {
         this.parentView = parentView;
     }
 

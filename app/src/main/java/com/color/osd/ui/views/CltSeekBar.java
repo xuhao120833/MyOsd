@@ -138,14 +138,20 @@ public class CltSeekBar extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 float deltaDown = Math.max(0, event.getX() - mFgSeekHeight);
-                touchMoveEvent.onMovePercent(Math.round(deltaDown / mFgSeekAvailableWidth * 100));   // 把结果回调出去
+                if (touchMoveEvent != null){
+                    touchMoveEvent.onMovePercent(Math.round(deltaDown / mFgSeekAvailableWidth * 100));   // 把结果回调出去
+                }
+
 //                Log.d(TAG, "onTouchEvent: here down: " + deltaDown);
                 break;
             case MotionEvent.ACTION_MOVE:
                 flag++;
                 if (flag % 6 == 0){    // 抽帧处理  不然滑动触发太多次了 导致频繁的onDraw() 性能跟不上
                     float deltaDownMove = Math.min(Math.max(0, event.getX() - mFgSeekHeight), mFgSeekAvailableWidth);
-                    touchMoveEvent.onMovePercent(Math.round(deltaDownMove / mFgSeekAvailableWidth * 100));    // 把结果回调出去
+                    if (touchMoveEvent != null){
+                        touchMoveEvent.onMovePercent(Math.round(deltaDownMove / mFgSeekAvailableWidth * 100));    // 把结果回调出去
+                    }
+
 //                    Log.d(TAG, "onTouchEvent: here move: " + deltaDownMove);
                 }
 

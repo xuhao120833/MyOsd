@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,15 +18,20 @@ import android.view.accessibility.AccessibilityEvent;
 import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.Menu_source;
 import com.color.osd.models.interfaces.DispatchKeyEventInterface;
+import com.color.osd.models.interfaces.VolumeChangeListener;
 import com.color.osd.ui.DialogMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.color.osd.broadcast.VolumeChangeReceiver;
+import com.color.osd.models.interfaces.VolumeChangeListener;
+
+import android.content.ContextWrapper;
 
 
-public class MenuService extends AccessibilityService {
+
+public class MenuService extends AccessibilityService implements VolumeChangeListener {
 
     Context mycontext;
 
@@ -46,6 +54,10 @@ public class MenuService extends AccessibilityService {
 
     boolean ceshi ;
 
+    public static Handler mainHandler;
+
+    Looper mainLooper = Looper.getMainLooper();
+
 
     @Override
     public void onCreate() {
@@ -54,6 +66,8 @@ public class MenuService extends AccessibilityService {
         super.onCreate();
         mycontext = this;
         menuState = NULL;
+
+        mainHandler = new Handler(mainLooper);
 
         //Menu 初始化
         dialogMenu = new DialogMenu(this);
@@ -66,6 +80,7 @@ public class MenuService extends AccessibilityService {
     private void addVolumeChangedReceiver() {
         if (volumeChangeReceiver == null) {
             volumeChangeReceiver = new VolumeChangeReceiver();
+            volumeChangeReceiver.setVolumeChangeListener(this::onVolumeChange);  // 注册回调
         }
 
         IntentFilter volumeChangeFilter = new IntentFilter();
@@ -107,6 +122,7 @@ public class MenuService extends AccessibilityService {
         Log.d("onConfigurationChanged","收到语言变化");
 
         onCreate();
+        //onDestroy();
     }
 
     //按键的处理和拦截
@@ -222,6 +238,28 @@ public class MenuService extends AccessibilityService {
             menuOn = false;
         }
     }
+
+    @Override
+    public void onVolumeChange(int volume) {
+        if (menuState == MenuState.MENU_VOLUME ||
+                menuState == MenuState.MENU_VOLUME_DIRECT) {
+            // 音量调节窗口已经显示  直接改变音量的值
+            dialogMenu.mybind.menu_volume.onVolumeChanged(volume);
+        } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS) {
+            // TODO: 亮度和音量一起显示。暂时只显示亮度 此功能尚未完成！！！
+//            dialogMenu.mybind.Menu_volume.performClick();
+        } else if (MenuService.menuState == MenuState.NULL){
+            // OSD一级菜单栏都没有打开，直接进入MENU_VOLUME_DIRECT态，并打开声音TouchBar
+            MenuService.menuState = MenuState.MENU_VOLUME_DIRECT;
+            dialogMenu.mybind.Menu_volume.performClick();
+        }else if(menuState == MenuState.MENU_BRIGHTNESS_VOLUME ||
+                menuState == MenuState.MENU_BRIGHTNESS_FOCUS ||
+                menuState == MenuState.MENU_VOLUME_FOCUS){
+            // 进入复合态了，那么直接调节音量吧，但是由Brightness
+            dialogMenu.mybind.menu_volume.onVolumeChangedInBrightnessAndVolume(volume);
+        }
+    }
+
 
 
 }

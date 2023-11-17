@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.os.Handler;
 
+import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.Menu_source;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
@@ -33,6 +34,21 @@ public class ColorSystemUiContentOberver extends ContentObserver {
                 DialogMenu.mydialog.show();//展示Osd 菜单
                 MenuService.menuOn = true;
                 Menu_source.fromOsd = false;
+
+            }
+            MenuService.menuState = MenuState.NULL;
+        }
+
+        if (fswitch == 0) {
+
+            MenuService.menuState = MenuState.NULL;
+
+        }
+
+        if (fswitch == 3) {
+            if (MenuService.menuOn = true) {
+                DialogMenu.mydialog.dismiss();//展示Osd 菜单
+                MenuService.menuOn = false;
             }
         }
 

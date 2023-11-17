@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.util.Log;
 
-import com.color.osd.models.Enum.MenuState;
-import com.color.osd.models.FunctionBind;
 import com.color.osd.models.interfaces.VolumeChangeListener;
 import com.color.osd.models.service.MenuService;
 
@@ -39,22 +37,13 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
         int volume;
         if (audioManager != null) {
             volume = audioManager.getStreamVolume(volumeType);
-            Log.d(TAG, "changeVolume: volType=" + volumeType + ", volume=" + volume + ", " + MenuService.menuState);
+            // 把当前音量改变情况传递给MenuService中  不要在广播中操作任何MenuServer相关的对象
+            // 之前的写法全都是在这里操作FunctionBind的静态View对象
+            // 把View这种带context的对象给弄成静态的，容易造成内存泄露，而且AS中也飘黄了，说明不建议把View的对象弄成静态的
+            volumeChangeListener.onVolumeChange(volume);
 
-//            ((Menu_volume) FunctionBind.Menu_volume).onVolumeChange();
-            if (MenuService.menuState == MenuState.MENU_VOLUME ||
-                    MenuService.menuState == MenuState.MENU_BRIGHTNESS_VOLUME ||
-                    MenuService.menuState == MenuState.MENU_VOLUME_DIRECT) {
-                // 音量调节窗口已经显示
-                FunctionBind.menu_volume.onVolumeChanged(volume);
-            } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS) {
-                // TODO: 亮度和音量一起显示。暂时只显示亮度
-                FunctionBind.Menu_volume.performClick();
-            } else if (MenuService.menuState == MenuState.NULL){
-                // 显示亮度窗口
-                MenuService.menuState = MenuState.MENU_VOLUME_DIRECT;    // 这里直接进入声音状态
-                FunctionBind.Menu_volume.performClick();
-            }
+
+            Log.d(TAG, "changeVolume: volType=" + volumeType + ", volume=" + volume + ", " + MenuService.menuState);
 
         }
     }

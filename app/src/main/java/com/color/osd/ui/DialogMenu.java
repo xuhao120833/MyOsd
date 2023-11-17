@@ -22,7 +22,7 @@ public class DialogMenu extends Dialog {
     Context mycontext;
     Window wm;
 
-    FunctionBind mybind;
+    public FunctionBind mybind;
 
     WindowManager.LayoutParams lp;
 
@@ -89,7 +89,10 @@ public class DialogMenu extends Dialog {
         wm.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+                | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+                | WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+
         wm.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 
     }

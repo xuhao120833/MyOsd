@@ -12,9 +12,11 @@ public class ConstantProperties {
     public static final String BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String SCREENSHOT_SAVE_PATH = BASE_PATH + "/DCIM/screen_shot";
 
+    public static final int DENSITY = 1;
+
     // UI布局相关的常量类
     /**************************************音量和亮度复合背景的参数************************************/
-    public static final int BRIGHTNESS_AND_VOLUME_BACKGROUND_WIDTH_DP = 343;
+    public static final int BRIGHTNESS_AND_VOLUME_BACKGROUND_WIDTH_DP = 343 * DENSITY;
     public static final int BRIGHTNESS_AND_VOLUME_BACKGROUND_HEIGHT_DP = 188;
     public static final int BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP = 32;
     public static final int BRIGHTNESS_AND_VOLUME_BACKGROUND_CORNER_DP = 30;   // 圆角

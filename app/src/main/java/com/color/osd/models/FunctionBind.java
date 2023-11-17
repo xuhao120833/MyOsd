@@ -5,7 +5,7 @@ import android.provider.Settings;
 import android.view.View;
 
 import com.color.osd.ContentObserver.ColorSystemUiContentOberver;
-import com.color.osd.R;
+import com.color.osd.ui.BrightnessAndVolume_View;
 import com.color.osd.models.Enum.MenuState;
 
 public class FunctionBind {
@@ -14,16 +14,18 @@ public class FunctionBind {
 
     public View Menu, Menu_source, Menu_brightness, Menu_recent , Menu_eye_off , Menu_eye_on , Menu_screenshot, Menu_comments;
 
-    public static View Menu_volume;
+    public View Menu_volume;
 
-    Menu_source menu_source;
-    Menu_brightness menu_brightness;
-    public static Menu_volume menu_volume;
+    public Menu_source menu_source;
+    public Menu_brightness menu_brightness;
+    public Menu_volume menu_volume;
 
     Menu_recent menu_recent;
     Menu_eye menu_eye;
     Menu_screenshot menu_screenshot;
     Menu_comments menu_comments;
+
+    BrightnessAndVolume_View brightnessAndVolumeView;
     ColorSystemUiContentOberver systemUiContentOberver;
 
     private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
@@ -40,8 +42,15 @@ public class FunctionBind {
         //按键初始化 添加
         menu_source = new Menu_source(mycontext);
 
-        menu_brightness = new Menu_brightness(mycontext);
-        menu_volume = new Menu_volume(mycontext);
+        // 这个view是亮度和音量同时调整的view，在这里公共创建，传递给menu_brightness、menu_volume共用
+        brightnessAndVolumeView = new BrightnessAndVolume_View(context);
+
+        menu_brightness = new Menu_brightness(mycontext, this);
+        menu_brightness.setBrightnessAndVolumeView(brightnessAndVolumeView);
+
+        menu_volume = new Menu_volume(mycontext, this);
+        menu_volume.setBrightnessAndVolumeView(brightnessAndVolumeView);
+
 
         menu_recent = new Menu_recent();
 //        menu_eye = new Menu_eye_off(mycontext);
@@ -90,9 +99,13 @@ public class FunctionBind {
 
     }
 
-    public static void removeItemViewByMenuState(MenuState menuState){
-        if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT){
+    public void removeItemViewByMenuState(MenuState menuState) {
+        if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT) {
             menu_volume.removeView();
+        }
+
+        if (menuState == MenuState.MENU_BRIGHTNESS) {
+            menu_brightness.removeView();
         }
     }
 

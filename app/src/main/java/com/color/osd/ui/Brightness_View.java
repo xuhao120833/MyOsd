@@ -11,17 +11,26 @@ import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
 import com.color.osd.models.Enum.MenuState;
-import com.color.osd.models.interfaces.AbstractMenuBrightnessAndVolume;
+import com.color.osd.models.interfaces.AbstractAutoClose;
+import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.models.service.MenuService;
+import com.color.osd.ui.views.CltBrightnessAndVolumeView;
 import com.color.osd.ui.views.CltTouchBarBaseView;
 import com.color.osd.utils.ConstantProperties;
 
-public class Brightness_View extends AbstractMenuBrightnessAndVolume {
+public class Brightness_View extends AbstractAutoClose implements MenuBrightnessAndVolumeInterface {
     private static final String TAG = Brightness_View.class.getSimpleName();
     private Context mContext;
     public CltTouchBarBaseView source;
     public WindowManager.LayoutParams lp;
     private int brightness = 0;
+
+    // 这个对象用来判断当前对象是否是由BrightnessAndVolume_View创建的，如果true：此对象的自动关闭行为由其控制
+    private CltBrightnessAndVolumeView cltBrightnessAndVolumeView;
+
+    public void setCltBrightnessAndVolumeView(CltBrightnessAndVolumeView cltBrightnessAndVolumeView) {
+        this.cltBrightnessAndVolumeView = cltBrightnessAndVolumeView;
+    }
 
     public Brightness_View(Context context) {
         this.mContext = context;
@@ -55,8 +64,12 @@ public class Brightness_View extends AbstractMenuBrightnessAndVolume {
         lp.height = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP;
         lp.gravity = Gravity.TOP;
         lp.y = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP;
-        lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
+        lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE |
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH |
+                WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE |
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
                 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
         lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         lp.format = PixelFormat.RGBA_8888;
@@ -75,6 +88,13 @@ public class Brightness_View extends AbstractMenuBrightnessAndVolume {
     public void setProgressFromTouchEvent(int progress) {
         this.brightness = progress;
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+
+        // 触摸进度条的时候，也要重置"自动关闭任务"，否则人还在拖动呢，view给干没了
+        if (cltBrightnessAndVolumeView == null){
+            reClose(source);
+        }else{
+            reClose(cltBrightnessAndVolumeView);
+        }
     }
 
     public void initSystemBrightness(){
