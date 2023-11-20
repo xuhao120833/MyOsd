@@ -50,6 +50,7 @@ public class ColorSystemUiContentOberver extends ContentObserver {
                 DialogMenu.mydialog.dismiss();//展示Osd 菜单
                 MenuService.menuOn = false;
             }
+            Settings.System.putInt(mcontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,5);//属性值修正，保证每次都能触发onChange
         }
 
     }

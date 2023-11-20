@@ -128,12 +128,12 @@ public class ScreenShotActivity extends Activity{
                 File file = saveBitmap(saveName, screenShotBitmap);
 
                 // 2 通知相册
-                try {
-                    MediaStore.Images.Media.insertImage(mContext.getContentResolver(),
-                            file.getAbsolutePath(), saveName, null);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    MediaStore.Images.Media.insertImage(mContext.getContentResolver(),
+//                            file.getAbsolutePath(), saveName, null);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
                 // 最后通知图库更新
                 String path = Environment.getExternalStorageDirectory().getPath();
                 mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
