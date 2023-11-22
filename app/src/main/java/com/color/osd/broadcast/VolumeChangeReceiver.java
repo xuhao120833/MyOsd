@@ -22,6 +22,12 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        if (!MenuService.initcomplete) {
+            // 如果在开机引导页面，则不走后续处理，不显示音量条（但由于不是监听拦截音量加减按键，其实音量还在变化）
+            return;
+        }
+
         //Log.d(TAG, "onReceive: intent");
         // 监听媒体音量的改变
         if (VOLUME_CHANGE_ACTION.equals(intent.getAction())

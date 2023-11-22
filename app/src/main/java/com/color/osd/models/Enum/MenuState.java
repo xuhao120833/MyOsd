@@ -5,6 +5,7 @@ package com.color.osd.models.Enum;
  */
 public enum MenuState {
     MENU_BRIGHTNESS,   // 亮度
+    MENU_BRIGHTNESS_DIRECT, // 亮度直接呼出态（通过按键小板呼出，非正统的）
     MENU_COMMENTS,
     MENU_EYE,
     MENU_SCREENSHOT,

@@ -104,7 +104,7 @@ public class FunctionBind {
             menu_volume.removeView();
         }
 
-        if (menuState == MenuState.MENU_BRIGHTNESS) {
+        if (menuState == MenuState.MENU_BRIGHTNESS || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
             menu_brightness.removeView();
         }
     }

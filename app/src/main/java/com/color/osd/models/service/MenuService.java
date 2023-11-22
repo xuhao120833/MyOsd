@@ -32,9 +32,11 @@ import java.util.List;
 
 import com.color.osd.broadcast.VolumeChangeReceiver;
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.ContentObserver.BrightnessObeserver;
+import com.color.osd.models.interfaces.BrightnessChangeListener;
 
 
-public class MenuService extends AccessibilityService implements VolumeChangeListener {
+public class MenuService extends AccessibilityService implements VolumeChangeListener, BrightnessChangeListener {
 
     Context mycontext;
 
@@ -73,11 +75,14 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     BootFinishContentObserver bootObserver;
 
+    private BrightnessObeserver brightnessObeserver;
+
     public static boolean initcomplete = false;
 
     Message m;
 
     int fswitch;
+
 
     @Override
     public void onCreate() {
@@ -113,10 +118,18 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         lastCountry = getResources().getConfiguration().locale.toLanguageTag();
         lastWidthDp = getResources().getConfiguration().screenWidthDp;
         lastHeightDp = getResources().getConfiguration().screenHeightDp;
-        Settings.System.putInt(mycontext.getContentResolver(), SYSTEM_RESOLUTION_CHANGE, 960516);
+        //Settings.System.putInt(mycontext.getContentResolver(), SYSTEM_RESOLUTION_CHANGE, 960516);
 
     }
 
+    private void addBrightnessChangedObeserver() {
+        if (brightnessObeserver == null) {
+            brightnessObeserver = new BrightnessObeserver(mycontext);
+            brightnessObeserver.setBrightnessChangeListener(this::onBrightnessChange);
+        }
+
+        brightnessObeserver.register();
+    }
 
     // 增加音量变化的广播接收。静态注册有点问题，暂时使用动态注册方式
     private void addVolumeChangedReceiver() {
@@ -253,8 +266,10 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     @Override
     public boolean onGesture(@NonNull AccessibilityGestureEvent gestureEvent) {
+        Log.d("onGesture", "监听全局手势");
         return super.onGesture(gestureEvent);
     }
+
 
     private boolean disPatchKeyEvent(KeyEvent event) {
         Log.d(TAG, "进入 disPatchKeyEvent");
@@ -267,7 +282,27 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             return true;
         }
 
-        if ((menuState == NULL || menuState == MenuState.MENU_VOLUME_DIRECT) && menuOn == true) {
+        if (menuState == NULL && (event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_UP ||
+                event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_DOWN )) {
+            // 未唤起菜单时，点击亮度加减键，唤起亮度条
+            Log.d(TAG + ", brightnessKey", "disPatchKeyEvent: push brightness key : " + event.getKeyCode());
+
+            if (menuOn) {
+                //二级菜单没有打开，Home键处理
+                firstHomeKeyEvent(event);
+
+                //二级菜单没有打开，Back键处理
+                firstBackKeyEvent(event);
+            }
+
+            menuState = MenuState.MENU_BRIGHTNESS_DIRECT;
+            dialogMenu.mybind.Menu_brightness.performClick();
+
+            return false;
+        }
+
+        if ((menuState == NULL || menuState == MenuState.MENU_VOLUME_DIRECT || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) && menuOn == true) {
+
             //2、二级菜单没有打开，Home键处理
             firstHomeKeyEvent(event);
 
@@ -354,8 +389,9 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 menuState == MenuState.MENU_VOLUME_DIRECT) {
             // 音量调节窗口已经显示  直接改变音量的值
             dialogMenu.mybind.menu_volume.onVolumeChanged(volume);
-        } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS) {
-            // TODO: 亮度和音量一起显示。暂时只显示亮度 此功能尚未完成！！！
+        } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS ||
+    MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
+        // TODO: 亮度和音量一起显示。暂时只显示亮度 此功能尚未完成！！！
 //            dialogMenu.mybind.Menu_volume.performClick();
         } else if (MenuService.menuState == MenuState.NULL) {
             // OSD一级菜单栏都没有打开，直接进入MENU_VOLUME_DIRECT态，并打开声音TouchBar
@@ -366,6 +402,18 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 menuState == MenuState.MENU_VOLUME_FOCUS) {
             // 进入复合态了，那么直接调节音量吧，但是由Brightness
             dialogMenu.mybind.menu_volume.onVolumeChangedInBrightnessAndVolume(volume);
+        }
+    }
+
+    @Override
+    public void onBrightnessChange(int brightness) {
+        if (menuState == MenuState.MENU_BRIGHTNESS) {
+            // 亮度窗口已经显示
+            //dialogMenu.mybind.menu_volume.o
+        } else if (menuState == MenuState.MENU_VOLUME) {
+            // 音量窗口已经显示 TODO: 亮度和音量一起显示
+        } else if (menuState == MenuState.NULL) {
+
         }
     }
 

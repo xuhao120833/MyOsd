@@ -51,14 +51,16 @@ public class Menu_volume implements DispatchKeyEventInterface {
                 }else if (MenuService.menuState == MenuState.MENU_VOLUME_DIRECT){
                     // 说明是直接来源于按键小板的音量加减按钮，非正统路线
                     FunctionBind.mavts.addView(volumeView.source, volumeView.lp);
-                }else if(MenuService.menuState == MenuState.MENU_BRIGHTNESS){
+                }else if(MenuService.menuState == MenuState.MENU_BRIGHTNESS ||
+                        MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT){
                     // 说明是二级菜单亮度的touchBar已经被唤出
                     // 那么这里要变身复合态
                     if (brightnessAndVolumeView != null){
+                        MenuState oldMenuState = MenuService.menuState;
                         MenuService.menuState = MenuState.MENU_BRIGHTNESS_VOLUME;
                         brightnessAndVolumeView.source.setCanFocusable(true);  // 亮度和声音的复合态才允许聚焦
                         // 先把当前的直接呼出的音量调节的touchBar的view给移除掉
-                        functionBind.removeItemViewByMenuState(MenuState.MENU_BRIGHTNESS);
+                        functionBind.removeItemViewByMenuState(oldMenuState);
                         // 重新添加音量与亮度共同调整的view
                         FunctionBind.mavts.addView(brightnessAndVolumeView.source , brightnessAndVolumeView.lp);
                         // 设置延时自动关闭

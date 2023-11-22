@@ -57,6 +57,13 @@ public class Menu_brightness implements DispatchKeyEventInterface {
                     FunctionBind.mavts.addView(brightnessView.source , brightnessView.lp);
                     // 设置延时自动关闭
                     brightnessView.autoClose(brightnessView.source);
+                }else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
+                    Log.d(TAG + ", brightnessKey", "onClick: here MENU_BRIGHTNESS_DIRECT");
+                    // 说明是直接来源于按键小板的亮度加减按钮，非正统路线
+                    brightnessView.source.setFocusable(false);   // 普通的亮度条 不允许聚焦（不能被选中）
+                    brightnessView.initSystemBrightness();   // 每次点击事件加载view前更新下progress的值
+                    FunctionBind.mavts.addView(brightnessView.source , brightnessView.lp);
+                    brightnessView.autoClose(brightnessView.source); // 设置延时自动关闭
                 }else if(MenuService.menuState == MenuState.MENU_VOLUME_DIRECT ||
                         MenuService.menuState == MenuState.MENU_VOLUME){
                     Log.d(TAG, "onClick: here MENU_VOLUME_DIRECT");
@@ -64,10 +71,11 @@ public class Menu_brightness implements DispatchKeyEventInterface {
                     // 说明声音二级菜单已经被遥控器唤起，并且没有自动消失
                     // 那么这里要打开亮度和声音的复合菜单
                     if (brightnessAndVolumeView != null){
+                        MenuState oldMenuState = MenuService.menuState;
                         MenuService.menuState = MenuState.MENU_BRIGHTNESS_VOLUME;
                         brightnessAndVolumeView.source.setCanFocusable(true);  // 亮度和声音的复合态才允许聚焦
                         // 先把当前的直接呼出的音量调节的touchBar的view给移除掉
-                        functionBind.removeItemViewByMenuState(MenuState.MENU_VOLUME_DIRECT);
+                        functionBind.removeItemViewByMenuState(oldMenuState);
                         // 重新添加音量与亮度共同调整的view
                         FunctionBind.mavts.addView(brightnessAndVolumeView.source , brightnessAndVolumeView.lp);
                         // 设置延时自动关闭
@@ -83,15 +91,17 @@ public class Menu_brightness implements DispatchKeyEventInterface {
 
     @Override
     public boolean onKeyEvent(KeyEvent event, MenuState menuState) {
-        if (menuState == MenuState.MENU_BRIGHTNESS){
+        if (menuState == MenuState.MENU_BRIGHTNESS || menuState == MenuState.MENU_BRIGHTNESS_DIRECT){
             Log.d(TAG, "onKeyEvent: MENU_BRIGHTNESS: " + event.getKeyCode());
             // 当前菜单停留在亮度, 这个时候就要响应亮度的增减了
             switch (event.getKeyCode()){
                 case KeyEvent.KEYCODE_DPAD_RIGHT:   // 19 up
+                case KeyEvent.KEYCODE_BRIGHTNESS_UP:    // 221 up
                     brightnessView.updateBrightness(13);
                     brightnessView.reClose(brightnessView.source);
                     break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:  // 20 down
+                case KeyEvent.KEYCODE_BRIGHTNESS_DOWN:  // 220 down
                     brightnessView.updateBrightness(-13);
                     brightnessView.reClose(brightnessView.source);
                     break;
@@ -115,12 +125,14 @@ public class Menu_brightness implements DispatchKeyEventInterface {
             Log.d(TAG, "onKeyEvent: MENU_BRIGHTNESS_FOCUS: " + event.getKeyCode());
             switch (event.getKeyCode()){
                 case KeyEvent.KEYCODE_DPAD_LEFT:   // 21 left
+                case KeyEvent.KEYCODE_BRIGHTNESS_DOWN:  // 220 down
                     brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
-                    brightnessAndVolumeView.updateBrightness(-30);
+                    brightnessAndVolumeView.updateBrightness(-13);
                     break;
                 case KeyEvent.KEYCODE_DPAD_RIGHT:  // 22 right
+                case KeyEvent.KEYCODE_BRIGHTNESS_UP:    // 221 up
                     brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
-                    brightnessAndVolumeView.updateBrightness(30);
+                    brightnessAndVolumeView.updateBrightness(13);
                     break;
                 case KeyEvent.KEYCODE_BACK:   //  4 back
                     FunctionBind.mavts.clearView(brightnessAndVolumeView.source);
@@ -142,6 +154,15 @@ public class Menu_brightness implements DispatchKeyEventInterface {
             // （亮度和声音复合态时）声音被选择了
             Log.d(TAG, "onKeyEvent: MENU_VOLUME_FOCUS: " + event.getKeyCode());
             switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_BRIGHTNESS_UP:    // 221 up
+                    // 即使音量是Focused，按了亮度按键也要将亮度变化
+                    brightnessAndVolumeView.updateBrightness(13);
+                    brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
+                    break;
+                case KeyEvent.KEYCODE_BRIGHTNESS_DOWN:  // 220 down
+                    brightnessAndVolumeView.updateBrightness(-13);
+                    brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
+                    break;
                 case KeyEvent.KEYCODE_DPAD_LEFT:   // 21 left
                     brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
                     brightnessAndVolumeView.updateVolume(-1);
@@ -169,6 +190,14 @@ public class Menu_brightness implements DispatchKeyEventInterface {
         }else if (menuState == MenuState.MENU_BRIGHTNESS_VOLUME){
             // 亮度和声音复合态时  直接点击返回或者home  那么这里也要响应下
             switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_BRIGHTNESS_UP:    // 221 up
+                    brightnessAndVolumeView.updateBrightness(13);
+                    brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
+                    break;
+                case KeyEvent.KEYCODE_BRIGHTNESS_DOWN:  // 220 down
+                    brightnessAndVolumeView.updateBrightness(-13);
+                    brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
+                    break;
                 case KeyEvent.KEYCODE_BACK:   //  4 back
                     brightnessAndVolumeView.cancelAutoClose();
                     FunctionBind.mavts.clearView(brightnessAndVolumeView.source);
