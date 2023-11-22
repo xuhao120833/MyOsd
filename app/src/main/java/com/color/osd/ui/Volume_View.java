@@ -17,6 +17,7 @@ import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.views.CltBrightnessAndVolumeView;
 import com.color.osd.ui.views.CltTouchBarBaseView;
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndVolumeInterface {
     private static final String TAG = "Volume_View";
@@ -64,10 +65,10 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
 
     private void initLp() {
         lp = new WindowManager.LayoutParams();
-        lp.width = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP;
-        lp.height = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP;
+        lp.width = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP);
+        lp.height = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP);
         lp.gravity = Gravity.TOP;
-        lp.y = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP;
+        lp.y = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP);
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE |
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |

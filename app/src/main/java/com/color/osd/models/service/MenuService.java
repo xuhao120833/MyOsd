@@ -2,19 +2,23 @@ package com.color.osd.models.service;
 
 import static com.color.osd.models.Enum.MenuState.NULL;
 
+import android.accessibilityservice.AccessibilityGestureEvent;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+
+import androidx.annotation.NonNull;
 
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.models.Enum.MenuState;
@@ -23,14 +27,11 @@ import com.color.osd.models.interfaces.DispatchKeyEventInterface;
 import com.color.osd.models.interfaces.VolumeChangeListener;
 import com.color.osd.ui.DialogMenu;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.color.osd.broadcast.VolumeChangeReceiver;
-import com.color.osd.models.interfaces.VolumeChangeListener;
-
-import android.content.ContextWrapper;
+import com.color.osd.utils.ConstantProperties;
 
 
 public class MenuService extends AccessibilityService implements VolumeChangeListener {
@@ -62,6 +63,8 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     Looper mainLooper = Looper.getMainLooper();
 
+    private Configuration mOldConfig;   // 存储当前的配置
+
     int lastWidthDp, lastHeightDp;
 
     String lastCountry;
@@ -71,6 +74,10 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     BootFinishContentObserver bootObserver;
 
     public static boolean initcomplete = false;
+
+    Message m;
+
+    int fswitch;
 
     @Override
     public void onCreate() {
@@ -91,6 +98,10 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         }
 
         mainHandler = new Handler(mainLooper);
+
+        mOldConfig = new Configuration(getResources().getConfiguration());
+        setDensityForAdaptation();
+
 
         //Menu 初始化
         dialogMenu = new DialogMenu(mycontext);
@@ -128,7 +139,22 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
+        Log.d("onAccessibilityEvent ", "检测到"+String.valueOf(event.getEventType()));
+        //判断事件是否被消费
+        int eventType = event.getEventType();
+        if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+            // 处理点击事件
+            Log.d("onAccessibilityEvent TYPE_VIEW_CLICKED", "检测到");
+
+        }
+
+        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            // 处理点击事件
+            Log.d("onAccessibilityEvent TYPE_WINDOW_STATE_CHANGED", "检测到");
+
+        }
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -174,6 +200,21 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             b = screenWidthDp * (int) Math.pow(10, judge(screenHeightDp)) + screenHeightDp;
             Log.d("onConfigurationChanged", "分辨率Dp" + b);
             Settings.System.putInt(mycontext.getContentResolver(), SYSTEM_RESOLUTION_CHANGE, b);
+
+            // osd 界面适配与计算
+            setDensityForAdaptation(); // 计算新的Density(Clt)值
+            // Log.d("onConfigurationChanged","屏幕大小变化 Adaptation, mDensity=" + ConstantProperties.DENSITY);
+            dialogMenu.clearAllChildView(); // 清空音量/亮度条的二级菜单的显示
+
+            if (DialogMenu.mydialog.isShowing()) {
+                // 在配置变化时，一级菜单仍然显示的话，先关闭之前的菜单，再通过onCreate()重新计算和绘制各窗口，并再显示。
+                DialogMenu.mydialog.dismiss();
+                onCreate(); // dialogMenu.refreshMenuView();
+                DialogMenu.mydialog.show();
+            } else {
+                onCreate();
+            }
+
         }
 
     }
@@ -182,8 +223,15 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     @Override
     protected boolean onKeyEvent(KeyEvent event) {//Menu 键 keyCode = 82
 
+        Log.d(TAG, String.valueOf(event.getKeyCode()));
+
         number++;
 
+        fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
+                "tv_user_setup_complete", 5);
+        if(fswitch == 1) {
+            initcomplete = true;
+        }
         if(!initcomplete) {
             return false;
         }
@@ -201,6 +249,11 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             return disPatchKeyEvent(event);
         }
 
+    }
+
+    @Override
+    public boolean onGesture(@NonNull AccessibilityGestureEvent gestureEvent) {
+        return super.onGesture(gestureEvent);
     }
 
     private boolean disPatchKeyEvent(KeyEvent event) {
@@ -325,6 +378,22 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             count++;
         }
         return count + 1;
+    }
+
+    // 计算新的Density(Clt)
+    public void setDensityForAdaptation() {
+
+        // 获取屏幕宽高
+        WindowManager windowManager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        ConstantProperties.DENSITY = Math.min(width / ConstantProperties.DESIGN_SCREEN_WIDTH_DP,
+                height / ConstantProperties.DESIGN_SCREEN_HEIGHT_DP);
+        Log.d(TAG, "setDensityForAdaptation - change: width=" + width + ", height=" + height
+                + ", mDensity=" + ConstantProperties.DENSITY);
     }
 
 }

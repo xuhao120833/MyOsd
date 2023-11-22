@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.color.osd.models.interfaces.AbstractAutoClose;
 import com.color.osd.ui.views.CltBrightnessAndVolumeView;
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 /**
  * 亮度和声音的复合界面
@@ -55,10 +56,10 @@ public class BrightnessAndVolume_View extends AbstractAutoClose {
 
     public void initLp(){
         lp = new WindowManager.LayoutParams();
-        lp.width = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_WIDTH_DP;
-        lp.height = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_HEIGHT_DP;
+        lp.width = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_WIDTH_DP);
+        lp.height = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_HEIGHT_DP);
         lp.gravity = Gravity.TOP;
-        lp.y = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP;
+        lp.y = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_MARGIN_TOP_DP);
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE |
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |

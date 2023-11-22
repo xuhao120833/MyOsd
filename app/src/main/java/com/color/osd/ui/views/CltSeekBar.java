@@ -15,6 +15,8 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
+import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 public class CltSeekBar extends View {
     private static final String TAG = CltSeekBar.class.getSimpleName();
@@ -40,13 +42,13 @@ public class CltSeekBar extends View {
 
     public CltSeekBar(Context context) {
         super(context, null);
-        mBgSeekHeight = 6;
+        mBgSeekHeight = DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_BACKGROUND_HEIGHT_DP);
         mBgSeekPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBgSeekPaint.setStyle(Paint.Style.FILL);
         mBgSeekPaint.setColor(Color.argb(255, 39, 39, 39));
 
-        radius = 15;
-        mFgSeekHeight = 46;
+        radius = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP);
+        mFgSeekHeight = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_HEIGHT_DP);
         brightnessPercent = 0;
         mFgSeekPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mFgSeekPaint.setStyle(Paint.Style.FILL);
@@ -59,8 +61,8 @@ public class CltSeekBar extends View {
         negativeIcon = ContextCompat.getDrawable(context, R.drawable.dark_brightness);
         positiveIcon = ContextCompat.getDrawable(context, R.drawable.white_brightness);
 
-        iconMarginRight = 12;
-        iconSize = 26;
+        iconMarginRight = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_ICON_MARGIN_RIGHT);
+        iconSize = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_ICON_SIZE);
     }
 
     public void setBrightnessPercent(float percent){

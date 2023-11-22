@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 /**
  * 复合状态的背景view
@@ -36,13 +37,13 @@ public class CltBrightnessAndVolumeView extends ViewGroup {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
 
-        mDotRadius = ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_CORNER_DP;
+        mDotRadius = DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_BACKGROUND_CORNER_DP);
         mPaginationPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaginationPaint.setStyle(Paint.Style.FILL);
         mPaginationPaint.setColor(Color.BLACK);
 
-        seekBarWidth = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP;
-        seekBarHeight = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP;
+        seekBarWidth = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_WIDTH_DP);
+        seekBarHeight = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_HEIGHT_DP);
 
 
     }
@@ -67,7 +68,7 @@ public class CltBrightnessAndVolumeView extends ViewGroup {
         int measuredHeightChild1 = childView1.getMeasuredHeight();
         // 1、计算child1的左上角坐标
         int child1Left = (getWidth() - measuredWidthChild1) / 2;
-        int child1Top = ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_VIEW_MARGIN_DP;
+        int child1Top = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_VIEW_MARGIN_DP);
         // 2、开始layout
         childView1.layout(child1Left, child1Top, child1Left + measuredWidthChild1 ,
                 child1Top + measuredHeightChild1);
@@ -77,8 +78,8 @@ public class CltBrightnessAndVolumeView extends ViewGroup {
         int measuredHeightChild2 = childView2.getMeasuredHeight();
         // 3、计算child2的左上角坐标
         int child2Left = (getWidth() - measuredWidthChild2) / 2;
-        int child2Top = ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_VIEW_MARGIN_DP +
-                measuredHeightChild1 + ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_2_CHILD_MARGIN_DP;
+        int child2Top = (int) (DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_VIEW_MARGIN_DP) +
+                measuredHeightChild1 + DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_AND_VOLUME_CHILD_2_CHILD_MARGIN_DP));
         childView2.layout(child2Left, child2Top, child2Left + measuredWidthChild2 ,
                 child2Top + measuredHeightChild2);
 

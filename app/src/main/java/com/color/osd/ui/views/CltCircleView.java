@@ -7,11 +7,13 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 
 /**
@@ -43,15 +45,15 @@ public class CltCircleView extends ViewGroup {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
         bgColor = Color.argb(255, 39, 39, 39);
-        mRightCircleRadius = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP;
+        mRightCircleRadius = DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP);
         mRightCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRightCirclePaint.setStyle(Paint.Style.FILL);
         mRightCirclePaint.setColor(bgColor);
 
         progressText = "0%";
-        textSize = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_TEXT_SIZE_DP;
+        textSize = (int) DensityUtil.getScaledValue(DensityUtil.pxToSp(ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_TEXT_SIZE_DP));
         textView = new TextView(context);
-        textView.setTextSize(textSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
         textView.setText(progressText);
         textView.setTextColor(Color.WHITE);
         textView.setGravity(Gravity.CENTER);

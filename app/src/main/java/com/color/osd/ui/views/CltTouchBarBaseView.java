@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMoveEvent {
 
@@ -55,19 +56,19 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     public CltTouchBarBaseView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setWillNotDraw(false);
-        mDotRadius = ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP;
+        mDotRadius = DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_BACKGROUND_CORNER_DP);
         mPaginationPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaginationPaint.setStyle(Paint.Style.FILL);
         mPaginationPaint.setColor(Color.BLACK);
 
         // seekbar的宽高
-        seekBarHeight = ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_HEIGHT_DP;
-        seekBarWidth = ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_WIDTH_DP;
+        seekBarHeight = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_HEIGHT_DP);
+        seekBarWidth = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_WIDTH_DP);
 
         // 圆形的大小
-        circleViewSize = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_HEIGHT_DP;
-        circleRightMargin = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_RIGHT_MARGIN_DP;
-        circleLeftMargin = ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_LEFT_MARGIN_DP;
+        circleViewSize = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_HEIGHT_DP);
+        circleRightMargin = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_RIGHT_MARGIN_DP);
+        circleLeftMargin = (int) DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_CIRCLE_VIEW_LEFT_MARGIN_DP);
 
         // 添加seek bar
         seekBar = new CltSeekBar(context);
@@ -92,6 +93,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         Log.d(TAG, "onMeasure: " + width + ", " + height);
         seekBar.measure(MeasureSpec.makeMeasureSpec(seekBarWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(seekBarHeight, MeasureSpec.EXACTLY));
+        Log.d(TAG, "onMeasure-seekbar: " + seekBarWidth + ", " + seekBarHeight);
 
         circleRight.measure(MeasureSpec.makeMeasureSpec(circleViewSize, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(circleViewSize, MeasureSpec.EXACTLY));
@@ -105,6 +107,8 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         // 摆放seekBar
         int measuredWidthSeekBar = seekBar.getMeasuredWidth();
         int measuredHeightSeekBar = seekBar.getMeasuredHeight();
+        Log.d(TAG, "onLayout: measuredWidthSeekBar=" + measuredWidthSeekBar
+                + ", measuredHeightSeekBar=" + measuredHeightSeekBar);
         int seekBarLeft = circleLeftMargin;
         int seekBarTop = (getHeight() - measuredHeightSeekBar) / 2;
         seekBar.layout(seekBarLeft, seekBarTop, seekBarLeft + measuredWidthSeekBar , seekBarTop + measuredHeightSeekBar);

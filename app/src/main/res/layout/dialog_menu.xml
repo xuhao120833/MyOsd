@@ -12,7 +12,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.color.osd.ui.views.dialogmenu.DialogMenuFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Menu"
@@ -20,141 +20,142 @@
     android:layout_height="52dp"
     android:background="@drawable/shapebuttom">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
+        <com.color.osd.ui.views.dialogmenu.DialogMenuLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/Menu_linear_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content">-->
-        <ImageView
-            android:id="@+id/Menu_source"
-            android:layout_width="55dp"
-            android:layout_height="33.9dp"
-            android:layout_marginLeft="10dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_source"
-            android:background="@drawable/source_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
-        </ImageView>
+                <!--        <LinearLayout-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content">-->
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_source"
+                    android:layout_width="55dp"
+                    android:layout_height="33.9dp"
+                    android:layout_marginLeft="10dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_source"
+                    android:background="@drawable/source_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
-<!--        <TextView-->
-<!--            android:layout_width="50dp"-->
-<!--            android:layout_height="50dp" >-->
+                <!--        <TextView-->
+                <!--            android:layout_width="50dp"-->
+                <!--            android:layout_height="50dp" >-->
 
-<!--        </TextView>-->
-<!--        </LinearLayout>-->
+                <!--        </TextView>-->
+                <!--        </LinearLayout>-->
 
-        <ImageView
-            android:id="@+id/Menu_brightness"
-            android:layout_width="55dp"
-            android:layout_height="33.9dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_brightness"
-            android:background="@drawable/brightness_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_brightness"
+                    android:layout_width="55dp"
+                    android:layout_height="33.9dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_brightness"
+                    android:background="@drawable/brightness_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
-        </ImageView>
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
-        <ImageView
-            android:id="@+id/Menu_volume"
-            android:layout_width="55dp"
-            android:layout_height="33.9dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_volume"
-            android:background="@drawable/volume_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_volume"
+                    android:layout_width="55dp"
+                    android:layout_height="33.9dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_volume"
+                    android:background="@drawable/volume_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
-        </ImageView>
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
 
-        <ImageView
-            android:id="@+id/Menu_recent"
-            android:layout_width="55dp"
-            android:layout_height="33.9dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_recent"
-            android:background="@drawable/recent_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_recent"
+                    android:layout_width="55dp"
+                    android:layout_height="33.9dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_recent"
+                    android:background="@drawable/recent_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
-        </ImageView>
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/Menu_eye_off"-->
-        <!--            android:layout_width="50dp"-->
-        <!--            android:layout_height="50dp"-->
-        <!--            android:layout_marginLeft="6dp"-->
-        <!--            android:layout_marginRight="6dp"-->
-        <!--            android:focusable="true"-->
-        <!--            android:clickable="true"-->
-        <!--            android:focusableInTouchMode="true"-->
-        <!--            android:src="@drawable/menu_eye"-->
-        <!--            android:background="@drawable/eye_focus_select_press"-->
-        <!--            android:visibility="visible"-->
-        <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
+                <!--        <ImageView-->
+                <!--            android:id="@+id/Menu_eye_off"-->
+                <!--            android:layout_width="50dp"-->
+                <!--            android:layout_height="50dp"-->
+                <!--            android:layout_marginLeft="6dp"-->
+                <!--            android:layout_marginRight="6dp"-->
+                <!--            android:focusable="true"-->
+                <!--            android:clickable="true"-->
+                <!--            android:focusableInTouchMode="true"-->
+                <!--            android:src="@drawable/menu_eye"-->
+                <!--            android:background="@drawable/eye_focus_select_press"-->
+                <!--            android:visibility="visible"-->
+                <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
 
-        <!--        </ImageView>-->
+                <!--        </ImageView>-->
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/Menu_eye_on"-->
-        <!--            android:layout_width="50dp"-->
-        <!--            android:layout_height="50dp"-->
-        <!--            android:layout_marginLeft="6dp"-->
-        <!--            android:layout_marginRight="6dp"-->
-        <!--            android:focusable="true"-->
-        <!--            android:clickable="true"-->
-        <!--            android:focusableInTouchMode="true"-->
-        <!--            android:src="@drawable/menu_eye"-->
-        <!--            android:background="@drawable/eye_focus_select_press"-->
-        <!--            android:visibility="visible"-->
-        <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
+                <!--        <ImageView-->
+                <!--            android:id="@+id/Menu_eye_on"-->
+                <!--            android:layout_width="50dp"-->
+                <!--            android:layout_height="50dp"-->
+                <!--            android:layout_marginLeft="6dp"-->
+                <!--            android:layout_marginRight="6dp"-->
+                <!--            android:focusable="true"-->
+                <!--            android:clickable="true"-->
+                <!--            android:focusableInTouchMode="true"-->
+                <!--            android:src="@drawable/menu_eye"-->
+                <!--            android:background="@drawable/eye_focus_select_press"-->
+                <!--            android:visibility="visible"-->
+                <!--            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">-->
 
-        <!--        </ImageView>-->
+                <!--        </ImageView>-->
 
-        <ImageView
-            android:id="@+id/Menu_screenshot"
-            android:layout_width="55dp"
-            android:layout_height="33.9dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_screenshot"
-            android:background="@drawable/screenshot_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_screenshot"
+                    android:layout_width="55dp"
+                    android:layout_height="33.9dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_screenshot"
+                    android:background="@drawable/screenshot_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
-        </ImageView>
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
-        <ImageView
-            android:id="@+id/Menu_comments"
-            android:layout_width="50dp"
-            android:layout_height="30.8dp"
-            android:layout_marginRight="10dp"
-            android:focusable="true"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/menu_comments"
-            android:background="@drawable/comments_focus_select_press"
-            android:visibility="visible"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+                <com.color.osd.ui.views.dialogmenu.DialogMenuItemView
+                    android:id="@+id/Menu_comments"
+                    android:layout_width="50dp"
+                    android:layout_height="30.8dp"
+                    android:layout_marginRight="10dp"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/menu_comments"
+                    android:background="@drawable/comments_focus_select_press"
+                    android:visibility="visible"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
 
-        </ImageView>
+                </com.color.osd.ui.views.dialogmenu.DialogMenuItemView>
 
-    </LinearLayout>
+        </com.color.osd.ui.views.dialogmenu.DialogMenuLinearLayout>
 
-</FrameLayout>
+</com.color.osd.ui.views.dialogmenu.DialogMenuFrameLayout>

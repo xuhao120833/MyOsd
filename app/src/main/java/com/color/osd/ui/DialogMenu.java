@@ -17,6 +17,11 @@ import android.view.WindowManager;
 
 import com.color.osd.R;
 import com.color.osd.models.FunctionBind;
+import com.color.osd.models.Menu_brightness;
+import com.color.osd.models.service.MenuService;
+import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
+
 
 public class DialogMenu extends Dialog {
     Context mycontext;
@@ -166,5 +171,16 @@ public class DialogMenu extends Dialog {
 
     }
 
+    public void refreshMenuView() {
+        Log.d(getClass().getSimpleName() + "Adaptation-MyError", "refreshMenuView");
+
+        // clearAllChildView();
+        Menu.requestLayout();
+    }
+
+    public void clearAllChildView() {
+        // 根据MenuService.menuState，移除当前的亮度/音量二级窗口
+        mybind.removeItemViewByMenuState(MenuService.menuState);
+    }
 
 }

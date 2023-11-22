@@ -27,12 +27,16 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import com.color.osd.utils.ConstantProperties;
+import com.color.osd.utils.DensityUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,6 +121,10 @@ public class ScreenShotActivity extends Activity{
 
     public void setUpVirtualDisplay(){
         Bitmap screenShotBitmap = screenShot(mediaProjection);
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        layoutParams.width = (int) DensityUtil.getScaledValue(ConstantProperties.SCREENSHOT_IMAGEVIEW_WIDTH_DP);
+        layoutParams.height = (int) DensityUtil.getScaledValue(ConstantProperties.SCREENSHOT_IMAGEVIEW_HEIGHT_DP);
+        imageView.setLayoutParams(layoutParams);
         imageView.setImageBitmap(screenShotBitmap);
 
         // 开个任务去保存图片
@@ -181,4 +189,5 @@ public class ScreenShotActivity extends Activity{
         // 2、结束当前activity
         this.finish();
     }
+
 }

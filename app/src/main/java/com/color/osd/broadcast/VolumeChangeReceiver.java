@@ -22,7 +22,7 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive: intent");
+        //Log.d(TAG, "onReceive: intent");
         // 监听媒体音量的改变
         if (VOLUME_CHANGE_ACTION.equals(intent.getAction())
                 && intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1) == AudioManager.STREAM_MUSIC
