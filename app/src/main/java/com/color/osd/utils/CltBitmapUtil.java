@@ -41,7 +41,7 @@ public class CltBitmapUtil {
         return bitmap;
     }
 
-    public static File saveBitmap(String name, Bitmap bm) {
+    public static boolean saveBitmap(String name, Bitmap bm) {
         //指定我们想要存储文件的地址
         String targetPath = SCREENSHOT_SAVE_PATH;
         File picDir = new File(targetPath);
@@ -61,10 +61,10 @@ public class CltBitmapUtil {
             saveImgOut.flush();
             saveImgOut.close();
             if(DEBUG) Log.d("CltBitmapUtil", "saveBitmap: The picture is save to your phone!");
-            return saveFile;
+            return true;
         } catch (IOException ex) {
             ex.printStackTrace();
-            return saveFile;
+            return false;
         }
     }
 

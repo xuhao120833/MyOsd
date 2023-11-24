@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
 import com.color.osd.models.Enum.MenuState;
+import com.color.osd.models.FunctionBind;
 import com.color.osd.models.interfaces.AbstractAutoClose;
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.models.service.MenuService;
@@ -49,6 +50,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
     public void initView(){
         source = new CltTouchBarBaseView(mContext);
         source.setParentView(this);   // 把当前对象赋值给BrightnessView 这样Brightness_View和BrightnessView双向依赖
+        source.setBackgroundResource(R.drawable.focus_background);     // 给设置一个聚焦状态下的背景
         source.baseValue = 255;   // 设置基底
         source.setProgress(brightness);
         source.setSeekBarIconPositive(ContextCompat.getDrawable(mContext, R.drawable.white_brightness));
@@ -91,11 +93,27 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
 
         // 触摸进度条的时候，也要重置"自动关闭任务"，否则人还在拖动呢，view给干没了
-        if (cltBrightnessAndVolumeView == null){
-            reClose(source);
+        reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+    }
+
+    @Override
+    public void onKeyDownFromBaseView(boolean positive) {
+        Log.d(TAG, "onKeyDownFromBaseView: here brightness view event: " + (cltBrightnessAndVolumeView == null));
+        // 拿到从source中响应的按键事件
+        if (positive) {
+            updateBrightness(13);
+            reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
         }else{
-            reClose(cltBrightnessAndVolumeView);
+            updateBrightness(-13);
+            reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
         }
+    }
+
+    @Override
+    public void onKeyUpClose() {
+        cancelAutoClose();
+        FunctionBind.mavts.clearView(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+        MenuService.menuState = MenuState.NULL;   // 恢复状态
     }
 
     public void initSystemBrightness(){
@@ -108,5 +126,6 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
             throw new RuntimeException(e);
         }
     }
+
 
 }

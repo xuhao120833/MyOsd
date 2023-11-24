@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
@@ -186,4 +187,27 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         seekBar.negativeIcon = res;
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(TAG, "onKeyDown: CltTouchBarBaseView down" + event.getKeyCode() + ", " + keyCode);
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
+            parentView.onKeyDownFromBaseView(false);    // 把这个事件传递出去
+            return true;
+        }else if(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT){
+            parentView.onKeyDownFromBaseView(true);    // 把这个事件传递出去
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.d(TAG, "onKeyDown: CltTouchBarBaseView up " + keyCode);
+        if (keyCode == KeyEvent.KEYCODE_BACK){   // 专门针对取消按键，在up抬起的时候时候传递出去
+            parentView.onKeyUpClose();
+        }
+
+        return true;
+    }
 }

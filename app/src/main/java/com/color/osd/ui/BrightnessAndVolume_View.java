@@ -88,4 +88,10 @@ public class BrightnessAndVolume_View extends AbstractAutoClose {
         reClose(source);
         volume_view.onVolumeChanged(volume);
     }
+
+    public void checkProgress(){
+        brightness_view.initSystemBrightness();
+        volume_view.initSystemVolume();
+    }
+
 }

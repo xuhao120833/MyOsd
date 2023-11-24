@@ -107,10 +107,12 @@ public class CltBrightnessAndVolumeView extends ViewGroup {
 
     public void setCanFocusable(boolean focusable){
         if (childView1 != null){
+            childView1.setBackgroundResource(0);
             childView1.setFocusable(focusable);
         }
 
         if (childView2 != null){
+            childView2.setBackgroundResource(0);
             childView2.setFocusable(focusable);
         }
     }

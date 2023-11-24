@@ -301,7 +301,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             return false;
         }
 
-        if ((menuState == NULL || menuState == MenuState.MENU_VOLUME_DIRECT || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) && menuOn == true) {
+        if ((menuState == NULL || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) && menuOn == true) {
 
             //2、二级菜单没有打开，Home键处理
             firstHomeKeyEvent(event);
@@ -310,6 +310,13 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             firstBackKeyEvent(event);
 
             return false;
+        }
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME){
+            dialogMenu.clearAllChildView();
+            menuState = NULL;
+            DialogMenu.mydialog.dismiss();//收起菜单
+            menuOn = false;
         }
 
         //4、二级菜单 KeyEvent判断处理
@@ -390,7 +397,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             // 音量调节窗口已经显示  直接改变音量的值
             dialogMenu.mybind.menu_volume.onVolumeChanged(volume);
         } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS ||
-    MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
+                MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
         // TODO: 亮度和音量一起显示。暂时只显示亮度 此功能尚未完成！！！
 //            dialogMenu.mybind.Menu_volume.performClick();
         } else if (MenuService.menuState == MenuState.NULL) {

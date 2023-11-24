@@ -2,6 +2,7 @@ package com.color.osd.models;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import com.color.osd.ContentObserver.ColorSystemUiContentOberver;
@@ -100,11 +101,14 @@ public class FunctionBind {
     }
 
     public void removeItemViewByMenuState(MenuState menuState) {
-        if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT) {
+        if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT
+                || menuState == MenuState.MENU_VOLUME_FOCUS) {
+            Log.d("TAG", "removeItemViewByMenuState: menu_volume remove");
             menu_volume.removeView();
         }
 
         if (menuState == MenuState.MENU_BRIGHTNESS || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
+            Log.d("TAG", "removeItemViewByMenuState: menu_brightness remove");
             menu_brightness.removeView();
         }
     }

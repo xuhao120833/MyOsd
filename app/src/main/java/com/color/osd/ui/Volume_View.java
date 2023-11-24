@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.color.osd.R;
 import com.color.osd.models.Enum.MenuState;
+import com.color.osd.models.FunctionBind;
 import com.color.osd.models.interfaces.AbstractAutoClose;
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.models.service.MenuService;
@@ -51,6 +52,7 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
     public void initView(){
         source = new CltTouchBarBaseView(mContext);
         source.setParentView(this);   // 双向依赖
+        source.setBackgroundResource(R.drawable.focus_background);     // 给设置一个聚焦状态下的背景
         source.baseValue = 15;   // 设置基底
         source.setProgress(volume);
         source.setSeekBarIconPositive(ContextCompat.getDrawable(mContext, R.drawable.volume_positive));
@@ -59,7 +61,12 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
         // 设置一个聚焦状态监听回调
         source.setOnFocusChangeListener((v, hasFocus) -> {
             Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
-            MenuService.menuState = MenuState.MENU_VOLUME_FOCUS;    // 声音被聚焦了（被选择了）
+            if (cltBrightnessAndVolumeView == null){
+                MenuService.menuState = MenuState.MENU_VOLUME;    // 声音被聚焦了（被选择了）
+            }else{
+                MenuService.menuState = MenuState.MENU_VOLUME_FOCUS;    // 声音被聚焦了（被选择了）
+            }
+
         });
     }
 
@@ -95,12 +102,28 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
         setSystemMusicVolume(progress);
 
         // 触摸进度条的时候，也要重置取消任务，否则人还在拖动呢，view给干没了
-        if (cltBrightnessAndVolumeView == null){
-            reClose(source);
-        }else{
-            reClose(cltBrightnessAndVolumeView);
-        }
+        reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+    }
 
+    @Override
+    public void onKeyDownFromBaseView(boolean positive) {
+        Log.d(TAG, "onKeyDownFromBaseView: here volume view event: " + (cltBrightnessAndVolumeView == null));
+        Log.d(TAG, "reClose: onKeyDownFromBaseView 123 " + this + ", " + MenuService.menuState);
+        if (positive) {
+            updateVolume(1);
+            reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+        }else{
+            updateVolume(-1);
+            reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+        }
+    }
+
+    @Override
+    public void onKeyUpClose() {
+        cancelAutoClose();
+        FunctionBind.mavts.clearView(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
+        MenuService.menuState = MenuState.NULL;   // 恢复状态
+        MenuService.settingVolumeChange = false;
     }
 
     // 设置音量
@@ -116,8 +139,10 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
     public void onVolumeChanged(int volume) {
         // 按键小板直接调整音量的时候，也要重置取消任务
         if (cltBrightnessAndVolumeView == null){
+            Log.d(TAG, "reClose: here 123 " + this + ", " + MenuService.menuState);
             reClose(source);
         }else{
+            Log.d(TAG, "reClose: here 456 " + this + ", " + MenuService.menuState);
             reClose(cltBrightnessAndVolumeView);
         }
 
@@ -126,22 +151,6 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
         source.setProgress(volume);
         source.reRenderView();
     }
-
-//    private void addVolumeChangedReceiver() {
-//        if (volumeChangeReceiver == null) {
-//            volumeChangeReceiver = new VolumeChangeReceiver();
-//        }
-//        //volumeChangeReceiver.setVolumeChangeListener();
-//        volumeChangeReceiver.setVolumeChangeListener(new VolumeChangeListener() {
-//            @Override
-//            public void onVolumeChange(int volume) {
-//                onVolumeChanged(volume);
-//            }
-//        });
-//        IntentFilter volumeChangeFilter = new IntentFilter();
-//        volumeChangeFilter.addAction(volumeChangeReceiver.VOLUME_CHANGE_ACTION);
-//        mContext.registerReceiver(volumeChangeReceiver, volumeChangeFilter);
-//    }
 
     public void initSystemVolume(){
         if (audioManager != null){
