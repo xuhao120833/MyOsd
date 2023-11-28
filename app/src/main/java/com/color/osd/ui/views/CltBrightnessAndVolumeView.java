@@ -109,11 +109,25 @@ public class CltBrightnessAndVolumeView extends ViewGroup {
         if (childView1 != null){
             childView1.setBackgroundResource(0);
             childView1.setFocusable(focusable);
+            childView1.setFocusableInTouchMode(true);
         }
 
         if (childView2 != null){
             childView2.setBackgroundResource(0);
             childView2.setFocusable(focusable);
+            childView2.setFocusableInTouchMode(true);
+        }
+    }
+
+    /**
+     * 设置当前那个子view被选择了
+     * @param isBrightness
+     */
+    public void setSelectView(boolean isBrightness){
+        if (isBrightness){
+            childView1.requestFocus();
+        }else{
+            childView2.requestFocus();
         }
     }
 }

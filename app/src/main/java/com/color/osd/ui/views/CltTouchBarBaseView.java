@@ -80,6 +80,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         circleRight = new CltCircleView(context);
         addView(circleRight);
 
+
         // 添加左侧圆，显示三个点 最新的设计稿给取消了
 //        circleLeft = new CircleView(context);
 //        addView(circleLeft);
@@ -189,6 +190,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 这种view的keyDown回调中是监听不到音量、亮度变化的。所以按键小板的音量和亮度加减单独走一套逻辑，不会走这里。
         Log.d(TAG, "onKeyDown: CltTouchBarBaseView down" + event.getKeyCode() + ", " + keyCode);
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
             parentView.onKeyDownFromBaseView(false);    // 把这个事件传递出去

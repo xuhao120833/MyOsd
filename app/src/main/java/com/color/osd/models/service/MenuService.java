@@ -29,6 +29,8 @@ import com.color.osd.ui.DialogMenu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.color.osd.broadcast.VolumeChangeReceiver;
 import com.color.osd.utils.ConstantProperties;
@@ -83,6 +85,11 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     int fswitch;
 
+    LongClickSimulate runable;
+    ExecutorService executors = Executors.newSingleThreadExecutor();
+    private boolean isDown;
+    private long downTime;
+    private long sleepTime;
 
     @Override
     public void onCreate() {
@@ -103,6 +110,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         }
 
         mainHandler = new Handler(mainLooper);
+        runable = new LongClickSimulate();
 
         mOldConfig = new Configuration(getResources().getConfiguration());
         setDensityForAdaptation();
@@ -236,7 +244,24 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     @Override
     protected boolean onKeyEvent(KeyEvent event) {//Menu 键 keyCode = 82
 
-        Log.d(TAG, String.valueOf(event.getKeyCode()));
+        Log.d(TAG, String.valueOf(event.getKeyCode()) + ", " + event.getAction());
+        // 单独处理按键小板上的亮度加减按键
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_UP ||
+                event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_DOWN){
+            if (event.getAction() == KeyEvent.ACTION_DOWN){
+                // 1 能走这个判断条件，一定是按下了按键小板亮度按钮
+                // 2 开个子线程把当前按键事件传递到相关的负责人（观察者）处
+                isDown = true;
+                Log.d(TAG, "onKeyEvent555: down");
+                runable.currKeyEvent = event;
+                downTime = System.currentTimeMillis();
+                sleepTime = 1000;
+                executors.submit(runable);
+            }else if(event.getAction() == KeyEvent.ACTION_UP){
+                isDown = false;   // 按键小板亮度按钮松手 取消子线程处理按键逻辑
+                Log.d(TAG, "onKeyEvent555: up");
+            }
+        }
 
         number++;
 
@@ -282,24 +307,24 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             return true;
         }
 
-        if (menuState == NULL && (event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_UP ||
-                event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_DOWN )) {
-            // 未唤起菜单时，点击亮度加减键，唤起亮度条
-            Log.d(TAG + ", brightnessKey", "disPatchKeyEvent: push brightness key : " + event.getKeyCode());
-
-            if (menuOn) {
-                //二级菜单没有打开，Home键处理
-                firstHomeKeyEvent(event);
-
-                //二级菜单没有打开，Back键处理
-                firstBackKeyEvent(event);
-            }
-
-            menuState = MenuState.MENU_BRIGHTNESS_DIRECT;
-            dialogMenu.mybind.Menu_brightness.performClick();
-
-            return false;
-        }
+//        if (menuState == NULL && (event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_UP ||
+//                event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_DOWN )) {
+//            // 未唤起菜单时，点击亮度加减键，唤起亮度条
+//            Log.d(TAG + ", brightnessKey", "disPatchKeyEvent: push brightness key : " + event.getKeyCode());
+//
+//            if (menuOn) {
+//                //二级菜单没有打开，Home键处理
+//                firstHomeKeyEvent(event);
+//
+//                //二级菜单没有打开，Back键处理
+//                firstBackKeyEvent(event);
+//            }
+//
+//            menuState = MenuState.MENU_BRIGHTNESS_DIRECT;
+//            dialogMenu.mybind.Menu_brightness.performClick();
+//
+//            return false;
+//        }
 
         if ((menuState == NULL || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) && menuOn == true) {
 
@@ -398,11 +423,12 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             dialogMenu.mybind.menu_volume.onVolumeChanged(volume);
         } else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS ||
                 MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
-        // TODO: 亮度和音量一起显示。暂时只显示亮度 此功能尚未完成！！！
-//            dialogMenu.mybind.Menu_volume.performClick();
+             // TODO: 亮度和音量一起显示。目前已经是亮度调整了，这个时候再按音量调整，那么就要进入复合态
+            //dialogMenu.mybind.Menu_volume.performClick();
+            Log.d(TAG, "onClick: 当前处于亮度阶段，但我监听到了音量变化~");
+            dialogMenu.mybind.Menu_volume.performClick();
         } else if (MenuService.menuState == MenuState.NULL) {
-            // OSD一级菜单栏都没有打开，直接进入MENU_VOLUME_DIRECT态，并打开声音TouchBar
-            MenuService.menuState = MenuState.MENU_VOLUME_DIRECT;
+            // 说明是直接按下音量调节按钮（可能是遥控器也可能是按键小板），那么就打开音量调节按钮
             dialogMenu.mybind.Menu_volume.performClick();
         } else if (menuState == MenuState.MENU_BRIGHTNESS_VOLUME ||
                 menuState == MenuState.MENU_BRIGHTNESS_FOCUS ||
@@ -449,6 +475,32 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 height / ConstantProperties.DESIGN_SCREEN_HEIGHT_DP);
         Log.d(TAG, "setDensityForAdaptation - change: width=" + width + ", height=" + height
                 + ", mDensity=" + ConstantProperties.DENSITY);
+    }
+
+    class LongClickSimulate implements Runnable {
+        public KeyEvent currKeyEvent;
+        @Override
+        public void run() {
+            // 为啥要加个while循环，因为如果一直按着按键小板亮度调整按键（触发长按事件），所以每隔300秒要处理一次按键
+            while (isDown){
+                long currTime = System.currentTimeMillis();
+                long delta = currTime - downTime;
+                Log.d(TAG, "run: " + delta);
+
+                mainHandler.post(() -> {
+                    for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
+                        KeyEventDispatcher.onKeyEvent(currKeyEvent, menuState);
+                    }
+                });
+                try {
+                    // 睡300ms  不然while循环频率太快了，造成cpu卡顿
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }
     }
 
 }

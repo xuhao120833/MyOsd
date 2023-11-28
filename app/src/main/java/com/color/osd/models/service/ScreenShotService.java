@@ -25,6 +25,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ public class ScreenShotService extends Service {
    @Override
    public void onCreate() {
       super.onCreate();
+      Log.d(TAG, "onCreate: here~");
       mContext = this;
       wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
       // 构造出截屏结果的展示View
@@ -162,8 +164,13 @@ public class ScreenShotService extends Service {
 
    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
    public Bitmap screenShot(MediaProjection mediaProjection) {
-      int width = wm.getDefaultDisplay().getWidth();
-      int height = wm.getDefaultDisplay().getHeight();
+      DisplayMetrics metrics = new DisplayMetrics();
+      wm.getDefaultDisplay().getRealMetrics(metrics);
+      int width = metrics.widthPixels;
+      int height = metrics.heightPixels;
+      int density = (int) metrics.density;
+      int densityDpi = (int) metrics.densityDpi;
+      Log.d(TAG, "screenShot: " + density + ", " + densityDpi);
       Objects.requireNonNull(mediaProjection);
       @SuppressLint("WrongConstant")
       ImageReader imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888,60);

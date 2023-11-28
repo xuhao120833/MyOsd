@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.color.osd.models.interfaces.VolumeChangeListener;
@@ -22,10 +23,16 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Log.d(TAG, "onReceive: 收到了音量变化的广播: " + MenuService.initcomplete);
         if (!MenuService.initcomplete) {
             // 如果在开机引导页面，则不走后续处理，不显示音量条（但由于不是监听拦截音量加减按键，其实音量还在变化）
-            return;
+            int inGuideFlag = Settings.Secure.getInt(context.getContentResolver(),
+                    "tv_user_setup_complete", 5);
+            if (inGuideFlag == 1) {
+                MenuService.initcomplete = true;
+            } else {
+                return;
+            }
         }
 
         //Log.d(TAG, "onReceive: intent");
@@ -34,7 +41,10 @@ public class VolumeChangeReceiver extends BroadcastReceiver {
                 && intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1) == AudioManager.STREAM_MUSIC
                 && !MenuService.settingVolumeChange) {
             // 调节媒体音量
+            Log.d(TAG, "onReceive: 允许调节");
             changeVolume(context, AudioManager.STREAM_MUSIC);
+        } else {
+            Log.d(TAG, "onReceive: 不允许调节： " + MenuService.settingVolumeChange + ", " + (intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1) == AudioManager.STREAM_MUSIC));
         }
     }
 

@@ -33,10 +33,10 @@ public class Menu_volume {
         baseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick");
-                volumeView.source.setFocusable(true);    // 单声音状态栏直接禁止聚焦
+                volumeView.source.setFocusable(true);    // view开启聚焦，可以监听onKeyDown事件
                 volumeView.initSystemVolume();     // 每次点击事件加载view之前都初始化下当前progress的音量值，避免其他地方改了，当前的volumeView对象的值没有变
                 if (MenuService.menuState == MenuState.NULL){
+                    Log.d(TAG, "onClick: 音量的普通状态");
                     // 说明是来源于OSD的一级音量菜单点击事件，正统路线
                     // 改变当前Menu_state
                     MenuService.menuState = MenuState.MENU_VOLUME;
@@ -45,18 +45,17 @@ public class Menu_volume {
                     // 弹出声音touchBar的UI界面
                     FunctionBind.mavts.addView(volumeView.source, volumeView.lp);
                     volumeView.autoClose(volumeView.source);
-                }else if (MenuService.menuState == MenuState.MENU_VOLUME_DIRECT){
-                    // 说明是直接来源于按键小板的音量加减按钮，非正统路线
-                    FunctionBind.mavts.addView(volumeView.source, volumeView.lp);
-                    volumeView.autoClose(volumeView.source);
                 }else if(MenuService.menuState == MenuState.MENU_BRIGHTNESS ||
                         MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT){
                     // 说明是二级菜单亮度的touchBar已经被唤出
                     // 那么这里要变身复合态
+                    Log.d(TAG, "onClick: 我要变成复合态，且首先操控音量~");
                     if (brightnessAndVolumeView != null){
                         MenuState oldMenuState = MenuService.menuState;
                         MenuService.menuState = MenuState.MENU_BRIGHTNESS_VOLUME;
                         brightnessAndVolumeView.source.setCanFocusable(true);  // 亮度和声音的复合态才允许聚焦
+                        brightnessAndVolumeView.source.setSelectView(false);  // 设置音量被默认聚焦（不需要上下选择是音量还是亮度）
+                        brightnessAndVolumeView.checkProgress();
                         // 先把当前的直接呼出的音量调节的touchBar的view给移除掉
                         functionBind.removeItemViewByMenuState(oldMenuState);
                         // 重新添加音量与亮度共同调整的view
@@ -65,9 +64,6 @@ public class Menu_volume {
                         brightnessAndVolumeView.reClose(brightnessAndVolumeView.source);
                     }
                 }
-
-
-
             }
         });
     }
