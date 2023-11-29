@@ -57,7 +57,12 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         source.setSeekBarIconNegative(ContextCompat.getDrawable(mContext, R.drawable.dark_brightness));
         source.setOnFocusChangeListener((v, hasFocus) -> {
             Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
-            MenuService.menuState = MenuState.MENU_BRIGHTNESS_FOCUS;    // 亮度被聚焦了（被选择了）
+            if (cltBrightnessAndVolumeView == null){
+                MenuService.menuState = MenuState.MENU_BRIGHTNESS;    // 亮度被聚焦了（被选择了）
+            }else {
+                MenuService.menuState = MenuState.MENU_BRIGHTNESS_FOCUS;    // 亮度被聚焦了（被选择了）
+            }
+
         });
     }
 
@@ -126,6 +131,5 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
             throw new RuntimeException(e);
         }
     }
-
 
 }
