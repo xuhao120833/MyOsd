@@ -96,7 +96,9 @@ public class Menu_brightness implements DispatchKeyEventInterface {
     @Override
     public boolean onKeyEvent(KeyEvent event, MenuState menuState) {
         Log.d(TAG, "onKeyEvent: " + event.getKeyCode() + ", " + event.getAction() + ", " + menuState);
-        if (event.getAction() == KeyEvent.ACTION_UP) return false;    // 屏蔽掉up事件
+        if (event.getAction() == KeyEvent.ACTION_UP ||
+                (event.getKeyCode() != KeyEvent.KEYCODE_BRIGHTNESS_UP &&
+                        event.getKeyCode() != KeyEvent.KEYCODE_BRIGHTNESS_DOWN)) return false;    // 屏蔽掉除开亮度调整的事件
 
         // 这个事件只会来自于按键小板上的亮度加减时的down事件
         // 1、先看加那个UI
