@@ -101,6 +101,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     LongClickSimulate volumeLongClickRunnable;
 
     ExecutorService executors = Executors.newSingleThreadExecutor();
+
     private boolean isDown;
     private long downTime;
     private long sleepTime;
@@ -281,7 +282,15 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
         if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
             Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
-            onCreate();
+
+            if (DialogMenu.mydialog.isShowing()) {
+                DialogMenu.mydialog.dismiss();
+                onCreate();
+                DialogMenu.mydialog.show();
+            } else {
+                onCreate();
+            }
+
         }
 
         //2、分辨率变化
