@@ -32,8 +32,11 @@ public class WindowManagerToOsdObserver extends ContentObserver {
         if (Settings.System.getInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 5) != 5) {
             globalClick = Settings.System.getInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 5);
         }
+        Log.d("WindowManagerToOsdObserver TimeManagerRunning",String.valueOf(StaticVariableUtils.TimeManagerRunning));
+        Log.d("WindowManagerToOsdObserver SettingsControlHoverballVisible",String.valueOf(StaticVariableUtils.SettingsControlHoverballVisible));
 
         if (globalClick == 1 && !StaticVariableUtils.TimeManagerRunning && StaticVariableUtils.SettingsControlHoverballVisible) {
+            Log.d("WindowManagerToOsdObserver "," 显示组件");
             StaticVariableUtils.TimeManagerRunning = true;
             Timing_begins_WhichOneShow();
             StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
