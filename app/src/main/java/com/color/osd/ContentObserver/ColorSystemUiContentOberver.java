@@ -29,29 +29,28 @@ public class ColorSystemUiContentOberver extends ContentObserver {
                 OSD_OPEN_OTHER_SOURCE, 1);
         Log.d("ColorSystemUiContentOberver ", String.valueOf(fswitch));
 
-        if (fswitch == 2) {
-            if (Menu_source.fromOsd == true) {
-                DialogMenu.mydialog.show();//展示Osd 菜单
-                MenuService.menuOn = true;
-                Menu_source.fromOsd = false;
+//        if (fswitch == 2) {
+//            if (Menu_source.fromOsd == true) {
+//                DialogMenu.mydialog.show();//展示Osd 菜单
+//                MenuService.menuOn = true;
+//                Menu_source.fromOsd = false;
+//            }
+//            MenuService.menuState = MenuState.NULL;
+//        }
 
-            }
-            MenuService.menuState = MenuState.NULL;
-        }
+//        if (fswitch == 0) {
+//
+//            MenuService.menuState = MenuState.NULL;
+//
+//        }
 
-        if (fswitch == 0) {
-
-            MenuService.menuState = MenuState.NULL;
-
-        }
-
-        if (fswitch == 3) {
-            if (MenuService.menuOn = true) {
-                DialogMenu.mydialog.dismiss();//收起Osd 菜单
-                MenuService.menuOn = false;
-            }
-            Settings.System.putInt(mcontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,5);//属性值修正，保证每次都能触发onChange
-        }
+//        if (fswitch == 3) {
+//            if (MenuService.menuOn = true) {
+//                DialogMenu.mydialog.dismiss();//收起Osd 菜单
+//                MenuService.menuOn = false;
+//            }
+//            Settings.System.putInt(mcontext.getContentResolver(),OSD_OPEN_OTHER_SOURCE,5);//属性值修正，保证每次都能触发onChange
+//        }
 
     }
 

@@ -20,6 +20,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (DBG)
             Log.d(TAG, "收到广播....");
+
         StartMyAccessibilityService(context);
 
     }

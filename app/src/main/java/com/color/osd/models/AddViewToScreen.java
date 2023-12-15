@@ -7,7 +7,7 @@ import android.content.Context;
 import android.view.WindowManager;
 
 public class AddViewToScreen {
-    static WindowManager wm;
+    public static WindowManager wm;
     private Context mcontext;
 
     public void addView(View v, WindowManager.LayoutParams p) {

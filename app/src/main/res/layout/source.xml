@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.color.systemui.view.navibar.navibar_source.SourceLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:background="@drawable/shapetop1"
+    android:orientation="vertical">
+
+    <com.color.systemui.view.navibar.navibar_source.FirstLinearLayout
+        android:id="@+id/First_line"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+
+        <com.color.systemui.view.navibar.navibar_source.SourceTextView
+            android:id="@+id/text"
+            android:layout_width="260dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/soure_change"
+            android:textColor="#FFFFFF"
+            android:textSize="28px" />
+
+        <com.color.systemui.view.navibar.navibar_source.SourceImageView
+            android:id="@+id/X"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/x"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+
+        </com.color.systemui.view.navibar.navibar_source.SourceImageView>
+
+
+    </com.color.systemui.view.navibar.navibar_source.FirstLinearLayout>
+
+
+    <com.color.systemui.view.navibar.navibar_source.SecondLinearLayout
+        android:id="@+id/Second_line"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <com.color.systemui.view.navibar.navibar_source.SourceImageView
+            android:id="@+id/OPS"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/ops"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+
+        </com.color.systemui.view.navibar.navibar_source.SourceImageView>
+
+        <com.color.systemui.view.navibar.navibar_source.SourceImageView
+            android:id="@+id/Android"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/android_select_useful"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+
+        </com.color.systemui.view.navibar.navibar_source.SourceImageView>
+    </com.color.systemui.view.navibar.navibar_source.SecondLinearLayout>
+
+    <com.color.systemui.view.navibar.navibar_source.ThirdLinearLayout
+        android:id="@+id/Third_line"
+        android:layout_width="300dp"
+        android:layout_height="115dp"
+        android:orientation="horizontal">
+
+        <com.color.systemui.view.navibar.navibar_source.SourceImageView
+            android:id="@+id/HDMI1"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/hdmi1"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+
+        </com.color.systemui.view.navibar.navibar_source.SourceImageView>
+
+        <com.color.systemui.view.navibar.navibar_source.SourceImageView
+            android:id="@+id/HDMI2"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/hdmi2"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck">
+
+        </com.color.systemui.view.navibar.navibar_source.SourceImageView>
+    </com.color.systemui.view.navibar.navibar_source.ThirdLinearLayout>
+
+
+</com.color.systemui.view.navibar.navibar_source.SourceLinearLayout>

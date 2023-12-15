@@ -12,6 +12,7 @@ import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.interfaces.DispatchKeyEventInterface;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
+import com.color.systemui.utils.StaticInstanceUtils;
 
 public class Menu_source implements DispatchKeyEventInterface {
 
@@ -25,7 +26,7 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     public static boolean sourceon = false;
 
-    public static boolean fromOsd;
+//    public static boolean fromOsd;
 
     Menu_source(Context context) {
         mycontext = context;
@@ -38,13 +39,13 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     public void setOnclick(View menu_source) {
         menu_source.setOnClickListener(v -> {
-            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 1);
+            StaticInstanceUtils.source.Source.setVisibility(View.VISIBLE);
+            //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 1);
             sourceon = true;
             MenuService.menuState = MenuState.MENU_SOURCE;
-
             DialogMenu.mydialog.dismiss();//收起菜单
             menuOn = false;
-            fromOsd = true;
+//            fromOsd = true;
 
         });
     }

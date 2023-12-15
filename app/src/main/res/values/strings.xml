@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">osd</string>
+
+    <string name="soure_change">信号源切换</string>
 </resources>

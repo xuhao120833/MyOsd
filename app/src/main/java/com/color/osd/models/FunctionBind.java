@@ -22,12 +22,16 @@ public class FunctionBind {
     public Menu_volume menu_volume;
 
     Menu_recent menu_recent;
+
     Menu_eye menu_eye;
+
     Menu_screenshot menu_screenshot;
+
     Menu_comments menu_comments;
 
     BrightnessAndVolume_View brightnessAndVolumeView;
-    ColorSystemUiContentOberver systemUiContentOberver;
+
+    //ColorSystemUiContentOberver systemUiContentOberver;
 
     private static final String OSD_OPEN_OTHER_SOURCE = "osd_open_other_source";
 
@@ -38,7 +42,7 @@ public class FunctionBind {
 
         mavts.setContext(mycontext);
 
-        systemUiContentOberver = new ColorSystemUiContentOberver(mycontext);
+        //systemUiContentOberver = new ColorSystemUiContentOberver(mycontext);
 
         //按键初始化 添加
         menu_source = new Menu_source(mycontext);
@@ -80,7 +84,7 @@ public class FunctionBind {
         //1、信源
         menu_source.setOnclick(Menu_source);
         //监听SystemUI的信源设置，做到同步效果
-        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(OSD_OPEN_OTHER_SOURCE), true, systemUiContentOberver);
+        //mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(OSD_OPEN_OTHER_SOURCE), true, systemUiContentOberver);
 
         menu_brightness.setOnclick(Menu_brightness);
         menu_volume.setOnclick(Menu_volume);

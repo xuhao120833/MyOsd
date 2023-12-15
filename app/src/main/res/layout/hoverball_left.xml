@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.color.systemui.view.hoverball.HoverballLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:focusable="false"
+    android:visibility="visible">
+
+    <com.color.systemui.view.hoverball.HoverballImageView
+        android:id="@+id/hoverball_left"
+        android:focusable="false"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hoverball_left">
+
+    </com.color.systemui.view.hoverball.HoverballImageView>
+
+</com.color.systemui.view.hoverball.HoverballLinearLayout>
+
+    <!--    android:layout_marginLeft="20dp"-->

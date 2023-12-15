@@ -33,6 +33,9 @@ import com.color.osd.utils.ConstantProperties;
 import com.color.osd.ContentObserver.BrightnessObeserver;
 import com.color.osd.models.interfaces.BrightnessChangeListener;
 import com.color.osd.broadcast.VolumeFromFWReceiver;
+import com.color.systemui.MySystemUI;
+import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +69,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     private static final String SYSTEM_RESOLUTION_CHANGE = "system_resolution_change";
 
     //监听WindowManagerService发来的信息
-    static final String WINDOW_MANAGER_TO_OSD = "window_manager_to_osd";
+    //static final String WINDOW_MANAGER_TO_OSD = "window_manager_to_osd";
 
     //将WindowManagerService发来的信息转发给SystemUI
     private final String WINDOWMANAGER_OSD_TO_SYSTEMUI = "windowmanager_osd_to_systemui";
@@ -117,17 +120,27 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     AccessibilityNodeInfo nodeInfo;
 
+    private MySystemUI mySystemUI;
+
+    private boolean SystemUIFirstBoot = true;//保证SystemUI在onCreate中只执行一次
+
     @Override
     public void onCreate() {
         mycontext = this;
 
+        fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
+                "tv_user_setup_complete", 5);
+
+        //开机启动ColorSystemUI
+        if (SystemUIFirstBoot && fswitch == 1) {
+            mySystemUI = new MySystemUI(mycontext);
+            mySystemUI.start();
+            SystemUIFirstBoot = false;
+        }
+
         //监听开机引导完成标志位
         bootObserver = new BootFinishContentObserver(mycontext);
         mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
-
-//        //监听WindowsManagerService全局点击事件
-//        windowOsd = new WindowManagerServiceObserver(mycontext);
-//        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(WINDOW_MANAGER_TO_OSD), true, windowOsd);
 
         init();
     }
@@ -184,7 +197,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 //        registerReceiver(volumeChangeReceiver, volumeChangeFilter);
 
         // 新的音量接收广播，在phoneWindowManager中单独添加的广播，只要音量+-按键按下，这里就会接收到广播
-        if (fromFWReceiver == null){
+        if (fromFWReceiver == null) {
             fromFWReceiver = new VolumeFromFWReceiver();
             fromFWReceiver.setVolumeChangeListener(this);
         }
@@ -204,11 +217,11 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         myevent = event;
 
-        Log.d("onAccessibilityEvent allTypes", "检测到"+String.valueOf(event.getEventType()));
+        Log.d("onAccessibilityEvent allTypes", "检测到" + String.valueOf(event.getEventType()));
         //判断事件是否被消费
         int eventType = event.getEventType();
 
-        if(eventType == AccessibilityEvent.WINDOWS_CHANGE_PIP && event.getText().contains("ClickBlandUp")){
+        if (eventType == AccessibilityEvent.WINDOWS_CHANGE_PIP && event.getText().contains("ClickBlandUp")) {
             Log.d("onAccessibilityEvent WINDOWS_CHANGE_PIP", "全局点击");
             clickList.add(eventType);
 
@@ -229,28 +242,30 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         }
 
-        if(eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED){
+        if (eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
             clickList.add(eventType);
         }
 
-        if(eventType == AccessibilityEvent.CONTENT_CHANGE_TYPE_PANE_DISAPPEARED){
+        if (eventType == AccessibilityEvent.CONTENT_CHANGE_TYPE_PANE_DISAPPEARED) {
             clickList.add(eventType);
         }
 
     }
 
     public void execut() {
-        executor.submit(()->{
+        executor.submit(() -> {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             size = clickList.size();
-            Log.d("onAccessibilityEvent execut"," "+String.valueOf(clickList.get(size-1)));
+            Log.d("onAccessibilityEvent execut", " " + String.valueOf(clickList.get(size - 1)));
 
-            if(clickList.get(size-1) == AccessibilityEvent.WINDOWS_CHANGE_PIP){
-                Settings.System.putInt(mycontext.getContentResolver(), WINDOW_MANAGER_TO_OSD, 1);
+            if (clickList.get(size - 1) == AccessibilityEvent.WINDOWS_CHANGE_PIP) {
+                Log.d("mtimeManager", " 全局空白处点击" + String.valueOf(StaticVariableUtils.TimeManagerRunning));
+
+                Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
             }
 
         });
@@ -590,14 +605,14 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
 
     @Override
-    public void onVolumeChange(int keyAction, int keyCode){
-        if (keyAction == KeyEvent.ACTION_DOWN){
+    public void onVolumeChange(int keyAction, int keyCode) {
+        if (keyAction == KeyEvent.ACTION_DOWN) {
             // 按下
             KeyEvent keyEvent = new KeyEvent(keyAction, keyCode);    // 自己构造一个keyEvent事件
             volumeLongClickRunnable.isDown = true;
             volumeLongClickRunnable.currKeyEvent = keyEvent;
             executors.submit(volumeLongClickRunnable);      // 开个子线程去循环处理按下事件（模拟长按）
-        }else if(keyAction == KeyEvent.ACTION_UP){
+        } else if (keyAction == KeyEvent.ACTION_UP) {
             // 抬起
             volumeLongClickRunnable.isDown = false;   // 按键小板音量按钮松手 取消子线程处理按键逻辑
 //            Log.d(TAG, "onKeyEvent555: up");

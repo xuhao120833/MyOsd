@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">osd</string>
+
+    <string name="soure_change">信號源切換</string>
+</resources>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+
+<com.color.systemui.view.statusbar.StatusBarFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/statusbar_frame"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone">
+
+    <com.color.systemui.view.statusbar.StatusBarLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/statusbar_linear"
+        android:layout_width="140dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="7dp"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <com.color.systemui.view.statusbar.StatusBarImageView
+            android:id="@+id/Udisk"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/statusbar_udisk"
+            android:visibility="gone">
+
+        </com.color.systemui.view.statusbar.StatusBarImageView>
+
+        <com.color.systemui.view.statusbar.StatusBarImageView
+            android:id="@+id/Wifi"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/statusbar_wifiserach"
+            android:visibility="gone">
+
+        </com.color.systemui.view.statusbar.StatusBarImageView>
+
+        <com.color.systemui.view.statusbar.StatusBarImageView
+            android:id="@+id/Ethernet"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/statusbar_ethernet"
+            android:visibility="gone">
+
+        </com.color.systemui.view.statusbar.StatusBarImageView>
+
+        <com.color.systemui.view.statusbar.StatusBarImageView
+            android:id="@+id/Mobile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/statusbar_mobile"
+            android:visibility="gone">
+
+        </com.color.systemui.view.statusbar.StatusBarImageView>
+
+        <com.color.systemui.view.statusbar.StatusBarImageView
+            android:id="@+id/Hotspot"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/statusbar_hotspot"
+            android:visibility="gone">
+
+        </com.color.systemui.view.statusbar.StatusBarImageView>
+
+    </com.color.systemui.view.statusbar.StatusBarLinearLayout>
+
+</com.color.systemui.view.statusbar.StatusBarFrameLayout>
+
+
