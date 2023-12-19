@@ -21,6 +21,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.annotation.NonNull;
 
+import com.color.notification.models.service.MyNotificationService;
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.ContentObserver.WindowManagerServiceObserver;
 import com.color.osd.models.Enum.MenuState;
@@ -34,7 +35,6 @@ import com.color.osd.ContentObserver.BrightnessObeserver;
 import com.color.osd.models.interfaces.BrightnessChangeListener;
 import com.color.osd.broadcast.VolumeFromFWReceiver;
 import com.color.systemui.MySystemUI;
-import com.color.systemui.utils.StaticInstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
@@ -124,6 +124,8 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     private boolean SystemUIFirstBoot = true;//保证SystemUI在onCreate中只执行一次
 
+    private MyNotificationService myNotificationService = new MyNotificationService();
+
     @Override
     public void onCreate() {
         mycontext = this;
@@ -136,11 +138,21 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             mySystemUI = new MySystemUI(mycontext);
             mySystemUI.start();
             SystemUIFirstBoot = false;
+
         }
 
         //监听开机引导完成标志位
         bootObserver = new BootFinishContentObserver(mycontext);
         mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
+
+        //启动消息通知服务
+//        Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+        Log.d("BootFinishContentObserver","启动消息通知服务");
+        myNotificationService.setContext(mycontext);
+        Intent intent1 = new Intent(mycontext, MyNotificationService.class);
+        mycontext.startService(intent1);
 
         init();
     }
@@ -265,7 +277,8 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             if (clickList.get(size - 1) == AccessibilityEvent.WINDOWS_CHANGE_PIP) {
                 Log.d("mtimeManager", " 全局空白处点击" + String.valueOf(StaticVariableUtils.TimeManagerRunning));
 
-                Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
+                //屏蔽掉全局空白无功能处点击控制悬浮球、导航栏显示与否的方案，使用侧滑唤起方案
+                //Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
             }
 
         });

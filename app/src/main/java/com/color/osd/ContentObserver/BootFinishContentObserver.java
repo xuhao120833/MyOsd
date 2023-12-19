@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.color.notification.models.service.MyNotificationService;
 import com.color.osd.models.service.MenuService;
 import com.color.systemui.MySystemUI;
 
@@ -15,6 +16,8 @@ public class BootFinishContentObserver extends ContentObserver {
     int fswitch;
 
     private MySystemUI mySystemUI;
+
+    private MyNotificationService myNotificationService = new MyNotificationService();
 
     public BootFinishContentObserver(Context mContext) {
         super(new Handler());

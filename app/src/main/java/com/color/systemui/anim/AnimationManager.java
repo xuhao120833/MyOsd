@@ -35,7 +35,7 @@ public class AnimationManager {
         StaticInstanceUtils.hoverball.leftlayout.animate()
                 .alpha(1.0f)
                 .translationX(0)
-                .setDuration(200)
+                .setDuration(300)
                 .start();
     }
 
@@ -45,7 +45,7 @@ public class AnimationManager {
         StaticInstanceUtils.hoverball.leftlayout.animate()
                 .alpha(0.0f)
                 .translationX(-StaticInstanceUtils.hoverball.leftlayout.getWidth())
-                .setDuration(200)
+                .setDuration(300)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -72,7 +72,7 @@ public class AnimationManager {
         StaticInstanceUtils.hoverball.rightlayout.animate()
                 .alpha(1.0f)
                 .translationX(0)
-                .setDuration(200)
+                .setDuration(300)
                 .start();
     }
 
@@ -82,7 +82,7 @@ public class AnimationManager {
         StaticInstanceUtils.hoverball.rightlayout.animate()
                 .alpha(0.0f)
                 .translationX(StaticInstanceUtils.hoverball.rightlayout.getWidth())
-                .setDuration(200)
+                .setDuration(300)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -109,7 +109,7 @@ public class AnimationManager {
         StaticInstanceUtils.navigationBar.leftNavibar.animate()
                 .alpha(1.0f)
                 .translationX(0)
-                .setDuration(200)
+                .setDuration(300)
                 .start();
 
     }
@@ -121,7 +121,7 @@ public class AnimationManager {
         StaticInstanceUtils.navigationBar.leftNavibar.animate()
                 .alpha(0.0f)
                 .translationX(-StaticInstanceUtils.navigationBar.leftNavibar.getWidth())
-                .setDuration(200)
+                .setDuration(300)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -147,7 +147,7 @@ public class AnimationManager {
         StaticInstanceUtils.navigationBar.rightNavibar.animate()
                 .alpha(1.0f)
                 .translationX(0)
-                .setDuration(200)
+                .setDuration(300)
                 .start();
 
     }
@@ -159,7 +159,7 @@ public class AnimationManager {
         StaticInstanceUtils.navigationBar.rightNavibar.animate()
                 .alpha(0.0f)
                 .translationX(StaticInstanceUtils.navigationBar.rightNavibar.getWidth())
-                .setDuration(200)
+                .setDuration(300)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {

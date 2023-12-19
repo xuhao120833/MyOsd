@@ -2,6 +2,7 @@ package com.color.systemui.models.statusbar;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,7 +24,7 @@ public class StatusBar {
 
     private SystemTopActivityChange systemTopActivityChange = new SystemTopActivityChange();
 
-    private StatusBarBootCheck statusBarBootCheck = new StatusBarBootCheck();
+    public StatusBarBootCheck statusBarBootCheck = new StatusBarBootCheck();
 
     public WindowManager.LayoutParams lp;
 
@@ -90,9 +91,11 @@ public class StatusBar {
         //开机检测wifi是否打开、Usb设备是否插入、以太网是否连接，初始化状态栏
         statusBarBootCheck.setContext(mycontext);
 
+        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
         //开机还原上一次关机的设置
         if(Settings.System.getInt(mycontext.getContentResolver(),
                 StaticInstanceUtils.settingsControlStatusBarObserver.OPEN_STATUS_BAR, 0) == 1) {
+            Log.d("startStatusBar ", " 开机状态栏显示");
             StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
             StaticVariableUtils.SettingsControlStatusBarVisible = true;
         }

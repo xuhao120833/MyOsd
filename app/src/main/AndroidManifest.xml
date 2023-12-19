@@ -15,6 +15,9 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+
     <protected-broadcast android:name="com.colorlight.SCREENSHOT_OVER" />
 
     <application
@@ -90,6 +93,17 @@
         <service android:name=".models.service.ScreenShotService"
             android:exported="true"
             android:foregroundServiceType="mediaProjection"/>
+
+        <service android:name="com.color.notification.models.service.MyNotificationService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+
+        </service>
 
     </application>
 

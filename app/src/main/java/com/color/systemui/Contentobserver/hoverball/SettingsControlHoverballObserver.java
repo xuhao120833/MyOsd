@@ -60,10 +60,44 @@ public class SettingsControlHoverballObserver extends ContentObserver {
 //            StaticInstanceUtils.hoverball.leftlayout.setVisibility(View.VISIBLE);
 //            StaticInstanceUtils.hoverball.rightlayout.setVisibility(View.VISIBLE);
             StaticVariableUtils.SettingsControlHoverballVisible = true;
+            StaticVariableUtils.leftSlide_Or_rightSlide = "left_and_right";
             Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
+
         }
 
 
     }
+
+    private void WhichOneShow() {
+        if(StaticVariableUtils.Timing_begins_leftHoverballShow) {
+            StaticInstanceUtils.hoverball.leftlayout.setVisibility(View.VISIBLE);
+        }
+        if(StaticVariableUtils.Timing_begins_rightHoverballShow ) {
+            StaticInstanceUtils.hoverball.rightlayout.setVisibility(View.VISIBLE);
+
+        }
+        if(StaticVariableUtils.Timing_begins_leftNavibarShow ) {
+            StaticInstanceUtils.navigationBar.leftNavibar.setVisibility(View.VISIBLE);
+        }
+        if(StaticVariableUtils.Timing_begins_rightNavibarShow) {
+            StaticInstanceUtils.navigationBar.rightNavibar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void WhichOneHide() {
+        if(StaticVariableUtils.Timing_begins_leftHoverballShow) {
+            StaticInstanceUtils.manimationManager.lefthoverballHideAnimation();
+        }
+        if(StaticVariableUtils.Timing_begins_rightHoverballShow) {
+            StaticInstanceUtils.manimationManager.righthoverballHideAnimation();
+        }
+        if(StaticVariableUtils.Timing_begins_leftNavibarShow) {
+            StaticInstanceUtils.manimationManager.leftNavibarHideAnimation();
+        }
+        if(StaticVariableUtils.Timing_begins_rightNavibarShow) {
+            StaticInstanceUtils.manimationManager.rightNavibarHideAnimation();
+        }
+    }
+
 
 }

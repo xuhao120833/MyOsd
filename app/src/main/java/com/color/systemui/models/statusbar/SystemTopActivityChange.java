@@ -130,24 +130,24 @@ public class SystemTopActivityChange {
                 StaticInstanceUtils.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(StaticVariableUtils.haveUsbDevice) {
-                            StaticInstanceUtils.statusBar.udisk.setVisibility(View.GONE);
-                        }
-                        if (StaticVariableUtils.WifiOpen) {
-                            //Log.d("SystemActivityChange "," wifi设置不可见");
-                            StaticInstanceUtils.statusBar.wifi.setVisibility(View.GONE);
-                        }
-                        if (StaticVariableUtils.EthernetConnected) {
-                            StaticInstanceUtils.statusBar.ethernet.setVisibility(View.GONE);
-                        }
-                        if (StaticVariableUtils.HotspotOpen) {
-                            StaticInstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
-                        }
+//                        if(StaticVariableUtils.haveUsbDevice) {
+//                            StaticInstanceUtils.statusBar.udisk.setVisibility(View.GONE);
+//                        }
+//                        if (StaticVariableUtils.WifiOpen) {
+//                            //Log.d("SystemActivityChange "," wifi设置不可见");
+//                            StaticInstanceUtils.statusBar.wifi.setVisibility(View.GONE);
+//                        }
+//                        if (StaticVariableUtils.EthernetConnected) {
+//                            StaticInstanceUtils.statusBar.ethernet.setVisibility(View.GONE);
+//                        }
+//                        if (StaticVariableUtils.HotspotOpen) {
+//                            StaticInstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
+//                        }
                         StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
                     }
                 });
                 //Log.d("xuLL", "不在launcher 选择隐藏");
-            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true ) {
+            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible ) {
                 StaticInstanceUtils.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {

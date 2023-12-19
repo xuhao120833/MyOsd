@@ -42,6 +42,7 @@ public class WindowManagerToOsdObserver extends ContentObserver {
             StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
         }
 
+
         if(globalClick == 0 && StaticVariableUtils.TimeManagerRunning && StaticVariableUtils.SettingsControlHoverballVisible) {
             StaticVariableUtils.TimeManagerRunning = false;
             Timed_end_WhichOneHide();
@@ -51,18 +52,23 @@ public class WindowManagerToOsdObserver extends ContentObserver {
     }
 
     public void Timing_begins_WhichOneShow() {
-        if(StaticVariableUtils.Timing_begins_leftHoverballShow) {
+        if((StaticVariableUtils.Timing_begins_leftHoverballShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left")) ||
+                (StaticVariableUtils.Timing_begins_leftHoverballShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left_and_right"))) {
             StaticInstanceUtils.manimationManager.lefthoverballShowAnimation();
         }
-        if(StaticVariableUtils.Timing_begins_rightHoverballShow) {
+        if((StaticVariableUtils.Timing_begins_rightHoverballShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("right")) ||
+                (StaticVariableUtils.Timing_begins_rightHoverballShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left_and_right"))) {
             StaticInstanceUtils.manimationManager.righthoverballShowAnimation();
         }
-        if(StaticVariableUtils.Timing_begins_leftNavibarShow) {
+        if((StaticVariableUtils.Timing_begins_leftNavibarShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left")) ||
+                (StaticVariableUtils.Timing_begins_leftNavibarShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left_and_right"))) {
             StaticInstanceUtils.manimationManager.leftNavibarShowAnimation();
         }
-        if(StaticVariableUtils.Timing_begins_rightNavibarShow) {
+        if((StaticVariableUtils.Timing_begins_rightNavibarShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("right")) ||
+                (StaticVariableUtils.Timing_begins_rightNavibarShow && StaticVariableUtils.leftSlide_Or_rightSlide.equals("left_and_right"))) {
             StaticInstanceUtils.manimationManager.rightNavibarShowAnimation();
         }
+        StaticVariableUtils.leftSlide_Or_rightSlide = " ";
     }
 
     public void Timed_end_WhichOneHide() {

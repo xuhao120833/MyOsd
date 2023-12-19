@@ -42,7 +42,7 @@ public class StatusBarBootCheck {
 
     }
 
-    private void Check() {
+    public void Check() {
         //Wifi检查
         WifiCheck();
 

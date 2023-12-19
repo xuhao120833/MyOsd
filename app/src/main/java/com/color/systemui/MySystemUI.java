@@ -11,6 +11,7 @@ import com.color.systemui.Contentobserver.hoverball.SettingsControlHoverballObse
 import com.color.systemui.Contentobserver.navibar.ButtonBoardSourceChangeObserver;
 import com.color.systemui.Contentobserver.statusbar.SettingsControlStatusBarObserver;
 import com.color.systemui.anim.AnimationManager;
+import com.color.systemui.broadcast.sideslip.SideSlipReceiver;
 import com.color.systemui.broadcast.source.SourceChangeToUsefulReceiver;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.models.hoverball.Hoverball;
@@ -57,6 +58,8 @@ public class MySystemUI implements Instance {
 
     SourceChangeToUsefulReceiver sourceChangeToUsefulReceiver = new SourceChangeToUsefulReceiver();
 
+    SideSlipReceiver sideSlipReceiver = new SideSlipReceiver();
+
 
     MySystemUI() {}
 
@@ -102,6 +105,13 @@ public class MySystemUI implements Instance {
         setInstance(sourceChangeToUsefulReceiver);
         sourceChangeToUsefulReceiver.source_useful_intent.addAction(sourceChangeToUsefulReceiver.HDMI_IN_PLUG);
         mycontext.registerReceiver(sourceChangeToUsefulReceiver,sourceChangeToUsefulReceiver.source_useful_intent);
+
+        //注册侧滑广播
+        sideSlipReceiver.setContext(mycontext);
+        setInstance(sideSlipReceiver);
+        sideSlipReceiver.sideslip_filter.addAction(StaticVariableUtils.onSwipeFromLeft_Action);
+        sideSlipReceiver.sideslip_filter.addAction(StaticVariableUtils.onSwipeFromRight_Action);
+        mycontext.registerReceiver(sideSlipReceiver,sideSlipReceiver.sideslip_filter);
 
         //6、各种ContentObserver监听:
         //设置控制悬浮球显示与否，默认显示
