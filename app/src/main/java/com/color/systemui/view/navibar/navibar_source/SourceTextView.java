@@ -31,8 +31,8 @@ public class SourceTextView extends TextView {
         sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d("sizefWidth SourceTextView", String.valueOf(sizeWidth));
-        Log.d("sizefHeight SourceTextView", String.valueOf(sizeHeight));
+//        Log.d("sizefWidth SourceTextView", String.valueOf(sizeWidth));
+//        Log.d("sizefHeight SourceTextView", String.valueOf(sizeHeight));
 
         setMeasuredDimension(sizeWidth, sizeHeight);
     }

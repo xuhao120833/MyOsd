@@ -9,7 +9,8 @@ import com.color.osd.R;
 import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import android.graphics.PixelFormat;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.util.Log;
 
-public class Source {
+public class Source implements Instance {
 
     private Context mycontext;
 
@@ -98,7 +99,7 @@ public class Source {
             @Override
             public void onClick(View v) {
                 if(!select_source.equals("OPS")) {//从其它信源选择OPS
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.ops_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
                         OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select_useful));
                     } else {
                         OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select));
@@ -118,10 +119,10 @@ public class Source {
                         MenuService.menuOn = false;
                     }
                     //状态栏
-                    StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
 
                 } else {
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.ops_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
                         OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
                     } else {
                         OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
@@ -138,7 +139,7 @@ public class Source {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
                     if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -161,7 +162,7 @@ public class Source {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
                     if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                     }
 
 
@@ -179,7 +180,7 @@ public class Source {
             @Override
             public void onClick(View v) {
                 if(!select_source.equals("HDMI1")) {
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi1_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi1_useful) {
                         HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select_useful));
                     } else {
                         HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select));
@@ -198,9 +199,9 @@ public class Source {
                         DialogMenu.mydialog.dismiss();//收起Osd 菜单
                         MenuService.menuOn = false;
                     }
-                    StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
                 } else {
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi1_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi1_useful) {
                         HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
                     } else {
                         HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
@@ -216,7 +217,7 @@ public class Source {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
                     if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                     }
 
                 }
@@ -227,7 +228,7 @@ public class Source {
             @Override
             public void onClick(View v) {
                 if(!select_source.equals("HDMI2")) {
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi2_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi2_useful) {
                         HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select_useful));
                     } else {
                         HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select));
@@ -246,10 +247,10 @@ public class Source {
                         DialogMenu.mydialog.dismiss();//收起Osd 菜单
                         MenuService.menuOn = false;
                     }
-                    StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
 
                 } else {
-                    if (StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi2_useful) {
+                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi2_useful) {
                         HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
                     } else {
                         HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
@@ -265,7 +266,7 @@ public class Source {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
                     if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -276,28 +277,28 @@ public class Source {
     private void setDrawable(String select) {
         switch (select) {
             case "OPS":
-                if(StaticInstanceUtils.sourceChangeToUsefulReceiver.ops_useful) {
+                if(STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
                     OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
                 } else {
                     OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
                 }
                 break;
             case "Android":
-                if(StaticInstanceUtils.sourceChangeToUsefulReceiver.android_useful) {
+                if(STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.android_useful) {
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_useful));
                 } else {
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android));
                 }
                 break;
             case "HDMI1":
-                if(StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi1_useful) {
+                if(STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi1_useful) {
                     HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
                 } else {
                     HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
                 }
                 break;
             case "HDMI2":
-                if(StaticInstanceUtils.sourceChangeToUsefulReceiver.hdmi2_useful) {
+                if(STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi2_useful) {
                     HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
                 } else {
                     HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
@@ -309,7 +310,7 @@ public class Source {
     public void start() {
 
         Source.setVisibility(View.GONE);
-        StaticInstanceUtils.mavts.addView(Source,lp);
+        STATIC_INSTANCE_UTILS.mavts.addView(Source,lp);
 
     }
 

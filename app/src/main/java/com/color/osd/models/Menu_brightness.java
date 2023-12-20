@@ -38,13 +38,13 @@ public class Menu_brightness implements DispatchKeyEventInterface {
     }
 
     public void setOnclick(View baseView){
-        Log.d(TAG, "setOnclick: here");
+        //Log.d(TAG, "setOnclick: here");
         // 1、添加view的点击事件（弹出亮度设置的view）
         baseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (MenuService.menuState == MenuState.NULL){
-                    Log.d(TAG, "onClick: 亮度普通状态");
+                    //Log.d(TAG, "onClick: 亮度普通状态");
                     // 如果一开始menuState是NULL状态，说明是OSD没有开启任何二级菜单
                     // 那么这个点击事件就是来自与OSD的一级菜单“亮度”的点击事件，正常流程
                     // 改变当前Menu_state
@@ -56,7 +56,7 @@ public class Menu_brightness implements DispatchKeyEventInterface {
                     // 设置延时自动关闭
                     brightnessView.autoClose(brightnessView.source);
                 }else if (MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
-                    Log.d(TAG, "onClick: 直接亮度");
+                    //Log.d(TAG, "onClick: 直接亮度");
                     // 说明是直接来源于按键小板的亮度加减按钮，非正统路线
                     brightnessView.source.setFocusable(true);   // 普通的亮度条 直接开启聚焦 方便其View响应onKeyDown事件
                     brightnessView.initSystemBrightness();   // 每次点击事件加载view前更新下progress的值
@@ -65,7 +65,7 @@ public class Menu_brightness implements DispatchKeyEventInterface {
                 }else if(MenuService.menuState == MenuState.MENU_VOLUME_DIRECT ||
                         MenuService.menuState == MenuState.MENU_VOLUME ||
                         MenuService.menuState == MenuState.MENU_VOLUME_FOCUS){
-                    Log.d(TAG, "onClick: 我要变成复合态，且首先操作亮度~");
+                    //Log.d(TAG, "onClick: 我要变成复合态，且首先操作亮度~");
                     // 如果当前menuState是MENU_VOLUME_DIRECT状态，或者是MENU_VOLUME
                     // 说明声音二级菜单已经被遥控器唤起，并且没有自动消失
                     // 那么这里要打开亮度和声音的复合菜单
@@ -95,7 +95,7 @@ public class Menu_brightness implements DispatchKeyEventInterface {
 
     @Override
     public boolean onKeyEvent(KeyEvent event, MenuState menuState) {
-        Log.d(TAG, "onKeyEvent: " + event.getKeyCode() + ", " + event.getAction() + ", " + menuState);
+        //Log.d(TAG, "onKeyEvent: " + event.getKeyCode() + ", " + event.getAction() + ", " + menuState);
         if (event.getAction() == KeyEvent.ACTION_UP ||
                 (event.getKeyCode() != KeyEvent.KEYCODE_BRIGHTNESS_UP &&
                         event.getKeyCode() != KeyEvent.KEYCODE_BRIGHTNESS_DOWN)) return false;    // 屏蔽掉除开亮度调整的事件
@@ -112,7 +112,7 @@ public class Menu_brightness implements DispatchKeyEventInterface {
             FunctionBind.mavts.addView(brightnessView.source , brightnessView.lp);
             brightnessView.autoClose(brightnessView.source); // 设置延时自动关闭
         } else if (menuState == MenuState.MENU_VOLUME) {
-            Log.d(TAG, "onKeyEvent: 当前处于音量调整中，但我监听到亮度变化，所以我要变成复合态，且首先调整亮度");
+            //Log.d(TAG, "onKeyEvent: 当前处于音量调整中，但我监听到亮度变化，所以我要变成复合态，且首先调整亮度");
             if (brightnessAndVolumeView != null){
                 MenuService.menuState = MenuState.MENU_BRIGHTNESS_VOLUME;
                 brightnessAndVolumeView.source.setCanFocusable(true);  // 亮度和声音的复合态才允许聚焦

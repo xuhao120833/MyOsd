@@ -2,16 +2,16 @@ package com.color.systemui.view.statusbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 
-public class StatusBarFrameLayout extends FrameLayout {
+public class StatusBarFrameLayout extends FrameLayout implements Instance {
 
     Context mycontext;
 
@@ -39,7 +39,7 @@ public class StatusBarFrameLayout extends FrameLayout {
         super(context, attrs);
         mycontext = context;
         windowManager = mycontext.getSystemService(WindowManager.class);
-        Log.d("MyFrameLayout(Context context, @Nullable AttributeSet attrs)", "获取context");
+        //Log.d("MyFrameLayout(Context context, @Nullable AttributeSet attrs)", "获取context");
     }
 
 
@@ -57,14 +57,14 @@ public class StatusBarFrameLayout extends FrameLayout {
         sizeWidth = sizeHeight*1920/1080;//分辨率宽
 
 
-        statusbar_liner = StaticInstanceUtils.statusBar.statusbar.findViewById(R.id.statusbar_linear);
+        statusbar_liner = STATIC_INSTANCE_UTILS.statusBar.statusbar.findViewById(R.id.statusbar_linear);
         LayoutParams statusbar_liner_lp = (LayoutParams) statusbar_liner.getLayoutParams();
         statusbar_liner_lp.topMargin = sizeWidth * 14 / 1080;
         statusbar_liner.setLayoutParams(statusbar_liner_lp);
         statusbar_liner.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 280 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 46 / 1080, MeasureSpec.EXACTLY));
 //
-        Udisk = StaticInstanceUtils.statusBar.udisk;
+        Udisk = STATIC_INSTANCE_UTILS.statusBar.udisk;
         android.widget.LinearLayout.LayoutParams Udisk_lp = (android.widget.LinearLayout.LayoutParams) Udisk.getLayoutParams();
         Udisk_lp.leftMargin = sizeWidth * 8 / 1920;
         Udisk_lp.rightMargin = sizeWidth * 8 / 1920;
@@ -72,7 +72,7 @@ public class StatusBarFrameLayout extends FrameLayout {
         Udisk.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 //
-        Wifi = StaticInstanceUtils.statusBar.wifi;
+        Wifi = STATIC_INSTANCE_UTILS.statusBar.wifi;
         android.widget.LinearLayout.LayoutParams Wifi_lp = (android.widget.LinearLayout.LayoutParams) Wifi.getLayoutParams();
         Wifi_lp.leftMargin = sizeWidth * 8 / 1920;
         Wifi_lp.rightMargin = sizeWidth * 8 / 1920;
@@ -80,7 +80,7 @@ public class StatusBarFrameLayout extends FrameLayout {
         Wifi.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 //
-        Ethernet = StaticInstanceUtils.statusBar.ethernet;
+        Ethernet = STATIC_INSTANCE_UTILS.statusBar.ethernet;
         android.widget.LinearLayout.LayoutParams Ethernet_lp = (android.widget.LinearLayout.LayoutParams) Ethernet.getLayoutParams();
         Ethernet_lp.leftMargin = sizeWidth * 8 / 1920;
         Ethernet_lp.rightMargin = sizeWidth * 8 / 1920;
@@ -88,7 +88,7 @@ public class StatusBarFrameLayout extends FrameLayout {
         Ethernet.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 //
-        Hotspot = StaticInstanceUtils.statusBar.hotspot;
+        Hotspot = STATIC_INSTANCE_UTILS.statusBar.hotspot;
         android.widget.LinearLayout.LayoutParams Hotspot_lp = (android.widget.LinearLayout.LayoutParams) Hotspot.getLayoutParams();
         Hotspot_lp.leftMargin = sizeWidth * 8 / 1920;
         Hotspot.setLayoutParams(Hotspot_lp);

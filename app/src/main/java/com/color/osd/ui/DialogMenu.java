@@ -119,7 +119,7 @@ public class DialogMenu extends Dialog {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        Log.d("DialogMenu", "收到按键消息");
+        //Log.d("DialogMenu", "收到按键消息");
         return super.onKeyDown(keyCode, event);
 
     }
@@ -172,7 +172,7 @@ public class DialogMenu extends Dialog {
     }
 
     public void refreshMenuView() {
-        Log.d(getClass().getSimpleName() + "Adaptation-MyError", "refreshMenuView");
+        //Log.d(getClass().getSimpleName() + "Adaptation-MyError", "refreshMenuView");
 
         // clearAllChildView();
         Menu.requestLayout();

@@ -62,7 +62,7 @@ public class ScreenShotService extends Service {
    @Override
    public void onCreate() {
       super.onCreate();
-      Log.d(TAG, "onCreate: here~");
+      //Log.d(TAG, "onCreate: here~");
       mContext = this;
       wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
       // 构造出截屏结果的展示View
@@ -94,9 +94,9 @@ public class ScreenShotService extends Service {
 
    @Override
    public int onStartCommand(Intent intent, int flags, int startId) {
-      Log.d(TAG, "onStartCommand: start command");
+      //Log.d(TAG, "onStartCommand: start command");
       if (mediaProjection == null){
-         Log.d(TAG, "the mediaProjection is null need to" );
+         //Log.d(TAG, "the mediaProjection is null need to" );
          // 说明没有拿到这个对象，那么需要开启一个activity去startActivityForResult，从而获取mediaProjection对象，再通过binder传递回来
          Intent activityIntent = new Intent();
          activityIntent.setClass(mContext, ScreenShotActivity.class);
@@ -170,7 +170,7 @@ public class ScreenShotService extends Service {
       int height = metrics.heightPixels;
       int density = (int) metrics.density;
       int densityDpi = (int) metrics.densityDpi;
-      Log.d(TAG, "screenShot: " + density + ", " + densityDpi);
+      //Log.d(TAG, "screenShot: " + density + ", " + densityDpi);
       Objects.requireNonNull(mediaProjection);
       @SuppressLint("WrongConstant")
       ImageReader imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888,60);

@@ -22,13 +22,13 @@ public class SideSlipReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(StaticVariableUtils.onSwipeFromLeft_Action)) {
-            Log.d("onSwipeFromLeft_Action"," 收到左侧侧滑通知");
+            //Log.d("onSwipeFromLeft_Action"," 收到左侧侧滑通知");
             StaticVariableUtils.leftSlide_Or_rightSlide = "left";
             Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
         }
 
         if(intent.getAction().equals(StaticVariableUtils.onSwipeFromRight_Action)) {
-            Log.d("onSwipeFromRight_Action"," 收到右侧侧滑通知");
+            //Log.d("onSwipeFromRight_Action"," 收到右侧侧滑通知");
             StaticVariableUtils.leftSlide_Or_rightSlide = "right";
             Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
         }

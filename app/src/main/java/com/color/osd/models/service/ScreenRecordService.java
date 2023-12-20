@@ -44,7 +44,7 @@ public class ScreenRecordService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (mediaProjection == null){
-            Log.d(TAG, "the mediaProjection is null need to" );
+            //Log.d(TAG, "the mediaProjection is null need to" );
             // 说明没有拿到这个对象，那么需要开启一个activity去startActivityForResult，从而获取mediaProjection对象，再通过binder传递回来
             Intent activityIntent = new Intent();
             activityIntent.setClass(mContext, ScreenShotActivity.class);
@@ -124,7 +124,7 @@ public class ScreenRecordService extends Service {
     }
 
     private VirtualDisplay createVirtualDisplay() {
-        Log.i(TAG, "Create VirtualDisplay");
+        //Log.i(TAG, "Create VirtualDisplay");
         return mediaProjection.createVirtualDisplay(TAG, mScreenWidth, mScreenHeight, (int)mScreenDensity,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mediaRecorder.getSurface(), null, null);
     }

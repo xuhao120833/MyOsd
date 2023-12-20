@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
-import android.util.Log;
-import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
 
-public class SourceChangeToUsefulReceiver extends BroadcastReceiver {
+import com.color.osd.R;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
+
+public class SourceChangeToUsefulReceiver extends BroadcastReceiver implements Instance {
 
     private Context mycontext;
 
@@ -28,7 +29,7 @@ public class SourceChangeToUsefulReceiver extends BroadcastReceiver {
         if (HDMI_IN_PLUG.equals(intent.getAction())) {
             source = intent.getStringExtra("source");
             plug = intent.getStringExtra("plug");
-            setWhichSource(StaticInstanceUtils.source.select_source, source , plug);
+            setWhichSource(STATIC_INSTANCE_UTILS.source.select_source, source , plug);
         }
 
     }
@@ -42,76 +43,76 @@ public class SourceChangeToUsefulReceiver extends BroadcastReceiver {
     private void setWhichSource (String myselect_source, String mysource, String myplug) {
         if("0".equals(mysource) && "1".equals(myplug)) { //volume_image1
             ops_useful = true;
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             switch (myselect_source){
                 case "OPS":
-                    StaticInstanceUtils.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select_useful));
+                    STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select_useful));
                     break;
                 default:
-                    StaticInstanceUtils.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
+                    STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
                     break;
 
             }
         }
         if ("0".equals(mysource) && "0".equals(myplug)) {
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             ops_useful = false;
             switch (myselect_source){
                 case "OPS":
-                    StaticInstanceUtils.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select));
+                    STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select));
                     break;
                 default:
-                    StaticInstanceUtils.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
+                    STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
                     break;
             }
         }
 
         if("1".equals(mysource) && "1".equals(myplug)) { //volume_image3
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             hdmi1_useful = true;
             switch (myselect_source){
                 case "HDMI1":
-                    StaticInstanceUtils.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select_useful));
+                    STATIC_INSTANCE_UTILS.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select_useful));
                     break;
                 default:
-                    StaticInstanceUtils.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
+                    STATIC_INSTANCE_UTILS.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
                     break;
             }
         }
         if ("1".equals(mysource) && "0".equals(myplug)) {
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             hdmi1_useful = false;
             switch (myselect_source){
                 case "HDMI1":
-                    StaticInstanceUtils.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select));
+                    STATIC_INSTANCE_UTILS.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_select));
                     break;
                 default:
-                    StaticInstanceUtils.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
+                    STATIC_INSTANCE_UTILS.source.HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
                     break;
             }
         }
 
         if("2".equals(mysource) && "1".equals(myplug)) { //volume_image4
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             hdmi2_useful = true;
             switch (myselect_source){
                 case "HDMI2":
-                    StaticInstanceUtils.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select_useful));
+                    STATIC_INSTANCE_UTILS.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select_useful));
                     break;
                 default:
-                    StaticInstanceUtils.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
+                    STATIC_INSTANCE_UTILS.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
                     break;
             }
         }
         if ("2".equals(mysource) && "0".equals(myplug)) {
-            Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
+            //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             hdmi2_useful = false;
             switch (myselect_source){
                 case "HDMI2":
-                    StaticInstanceUtils.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select));
+                    STATIC_INSTANCE_UTILS.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_select));
                     break;
                 default:
-                    StaticInstanceUtils.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
+                    STATIC_INSTANCE_UTILS.source.HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
                     break;
             }
         }

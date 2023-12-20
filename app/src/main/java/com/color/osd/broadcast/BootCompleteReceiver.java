@@ -29,16 +29,16 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
         boolean accessibilitySettingsOn = isAccessibilitySettingsOn(context, MenuService.class);
 
-        Log.d(TAG, "isAccessibilitySettingsOn: " + accessibilitySettingsOn);
+        //Log.d(TAG, "isAccessibilitySettingsOn: " + accessibilitySettingsOn);
         if (!accessibilitySettingsOn) {
             String enabledServicesSetting = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
 
-            Log.d(TAG, "package name: " + context.getPackageName());
+            //Log.d(TAG, "package name: " + context.getPackageName());
 
             ComponentName selfComponentName = new ComponentName(context.getPackageName(), MenuService.class.getCanonicalName());
             String flattenToString = selfComponentName.flattenToString();
 
-            Log.d(TAG, "flattenToString: " + flattenToString);
+            //Log.d(TAG, "flattenToString: " + flattenToString);
             //null 表示没有任何服务
             if (enabledServicesSetting == null) {
                 enabledServicesSetting = flattenToString;
@@ -46,7 +46,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
                 enabledServicesSetting = enabledServicesSetting + ":" + flattenToString;
             }
 
-            Log.d(TAG, "enabledServicesSetting: " + enabledServicesSetting);
+            //Log.d(TAG, "enabledServicesSetting: " + enabledServicesSetting);
 
             Settings.Secure.putString(context.getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, enabledServicesSetting);
             Settings.Secure.putInt(context.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, 1);
@@ -58,7 +58,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         int accessibilityEnabled = 0;
         final String service = mContext.getPackageName() + "/" + clazz.getCanonicalName();
 
-        Log.d(TAG, "service: " + service);
+        //Log.d(TAG, "service: " + service);
         try {
             accessibilityEnabled = Settings.Secure.getInt(mContext.getApplicationContext().getContentResolver(),
                     Settings.Secure.ACCESSIBILITY_ENABLED);

@@ -5,10 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.view.View;
 
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
-public class HotspotIconChangeReceiver extends BroadcastReceiver {
+public class HotspotIconChangeReceiver extends BroadcastReceiver implements Instance {
 
     private Context mycontext;
 
@@ -28,13 +29,13 @@ public class HotspotIconChangeReceiver extends BroadcastReceiver {
             hotspot_state = intent.getIntExtra("wifi_state", 0);
             switch (hotspot_state) {
                 case 11:
-                    StaticInstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.statusBar.hotspot.setVisibility(View.GONE);
                     StaticVariableUtils.HotspotOpen = false;
                     break;
                 case 13:
-                    if("com.android.launcher3".equals(StaticInstanceUtils.mgetTopActivity.getPackage()) ||
-                            "com.color.settings".equals(StaticInstanceUtils.mgetTopActivity.getPackage())) {
-                        StaticInstanceUtils.statusBar.hotspot.setVisibility(View.VISIBLE);
+                    if("com.android.launcher3".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
+                            "com.color.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage())) {
+                        STATIC_INSTANCE_UTILS.statusBar.hotspot.setVisibility(View.VISIBLE);
                     }
                     StaticVariableUtils.HotspotOpen =true;
                     break;

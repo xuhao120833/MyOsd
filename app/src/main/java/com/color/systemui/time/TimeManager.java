@@ -1,14 +1,9 @@
 package com.color.systemui.time;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 import android.provider.Settings;
-import java.util.Stack;
-import android.view.View;
 
-import com.color.systemui.utils.StaticInstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 public class TimeManager {

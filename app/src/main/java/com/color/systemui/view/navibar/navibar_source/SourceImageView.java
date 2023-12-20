@@ -30,8 +30,8 @@ public class SourceImageView extends androidx.appcompat.widget.AppCompatImageVie
         sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d("sizefWidth SourceImageView", String.valueOf(sizeWidth));
-        Log.d("sizefHeight SourceImageView", String.valueOf(sizeHeight));
+//        Log.d("sizefWidth SourceImageView", String.valueOf(sizeWidth));
+//        Log.d("sizefHeight SourceImageView", String.valueOf(sizeHeight));
 
         setMeasuredDimension(sizeWidth, sizeHeight);
     }

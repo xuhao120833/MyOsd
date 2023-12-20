@@ -3,21 +3,20 @@ package com.color.systemui.broadcast.statusbar.icons;
 import android.content.Context;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.widget.ImageView;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import android.os.Parcelable;
 import java.lang.*;
 import android.net.wifi.WifiManager;
 import android.view.View;
-import android.util.Log;
 import android.net.NetworkCapabilities;
 
-public class WifiIconChangeReceiver extends BroadcastReceiver {
+public class WifiIconChangeReceiver extends BroadcastReceiver implements Instance {
 
     private Context mycontext;
 
@@ -60,19 +59,19 @@ public class WifiIconChangeReceiver extends BroadcastReceiver {
             switch (wifiState) {
                 case WifiManager.WIFI_STATE_DISABLED:
                     //Log.d("MyWifi 收到wifi关闭广播","wifi图标消失");
-                    StaticInstanceUtils.statusBar.wifi.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.GONE);
                     StaticVariableUtils.WifiOpen = false;
                     break;
                 case WifiManager.WIFI_STATE_DISABLING:
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
                     //Log.d("MyWifi 收到wifi打开广播","WIFI_STATE_ENABLED");
-                    StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
-                    if("com.android.launcher3".equals(StaticInstanceUtils.mgetTopActivity.getPackage()) ||
-                            "com.color.settings".equals(StaticInstanceUtils.mgetTopActivity.getPackage()) ||
-                            "com.android.tv.settings".equals(StaticInstanceUtils.mgetTopActivity.getPackage()) ){
+                    STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
+                    if("com.android.launcher3".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
+                            "com.color.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
+                            "com.android.tv.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ){
                         //Log.d("MyWifi 收到wifi打开广播","wifi图标出现");
-                        StaticInstanceUtils.statusBar.wifi.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.VISIBLE);
                     }
                     StaticVariableUtils.WifiOpen = true;
                     break;
@@ -91,7 +90,7 @@ public class WifiIconChangeReceiver extends BroadcastReceiver {
                 wifiConnected = state == NetworkInfo.State.CONNECTED;
             }
             if (state == NetworkInfo.State.DISCONNECTED) {
-                StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
+                STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
             }
 
         }
@@ -112,37 +111,37 @@ public class WifiIconChangeReceiver extends BroadcastReceiver {
             switch (rssi) {
                 case 0:
                     if (wifiConnected && isWificanusful()) {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi0));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi0));
                     } else {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi0_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi0_nonet));
                     }
                     break;
                 case 1:
                     if (wifiConnected && isWificanusful()) {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi1));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi1));
                     } else {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi1_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi1_nonet));
                     }
                     break;
                 case 2:
                     if (wifiConnected && isWificanusful()) {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi2));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi2));
                     } else {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi2_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi2_nonet));
                     }
                     break;
                 case 3:
                     if (wifiConnected && isWificanusful()) {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi3));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi3));
                     } else {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
                     }
                     break;
                 case 4:
                     if (wifiConnected && isWificanusful()) {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4));
                     } else {
-                        StaticInstanceUtils.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
                     }
                     break;
                 default:
@@ -168,7 +167,7 @@ public class WifiIconChangeReceiver extends BroadcastReceiver {
         try {
             Process ipProcess = runtime.exec("ping -c 1 www.baidu.com");
             int exitValue = ipProcess.waitFor();
-            Log.i("Avalible", "Process:" + exitValue);
+            //Log.i("Avalible", "Process:" + exitValue);
             return (exitValue == 0);
         } catch (Exception e) {
             e.printStackTrace();

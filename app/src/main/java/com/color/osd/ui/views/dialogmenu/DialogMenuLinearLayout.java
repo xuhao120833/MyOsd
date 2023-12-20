@@ -38,8 +38,8 @@ public class DialogMenuLinearLayout extends LinearLayout {
         int widthSize = getMeasuredWidth();// MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = getMeasuredHeight();// MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d(getClass().getSimpleName() + "Adaptation-MyError", "widthMode="+widthMode
-                + ", width=" + widthSize + ", height=" + heightSize);
+        //Log.d(getClass().getSimpleName() + "Adaptation-MyError", "widthMode="+widthMode
+                //+ ", width=" + widthSize + ", height=" + heightSize);
         //setMeasuredDimension(widthSize, heightSize);
 
         int count = getChildCount();

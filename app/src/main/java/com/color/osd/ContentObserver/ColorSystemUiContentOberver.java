@@ -27,7 +27,7 @@ public class ColorSystemUiContentOberver extends ContentObserver {
         super.onChange(selfChange);
         fswitch = Settings.System.getInt(mcontext.getContentResolver(),
                 OSD_OPEN_OTHER_SOURCE, 1);
-        Log.d("ColorSystemUiContentOberver ", String.valueOf(fswitch));
+        //Log.d("ColorSystemUiContentOberver ", String.valueOf(fswitch));
 
 //        if (fswitch == 2) {
 //            if (Menu_source.fromOsd == true) {

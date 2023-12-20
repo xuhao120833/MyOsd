@@ -8,7 +8,8 @@ import android.view.WindowManager;
 import android.view.LayoutInflater;
 
 import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import android.graphics.PixelFormat;
@@ -22,7 +23,7 @@ import android.content.ComponentName;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class NavigationBar {
+public class NavigationBar implements Instance {
 
     private Context mycontext;
 
@@ -94,7 +95,7 @@ public class NavigationBar {
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.gravity = Gravity.LEFT | Gravity.TOP;
         lp.format = PixelFormat.RGBA_8888;
-        lp.y = StaticInstanceUtils.mcalculateYposition.GetNavibarY();
+        lp.y = STATIC_INSTANCE_UTILS.mcalculateYposition.GetNavibarY();
 
         lp2 = new WindowManager.LayoutParams();
         lp2.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -107,7 +108,7 @@ public class NavigationBar {
         lp2.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp2.gravity = Gravity.RIGHT | Gravity.TOP;
         lp2.format = PixelFormat.RGBA_8888;
-        lp2.y = StaticInstanceUtils.mcalculateYposition.GetNavibarY();
+        lp2.y = STATIC_INSTANCE_UTILS.mcalculateYposition.GetNavibarY();
 
     }
 
@@ -153,8 +154,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -172,8 +173,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -190,8 +191,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -200,11 +201,11 @@ public class NavigationBar {
             @Override
             public void onClick(View v) {
 
-                StaticInstanceUtils.source.Source.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -216,8 +217,8 @@ public class NavigationBar {
                 mycontext.startService(leftcomments_intent);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -229,8 +230,8 @@ public class NavigationBar {
                 mycontext.startActivity(leftwhiteboard_intent);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -240,16 +241,16 @@ public class NavigationBar {
             public void onClick(View v) {
                 //leftNavibar.setVisibility(View.GONE);
                 StaticVariableUtils.Proactive_triggering_leftnavibar_hide = 0;
-                StaticInstanceUtils.manimationManager.leftNavibarHideAnimation();
+                STATIC_INSTANCE_UTILS.manimationManager.leftNavibarHideAnimation();
                 StaticVariableUtils.Timing_begins_leftNavibarShow = false;
 
-                //StaticInstanceUtils.hoverball.leftlayout.setVisibility(View.VISIBLE);
-                StaticInstanceUtils.manimationManager.lefthoverballShowAnimation();
+                //InstanceUtils.hoverball.leftlayout.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.manimationManager.lefthoverballShowAnimation();
                 StaticVariableUtils.Timing_begins_leftHoverballShow = true;
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -271,8 +272,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -290,8 +291,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -308,8 +309,8 @@ public class NavigationBar {
                 });
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -318,11 +319,11 @@ public class NavigationBar {
             @Override
             public void onClick(View v) {
 
-                StaticInstanceUtils.source.Source.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -334,8 +335,8 @@ public class NavigationBar {
                 mycontext.startService(rightcomments_intent);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -347,8 +348,8 @@ public class NavigationBar {
                 mycontext.startActivity(rightwhiteboard_intent);
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -358,16 +359,16 @@ public class NavigationBar {
             public void onClick(View v) {
                 //rightNavibar.setVisibility(View.GONE);
                 StaticVariableUtils.Proactive_triggering_rightnavibar_hide = 0;
-                StaticInstanceUtils.manimationManager.rightNavibarHideAnimation();
+                STATIC_INSTANCE_UTILS.manimationManager.rightNavibarHideAnimation();
                 StaticVariableUtils.Timing_begins_rightNavibarShow = false;
 
-                //StaticInstanceUtils.hoverball.rightlayout.setVisibility(View.VISIBLE);
-                StaticInstanceUtils.manimationManager.righthoverballShowAnimation();
+                //InstanceUtils.hoverball.rightlayout.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.manimationManager.righthoverballShowAnimation();
                 StaticVariableUtils.Timing_begins_rightHoverballShow = true;
 
                 //有操作，则重新计时
-                StaticInstanceUtils.mtimeManager.Time_handler_removeCallbacks();
-                StaticInstanceUtils.mtimeManager.Time_handler_postDelayed();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
@@ -378,8 +379,8 @@ public class NavigationBar {
 
         leftNavibar.setVisibility(View.GONE);
         rightNavibar.setVisibility(View.GONE);
-        StaticInstanceUtils.mavts.addView(leftNavibar, lp);
-        StaticInstanceUtils.mavts.addView(rightNavibar, lp2);
+        STATIC_INSTANCE_UTILS.mavts.addView(leftNavibar, lp);
+        STATIC_INSTANCE_UTILS.mavts.addView(rightNavibar, lp2);
 
     }
 

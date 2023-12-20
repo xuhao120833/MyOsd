@@ -32,8 +32,8 @@ public class FirstLinearLayout extends LinearLayout {
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         //sizeWidth = sizeHeight * 1920 / 1080;
 
-        Log.d("sizefWidth SecondLinearLayout", String.valueOf(sizeWidth));
-        Log.d("sizefHeight SecondLinearLayout", String.valueOf(sizeHeight));
+//        Log.d("sizefWidth SecondLinearLayout", String.valueOf(sizeWidth));
+//        Log.d("sizefHeight SecondLinearLayout", String.valueOf(sizeHeight));
 
 
         setMeasuredDimension(sizeWidth, sizeHeight);

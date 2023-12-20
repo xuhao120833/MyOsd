@@ -44,8 +44,8 @@ public class DialogMenuFrameLayout extends FrameLayout {
 
         int widthSize = (int) DensityUtil.getScaledValue(ConstantProperties.OSD_MENU_WIDTH_DP);
         int heightSize = (int) DensityUtil.getScaledValue(ConstantProperties.OSD_MENU_HEIGHT_DP);
-        Log.d(getClass().getSimpleName() + "Adaptation-MyError", "widthSize=" + widthSize
-                + ", heightSize=" + heightSize);
+        //Log.d(getClass().getSimpleName() + "Adaptation-MyError", "widthSize=" + widthSize
+                //+ ", heightSize=" + heightSize);
 
 //        mLinearLayout = findViewById(R.id.Menu_linear_list);
 //        mSourceView = mLinearLayout.findViewById(R.id.Menu_source);

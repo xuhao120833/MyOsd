@@ -83,7 +83,7 @@ public class CltCircleView extends ViewGroup {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d(TAG, "onMeasure: " + width + ", " + height);
+        //Log.d(TAG, "onMeasure: " + width + ", " + height);
         // 直接给textView设置宽高(当前布局有多大就给textView设多大)
         textView.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));

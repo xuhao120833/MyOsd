@@ -15,7 +15,7 @@ public class AddViewToScreen {
         try {
             wm.removeViewImmediate(v);
         } catch (Exception e) {
-            Log.d("AddViewToScreen", "addView : removeView has Error： " + e.getMessage());
+            //Log.d("AddViewToScreen", "addView : removeView has Error： " + e.getMessage());
         }
         wm.addView(v, p);
     }
@@ -27,7 +27,7 @@ public class AddViewToScreen {
 
     public void clearView(View v) {
         if (v != null) {
-            Log.d("xuhao", "clearView");
+            //Log.d("xuhao", "clearView");
             try {
                 wm.removeViewImmediate(v);
             } catch (Exception e) {

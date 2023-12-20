@@ -67,7 +67,7 @@ public class CltSeekBar extends View {
 
     public void setBrightnessPercent(float percent){
         brightnessPercent = percent;
-        Log.d(TAG, "setBrightnessPercent: " + (mFgSeekAvailableWidth * brightnessPercent / 100));
+        //Log.d(TAG, "setBrightnessPercent: " + (mFgSeekAvailableWidth * brightnessPercent / 100));
         linearGradient = new LinearGradient(0, 0,mFgSeekAvailableWidth * brightnessPercent / 100, mFgSeekHeight,
                 Color.rgb(70, 175, 253),
                 Color.rgb(68, 79, 252), Shader.TileMode.MIRROR);
@@ -81,20 +81,20 @@ public class CltSeekBar extends View {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d(TAG, "onMeasure: " + width + ", " + height);
+        //Log.d(TAG, "onMeasure: " + width + ", " + height);
         mFgSeekAvailableWidth = width - mFgSeekHeight;  // 计算进度条有效宽度
         setMeasuredDimension(width, height);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.d(TAG, "onLayout: " + l + ", " + t + ", " + r + ", " + b);
+        //Log.d(TAG, "onLayout: " + l + ", " + t + ", " + r + ", " + b);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d(TAG, "onDraw: here");
+        //Log.d(TAG, "onDraw: here");
 
         // 1、绘制seek bar的那个背景横杠
         RectF bgSeekRect = new RectF();
@@ -160,7 +160,7 @@ public class CltSeekBar extends View {
                 break;
 
             case MotionEvent.ACTION_UP:
-                Log.d(TAG, "onTouchEvent: here up");
+                //Log.d(TAG, "onTouchEvent: here up");
                 break;
         }
         return true;

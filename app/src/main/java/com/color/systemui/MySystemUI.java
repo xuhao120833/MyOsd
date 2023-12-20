@@ -2,7 +2,6 @@ package com.color.systemui;
 
 import android.content.Context;
 import android.provider.Settings;
-import android.util.Log;
 
 import com.color.osd.models.AddViewToScreen;
 import com.color.systemui.Contentobserver.ResolutionChangeObserver;
@@ -21,7 +20,7 @@ import com.color.systemui.models.statusbar.StatusBar;
 import com.color.systemui.time.TimeManager;
 import com.color.systemui.utils.CalculateYposition;
 import com.color.systemui.utils.GetTopActivity;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
 public class MySystemUI implements Instance {
@@ -117,12 +116,12 @@ public class MySystemUI implements Instance {
         //设置控制悬浮球显示与否，默认显示
         settingsControlHoverballObserver.setContext(mycontext);
         setInstance(settingsControlHoverballObserver);
-        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(StaticInstanceUtils.settingsControlHoverballObserver.OPEN_FAST_TOOLBAR), true, settingsControlHoverballObserver);
+        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(STATIC_INSTANCE_UTILS.settingsControlHoverballObserver.OPEN_FAST_TOOLBAR), true, settingsControlHoverballObserver);
 
         //设置控制导航栏显示与否，默认不显示
         settingsControlStatusBarObserver.setContext(mycontext);
         setInstance(settingsControlStatusBarObserver);
-        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(StaticInstanceUtils.settingsControlStatusBarObserver.OPEN_STATUS_BAR),true,settingsControlStatusBarObserver);
+        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(STATIC_INSTANCE_UTILS.settingsControlStatusBarObserver.OPEN_STATUS_BAR),true,settingsControlStatusBarObserver);
 
         //全局空白无功能点击事件监听，处理悬浮球、导航栏定时逻辑
         windowManagerToOsdObserver.setContext(mycontext);
@@ -132,12 +131,12 @@ public class MySystemUI implements Instance {
         //监听分辨率变化，重置悬浮球、悬浮球导航栏的Y坐标
         resolutionChangeObserver = new ResolutionChangeObserver(mycontext);
         setInstance(resolutionChangeObserver);
-        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(StaticInstanceUtils.resolutionChangeObserver.SYSTEM_RESOLUTION_CHANGE),true,resolutionChangeObserver);
+        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(STATIC_INSTANCE_UTILS.resolutionChangeObserver.SYSTEM_RESOLUTION_CHANGE),true,resolutionChangeObserver);
 
         //按键小板切源监听,同步变换信源图片，隐藏Osd菜单、状态栏
         buttonBoardSourceChangeObserver = new ButtonBoardSourceChangeObserver(mycontext);
         setInstance(buttonBoardSourceChangeObserver);
-        mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(StaticInstanceUtils.buttonBoardSourceChangeObserver.CURRENT_SOURCE),true,buttonBoardSourceChangeObserver);
+        mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(STATIC_INSTANCE_UTILS.buttonBoardSourceChangeObserver.CURRENT_SOURCE),true,buttonBoardSourceChangeObserver);
 
         //7、将各个View添加到屏幕上显示
         startAddView();
@@ -148,7 +147,7 @@ public class MySystemUI implements Instance {
 
         hoverball = new Hoverball();
         hoverball.setContext(mycontext);
-        Log.d("starthoverball","setInstance(hoverball.getClass())");
+        //Log.d("starthoverball","setInstance(hoverball.getClass())");
         setInstance(hoverball);
 
 

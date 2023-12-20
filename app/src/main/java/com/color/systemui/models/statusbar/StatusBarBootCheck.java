@@ -9,12 +9,12 @@ import android.net.wifi.WifiManager;
 import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
-import android.util.Log;
 
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
-public class StatusBarBootCheck {
+public class StatusBarBootCheck implements Instance {
 
     private Context mycontext;
 
@@ -55,14 +55,14 @@ public class StatusBarBootCheck {
 
     private void WifiCheck() {
         if (wifiManager != null && wifiManager.isWifiEnabled() == true ) {
-            Log.d("WifiCheck", " wifiManager.isWifiEnabled() == true");
-            StaticInstanceUtils.statusBar.wifi.setVisibility(View.VISIBLE);
+            //Log.d("WifiCheck", " wifiManager.isWifiEnabled() == true");
+            STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.VISIBLE);
             StaticVariableUtils.WifiOpen = true;
         }
 
         if (wifiManager != null && wifiManager.isWifiEnabled() == false ) {
-            Log.d("WifiCheck", " wifiManager.isWifiEnabled() == false");
-            StaticInstanceUtils.statusBar.wifi.setVisibility(View.GONE);
+            //Log.d("WifiCheck", " wifiManager.isWifiEnabled() == false");
+            STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.GONE);
             StaticVariableUtils.WifiOpen = false;
         }
     }
@@ -70,9 +70,9 @@ public class StatusBarBootCheck {
     private void  UsbDeviceCheck() {
 
         for (Map.Entry entry : deviceHashMap.entrySet()) {
-            Log.d("StatusBarBootCheck", "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
+            //Log.d("StatusBarBootCheck", "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
             if(entry != null) {
-                StaticInstanceUtils.statusBar.udisk.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
                 StaticVariableUtils.haveUsbDevice = true;
             }
         }
@@ -82,10 +82,10 @@ public class StatusBarBootCheck {
     private void EthernetCheck() {
         networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null) {
-            Log.d("UsbDeviceCheck 网络类型 " , String.valueOf(networkInfo.getType()));
+            //Log.d("UsbDeviceCheck 网络类型 " , String.valueOf(networkInfo.getType()));
             if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET && networkInfo.isConnected()) {
 
-                StaticInstanceUtils.statusBar.ethernet.setVisibility(View.VISIBLE);
+                STATIC_INSTANCE_UTILS.statusBar.ethernet.setVisibility(View.VISIBLE);
                 StaticVariableUtils.EthernetConnected = true;
 
             }

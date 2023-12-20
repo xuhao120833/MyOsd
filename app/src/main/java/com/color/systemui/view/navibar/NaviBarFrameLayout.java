@@ -2,7 +2,6 @@ package com.color.systemui.view.navibar;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -11,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 
-public class NaviBarFrameLayout extends FrameLayout {
+public class NaviBarFrameLayout extends FrameLayout implements Instance {
 
     Context mycontext;
 
@@ -50,7 +50,7 @@ public class NaviBarFrameLayout extends FrameLayout {
         super(context, attrs);
         mycontext = context;
         windowManager = mycontext.getSystemService(WindowManager.class);
-        Log.d("MyFrameLayout(Context context, @Nullable AttributeSet attrs)", "获取context");
+        //Log.d("MyFrameLayout(Context context, @Nullable AttributeSet attrs)", "获取context");
     }
 
 
@@ -67,10 +67,10 @@ public class NaviBarFrameLayout extends FrameLayout {
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
         sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
 
-        Log.d("sizef mode  widthMeasureSpec", String.valueOf(widthMeasureSpec));
-        Log.d("sizef mode  heightMeasureSpec", String.valueOf(heightMeasureSpec));
-        Log.d("sizefWidth  StatusBarFrameLayout", String.valueOf(sizeWidth));
-        Log.d("sizefHeight  StatusBarFrameLayout", String.valueOf(sizeHeight));
+//        Log.d("sizef mode  widthMeasureSpec", String.valueOf(widthMeasureSpec));
+//        Log.d("sizef mode  heightMeasureSpec", String.valueOf(heightMeasureSpec));
+//        Log.d("sizefWidth  StatusBarFrameLayout", String.valueOf(sizeWidth));
+//        Log.d("sizefHeight  StatusBarFrameLayout", String.valueOf(sizeHeight));
 
         //左侧导航栏
         MeasureLeftNavibar();
@@ -85,9 +85,9 @@ public class NaviBarFrameLayout extends FrameLayout {
     }
 
     private void MeasureLeftNavibar() {
-        mynaviFrame = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.naviFrame);
+        mynaviFrame = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.naviFrame);
 
-        mynaviLinear = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.naviLinear);
+        mynaviLinear = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.naviLinear);
         lpnaviLinear = (LayoutParams) mynaviLinear.getLayoutParams();
         lpnaviLinear.leftMargin = sizeWidth * 24 / 1920;
         mynaviLinear.setLayoutParams(lpnaviLinear);
@@ -95,17 +95,17 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 508 / 1080, MeasureSpec.EXACTLY));
 
 
-        myBack = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Back);
+        myBack = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Back);
         lpnaviBack = (android.widget.LinearLayout.LayoutParams) myBack.getLayoutParams();
         lpnaviBack.topMargin = sizeWidth * 20 / 1080;
         lpnaviBack.bottomMargin = sizeHeight * 10 / 1080;
-        Log.d("sizef Backbottom", String.valueOf(sizeHeight * 10 / 1080));
+        //Log.d("sizef Backbottom", String.valueOf(sizeHeight * 10 / 1080));
         myBack.setLayoutParams(lpnaviBack);
         myBack.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 60 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myHome = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Home);
+        myHome = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Home);
         lpnaviHome = (android.widget.LinearLayout.LayoutParams) myHome.getLayoutParams();
         lpnaviHome.topMargin = sizeHeight * 10 / 1080;
         lpnaviHome.bottomMargin = sizeHeight * 10 / 1080;
@@ -114,7 +114,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myRecent = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Recent);
+        myRecent = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Recent);
         lpnaviRecent = (android.widget.LinearLayout.LayoutParams) myRecent.getLayoutParams();
         lpnaviRecent.topMargin = sizeHeight * 10 / 1080;
         lpnaviRecent.bottomMargin = sizeHeight * 10 / 1080;
@@ -123,7 +123,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myleftDline1 = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Dline1);
+        myleftDline1 = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Dline1);
         lpnavileftDline1 = (android.widget.LinearLayout.LayoutParams) myleftDline1.getLayoutParams();
         lpnavileftDline1.topMargin = sizeHeight * 10 / 1080;
         lpnavileftDline1.bottomMargin = sizeHeight * 10 / 1080;
@@ -132,7 +132,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 1080, MeasureSpec.EXACTLY));
 
 
-        myVolume = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Source);
+        myVolume = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Source);
         lpnaviVolume = (android.widget.LinearLayout.LayoutParams) myVolume.getLayoutParams();
         lpnaviVolume.topMargin = sizeHeight * 10 / 1080;
         lpnaviVolume.bottomMargin = sizeHeight * 10 / 1080;
@@ -141,7 +141,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myComments = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Comments);
+        myComments = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Comments);
         lpnaviComments = (android.widget.LinearLayout.LayoutParams) myComments.getLayoutParams();
         lpnaviComments.topMargin = sizeHeight * 10 / 1080;
         lpnaviComments.bottomMargin = sizeHeight * 10 / 1080;
@@ -150,7 +150,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myWhiteboard = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Whiteboard);
+        myWhiteboard = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Whiteboard);
         lpnaviWhiteboard = (android.widget.LinearLayout.LayoutParams) myWhiteboard.getLayoutParams();
         lpnaviWhiteboard.topMargin = sizeHeight * 10 / 1080;
         lpnaviWhiteboard.bottomMargin = sizeHeight * 10 / 1080;
@@ -159,7 +159,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myleftDline2 = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Dline2);
+        myleftDline2 = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Dline2);
         lpnavileftDline2 = (android.widget.LinearLayout.LayoutParams) myleftDline2.getLayoutParams();
         lpnavileftDline2.topMargin = sizeHeight * 10 / 1080;
         lpnavileftDline2.bottomMargin = sizeHeight * 10 / 1080;
@@ -168,7 +168,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 1080, MeasureSpec.EXACTLY));
 
 
-        myCollapse = StaticInstanceUtils.navigationBar.leftNavibar.findViewById(R.id.Collapse);
+        myCollapse = STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.findViewById(R.id.Collapse);
         lpnaviCollapse = (android.widget.LinearLayout.LayoutParams) myCollapse.getLayoutParams();
         lpnaviCollapse.topMargin = sizeHeight * 10 / 1080;
 //        lpnaviCollapse.bottomMargin=sizeHeight*16/1080;
@@ -183,9 +183,9 @@ public class NaviBarFrameLayout extends FrameLayout {
     }
 
     private void MeasureRightNavibar() {
-        mynaviFrame2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.naviFrame2);
+        mynaviFrame2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.naviFrame2);
 
-        mynaviLinear2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.naviLinear2);
+        mynaviLinear2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.naviLinear2);
         lpnaviLinear2 = (LayoutParams) mynaviLinear2.getLayoutParams();
         lpnaviLinear2.rightMargin = sizeWidth * 24 / 1920;
         mynaviLinear2.setLayoutParams(lpnaviLinear2);
@@ -193,17 +193,17 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 508 / 1080, MeasureSpec.EXACTLY));
 
 
-        myBack2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Back2);
+        myBack2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Back2);
         lpnaviBack2 = (android.widget.LinearLayout.LayoutParams) myBack2.getLayoutParams();
         lpnaviBack2.topMargin = sizeWidth * 20 / 1080;
         lpnaviBack2.bottomMargin = sizeHeight * 10 / 1080;
-        Log.d("sizef Backbottom", String.valueOf(sizeHeight * 10 / 1080));
+        //Log.d("sizef Backbottom", String.valueOf(sizeHeight * 10 / 1080));
         myBack2.setLayoutParams(lpnaviBack2);
         myBack2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 60 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myHome2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Home2);
+        myHome2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Home2);
         lpnaviHome2 = (android.widget.LinearLayout.LayoutParams) myHome2.getLayoutParams();
         lpnaviHome2.topMargin = sizeHeight * 10 / 1080;
         lpnaviHome2.bottomMargin = sizeHeight * 10 / 1080;
@@ -212,7 +212,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myRecent2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Recent2);
+        myRecent2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Recent2);
         lpnaviRecent2 = (android.widget.LinearLayout.LayoutParams) myRecent2.getLayoutParams();
         lpnaviRecent2.topMargin = sizeHeight * 10 / 1080;
         lpnaviRecent2.bottomMargin = sizeHeight * 10 / 1080;
@@ -221,7 +221,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myrightDline1 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Dline1);
+        myrightDline1 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Dline1);
         lpnavirightDline1 = (android.widget.LinearLayout.LayoutParams) myrightDline1.getLayoutParams();
         lpnavirightDline1.topMargin = sizeHeight * 10 / 1080;
         lpnavirightDline1.bottomMargin = sizeHeight * 10 / 1080;
@@ -230,7 +230,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 1080, MeasureSpec.EXACTLY));
 
 
-        myVolume2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Source2);
+        myVolume2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Source2);
         lpnaviVolume2 = (android.widget.LinearLayout.LayoutParams) myVolume2.getLayoutParams();
         lpnaviVolume2.topMargin = sizeHeight * 10 / 1080;
         lpnaviVolume2.bottomMargin = sizeHeight * 10 / 1080;
@@ -239,7 +239,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myComments2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Comments2);
+        myComments2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Comments2);
         lpnaviComments2 = (android.widget.LinearLayout.LayoutParams) myComments2.getLayoutParams();
         lpnaviComments2.topMargin = sizeHeight * 10 / 1080;
         lpnaviComments2.bottomMargin = sizeHeight * 10 / 1080;
@@ -248,7 +248,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myWhiteboard2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Whiteboard2);
+        myWhiteboard2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Whiteboard2);
         lpnaviWhiteboard2 = (android.widget.LinearLayout.LayoutParams) myWhiteboard2.getLayoutParams();
         lpnaviWhiteboard2.topMargin = sizeHeight * 10 / 1080;
         lpnaviWhiteboard2.bottomMargin = sizeHeight * 10 / 1080;
@@ -257,7 +257,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 1080, MeasureSpec.EXACTLY));
 
 
-        myrightDline2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Dline2);
+        myrightDline2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Dline2);
         lpnavirightDline2 = (android.widget.LinearLayout.LayoutParams) myrightDline2.getLayoutParams();
         lpnavirightDline2.topMargin = sizeHeight * 10 / 1080;
         lpnavirightDline2.bottomMargin = sizeHeight * 10 / 1080;
@@ -266,7 +266,7 @@ public class NaviBarFrameLayout extends FrameLayout {
                 MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 1080, MeasureSpec.EXACTLY));
 
 
-        myCollapse2 = StaticInstanceUtils.navigationBar.rightNavibar.findViewById(R.id.Collapse2);
+        myCollapse2 = STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.findViewById(R.id.Collapse2);
         lpnaviCollapse2 = (android.widget.LinearLayout.LayoutParams) myCollapse2.getLayoutParams();
         lpnaviCollapse2.topMargin = sizeHeight * 10 / 1080;
 //        lpnaviCollapse.bottomMargin=sizeHeight*16/1080;

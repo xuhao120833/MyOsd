@@ -43,7 +43,7 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
         }
         volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         // volume = 10;
-        Log.d("TAG", "Volume_View: volume=" + volume);
+        //Log.d("TAG", "Volume_View: volume=" + volume);
         initView();
         initLp();
         // addVolumeChangedReceiver();
@@ -60,7 +60,7 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
 
         // 设置一个聚焦状态监听回调
         source.setOnFocusChangeListener((v, hasFocus) -> {
-            Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
+            //Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
             if (cltBrightnessAndVolumeView == null){
                 MenuService.menuState = MenuState.MENU_VOLUME;    // 声音被聚焦了（被选择了）
             }else{
@@ -89,7 +89,7 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
 
     public void updateVolume(int delta){
         volume = delta > 0 ? Math.min(15, volume + delta) : Math.max(0, volume + delta);  // 约束volume始终在[0, 15]之间
-        Log.d("TAG", "updateVolume: " + volume);
+        //Log.d("TAG", "updateVolume: " + volume);
         // 设置音量
         setSystemMusicVolume(volume);
         source.setProgress(volume);
@@ -107,8 +107,8 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
 
     @Override
     public void onKeyDownFromBaseView(boolean positive) {
-        Log.d(TAG, "onKeyDownFromBaseView: here volume view event: " + (cltBrightnessAndVolumeView == null));
-        Log.d(TAG, "reClose: onKeyDownFromBaseView 123 " + this + ", " + MenuService.menuState);
+        //Log.d(TAG, "onKeyDownFromBaseView: here volume view event: " + (cltBrightnessAndVolumeView == null));
+        //Log.d(TAG, "reClose: onKeyDownFromBaseView 123 " + this + ", " + MenuService.menuState);
         if (positive) {
             updateVolume(1);
             reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
@@ -132,17 +132,17 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
         } else {
             // 不应出现的情况
-            Log.w(TAG, "setSystemMusicVolume: audioManager=null");
+            //Log.w(TAG, "setSystemMusicVolume: audioManager=null");
         }
     }
 
     public void onVolumeChanged(int volume) {
         // 按键小板直接调整音量的时候，也要重置取消任务
         if (cltBrightnessAndVolumeView == null){
-            Log.d(TAG, "reClose: here 123 " + this + ", " + MenuService.menuState);
+            //Log.d(TAG, "reClose: here 123 " + this + ", " + MenuService.menuState);
             reClose(source);
         }else{
-            Log.d(TAG, "reClose: here 456 " + this + ", " + MenuService.menuState);
+            //Log.d(TAG, "reClose: here 456 " + this + ", " + MenuService.menuState);
             reClose(cltBrightnessAndVolumeView);
         }
 

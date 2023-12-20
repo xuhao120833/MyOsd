@@ -1,7 +1,6 @@
 package com.color.systemui.utils;
 
-import android.util.Log;
-
+import com.color.notification.models.service.MyNotificationService;
 import com.color.osd.models.AddViewToScreen;
 import com.color.systemui.Contentobserver.ResolutionChangeObserver;
 import com.color.systemui.Contentobserver.WindowManagerToOsdObserver;
@@ -16,37 +15,41 @@ import com.color.systemui.models.navibar.Source;
 import com.color.systemui.models.statusbar.StatusBar;
 import com.color.systemui.time.TimeManager;
 
-public class StaticInstanceUtils<T> {
+public class InstanceUtils<T> {
 
-    public static AddViewToScreen mavts;
+    public AddViewToScreen mavts;
 
-    public static CalculateYposition mcalculateYposition;
+    public CalculateYposition mcalculateYposition;
 
-    public static GetTopActivity mgetTopActivity;
+    public GetTopActivity mgetTopActivity;
 
-    public static TimeManager mtimeManager;
+    public TimeManager mtimeManager;
 
-    public static AnimationManager manimationManager;
+    public AnimationManager manimationManager;
 
-    public static Hoverball hoverball;
+    public Hoverball hoverball;
 
-    public static NavigationBar navigationBar;
+    public NavigationBar navigationBar;
 
-    public static Source source;
+    public Source source;
 
-    public static StatusBar statusBar;
+    public StatusBar statusBar;
 
-    public static SettingsControlHoverballObserver settingsControlHoverballObserver;
+    public SettingsControlHoverballObserver settingsControlHoverballObserver;
 
-    public static SettingsControlStatusBarObserver settingsControlStatusBarObserver;
+    public SettingsControlStatusBarObserver settingsControlStatusBarObserver;
 
-    public static WindowManagerToOsdObserver windowManagerToOsdObserver;
+    public WindowManagerToOsdObserver windowManagerToOsdObserver;
 
-    public static ResolutionChangeObserver resolutionChangeObserver;
+    public ResolutionChangeObserver resolutionChangeObserver;
 
-    public static SourceChangeToUsefulReceiver sourceChangeToUsefulReceiver;
+    public SourceChangeToUsefulReceiver sourceChangeToUsefulReceiver;
 
-    public static ButtonBoardSourceChangeObserver buttonBoardSourceChangeObserver;
+    public ButtonBoardSourceChangeObserver buttonBoardSourceChangeObserver;
+
+
+    //另一个功能，通知消息中心
+    public MyNotificationService myNotificationService = new MyNotificationService();
 
 
     public T getInstance(T object) {
@@ -60,80 +63,87 @@ public class StaticInstanceUtils<T> {
     }
 
     public void SetwhichOne(Object object) {
-        Log.d("SetwhichOne", " if(object instanceof AddViewToScreen )");
+        //Log.d("SetwhichOne", " if(object instanceof AddViewToScreen )");
         if (object instanceof AddViewToScreen) {
             mavts = (AddViewToScreen) object;
-            Log.d("SetwhichOne", mavts.toString() + " AddViewToScreen");
+            //Log.d("SetwhichOne", mavts.toString() + " AddViewToScreen");
         }
 
         if (object instanceof Hoverball) {
             hoverball = (Hoverball) object;
-            Log.d("SetwhichOne", hoverball.toString() + " Hoverball");
+            //Log.d("SetwhichOne", hoverball.toString() + " Hoverball");
         }
 
         if (object instanceof CalculateYposition) {
             mcalculateYposition = (CalculateYposition) object;
-            Log.d("SetwhichOne", mcalculateYposition.toString() + " CalculateYposition");
+            //Log.d("SetwhichOne", mcalculateYposition.toString() + " CalculateYposition");
         }
 
         if (object instanceof GetTopActivity) {
             mgetTopActivity = (GetTopActivity) object;
-            Log.d("SetwhichOne", mgetTopActivity.toString() + " GetTopActivity");
+            //Log.d("SetwhichOne", mgetTopActivity.toString() + " GetTopActivity");
         }
 
         if (object instanceof TimeManager) {
             mtimeManager = (TimeManager) object;
-            Log.d("SetwhichOne", mtimeManager.toString() + " TimeManager");
+            //Log.d("SetwhichOne", mtimeManager.toString() + " TimeManager");
         }
 
         if (object instanceof AnimationManager) {
             manimationManager = (AnimationManager) object;
-            Log.d("SetwhichOne", manimationManager.toString() + " AnimationManager");
+            //Log.d("SetwhichOne", manimationManager.toString() + " AnimationManager");
         }
 
         if (object instanceof SettingsControlHoverballObserver) {
             settingsControlHoverballObserver = (SettingsControlHoverballObserver) object;
-            Log.d("SetwhichOne", settingsControlHoverballObserver.toString() + " SettingsControlHoverballObserver");
+            //Log.d("SetwhichOne", settingsControlHoverballObserver.toString() + " SettingsControlHoverballObserver");
         }
 
         if (object instanceof SettingsControlStatusBarObserver) {
             settingsControlStatusBarObserver = (SettingsControlStatusBarObserver) object;
-            Log.d("SetwhichOne", settingsControlStatusBarObserver.toString() + " SettingsControlStatusBarObserver");
+            //Log.d("SetwhichOne", settingsControlStatusBarObserver.toString() + " SettingsControlStatusBarObserver");
         }
 
         if (object instanceof WindowManagerToOsdObserver) {
             windowManagerToOsdObserver = (WindowManagerToOsdObserver) object;
-            Log.d("SetwhichOne", windowManagerToOsdObserver.toString() + " WindowManagerToOsdObserver");
+            //Log.d("SetwhichOne", windowManagerToOsdObserver.toString() + " WindowManagerToOsdObserver");
         }
 
         if (object instanceof NavigationBar) {
             navigationBar = (NavigationBar) object;
-            Log.d("SetwhichOne", navigationBar.toString() + " NavigationBar");
+            //Log.d("SetwhichOne", navigationBar.toString() + " NavigationBar");
         }
 
         if (object instanceof ResolutionChangeObserver) {
             resolutionChangeObserver = (ResolutionChangeObserver) object;
-            Log.d("SetwhichOne", resolutionChangeObserver.toString() + " ResolutionChangeObserver");
+            //Log.d("SetwhichOne", resolutionChangeObserver.toString() + " ResolutionChangeObserver");
         }
 
         if (object instanceof Source) {
             source = (Source) object;
-            Log.d("SetwhichOne", source.toString() + " Source");
+            //Log.d("SetwhichOne", source.toString() + " Source");
         }
 
         if (object instanceof SourceChangeToUsefulReceiver) {
             sourceChangeToUsefulReceiver = (SourceChangeToUsefulReceiver) object;
-            Log.d("SetwhichOne", sourceChangeToUsefulReceiver.toString() + " SourceChangeToUsefulReceiver");
+            //Log.d("SetwhichOne", sourceChangeToUsefulReceiver.toString() + " SourceChangeToUsefulReceiver");
         }
 
         if (object instanceof ButtonBoardSourceChangeObserver) {
             buttonBoardSourceChangeObserver = (ButtonBoardSourceChangeObserver) object;
-            Log.d("SetwhichOne", buttonBoardSourceChangeObserver.toString() + " ButtonBoardSourceChangeObserver");
+            //Log.d("SetwhichOne", buttonBoardSourceChangeObserver.toString() + " ButtonBoardSourceChangeObserver");
         }
 
         if (object instanceof StatusBar) {
             statusBar = (StatusBar) object;
-            Log.d("SetwhichOne", statusBar.toString() + " StatusBar");
+            //Log.d("SetwhichOne", statusBar.toString() + " StatusBar");
+        }
+
+
+        //另一个功能，通知消息中心
+        if (object instanceof MyNotificationService) {
+            myNotificationService = (MyNotificationService) object;
+            //Log.d("SetwhichOne", myNotificationService.toString() + " MyNotificationService");
         }
 
     }

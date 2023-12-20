@@ -1,43 +1,24 @@
 package com.color.systemui.models.statusbar;
 
-import android.app.ActionBar;
 import android.app.IProcessObserver;
 import android.content.Context;
-import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.LayoutInflater;
-import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import com.color.systemui.utils.StaticVariableUtils;
 
-import android.graphics.PixelFormat;
-import android.widget.ImageView;
-import android.view.LayoutInflater;
-import android.content.Intent;
-import android.content.ContextWrapper;
-import android.accessibilityservice.AccessibilityService;
-import android.view.accessibility.AccessibilityEvent;
-import android.provider.Settings;
-import android.util.Log;
 import android.app.ActivityManager;
 //import android.app.IActivityManager;
 //import android.app.IProcessObserver;
 //import android.app.TaskStackListener;
 import android.annotation.SuppressLint;
-import android.os.HandlerThread;
-import android.app.Instrumentation;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.os.RemoteException;
-import android.graphics.Point;
-import android.view.WindowManager;
 
-public class SystemTopActivityChange {
+public class SystemTopActivityChange implements Instance {
 
     private Context mycontext;
 
@@ -127,42 +108,42 @@ public class SystemTopActivityChange {
 
             //Log.d("SystemActivityChange : 前台活动的包名: ", processName);
             if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false) ) {
-                StaticInstanceUtils.statusBar.udisk.post(new Runnable() {
+                STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {
 //                        if(StaticVariableUtils.haveUsbDevice) {
-//                            StaticInstanceUtils.statusBar.udisk.setVisibility(View.GONE);
+//                            InstanceUtils.statusBar.udisk.setVisibility(View.GONE);
 //                        }
 //                        if (StaticVariableUtils.WifiOpen) {
 //                            //Log.d("SystemActivityChange "," wifi设置不可见");
-//                            StaticInstanceUtils.statusBar.wifi.setVisibility(View.GONE);
+//                            InstanceUtils.statusBar.wifi.setVisibility(View.GONE);
 //                        }
 //                        if (StaticVariableUtils.EthernetConnected) {
-//                            StaticInstanceUtils.statusBar.ethernet.setVisibility(View.GONE);
+//                            InstanceUtils.statusBar.ethernet.setVisibility(View.GONE);
 //                        }
 //                        if (StaticVariableUtils.HotspotOpen) {
-//                            StaticInstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
+//                            InstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
 //                        }
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.GONE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
                     }
                 });
                 //Log.d("xuLL", "不在launcher 选择隐藏");
             } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible ) {
-                StaticInstanceUtils.statusBar.udisk.post(new Runnable() {
+                STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {
-                        StaticInstanceUtils.statusBar.statusbar.setVisibility(View.VISIBLE);
+                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                         if(StaticVariableUtils.haveUsbDevice) {
-                            StaticInstanceUtils.statusBar.udisk.setVisibility(View.VISIBLE);
+                            STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
                         }
                         if (StaticVariableUtils.WifiOpen) {
-                            StaticInstanceUtils.statusBar.wifi.setVisibility(View.VISIBLE);
+                            STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.VISIBLE);
                         }
                         if (StaticVariableUtils.EthernetConnected) {
-                            StaticInstanceUtils.statusBar.ethernet.setVisibility(View.VISIBLE);
+                            STATIC_INSTANCE_UTILS.statusBar.ethernet.setVisibility(View.VISIBLE);
                         }
                         if (StaticVariableUtils.HotspotOpen) {
-                            StaticInstanceUtils.statusBar.hotspot.setVisibility(View.VISIBLE);
+                            STATIC_INSTANCE_UTILS.statusBar.hotspot.setVisibility(View.VISIBLE);
                         }
                     }
                 });

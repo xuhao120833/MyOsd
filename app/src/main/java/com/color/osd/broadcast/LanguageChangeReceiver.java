@@ -13,7 +13,7 @@ import com.color.osd.ui.DialogMenu;
 public class LanguageChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("LanguageChangeReceiver","语言切换");
+        //Log.d("LanguageChangeReceiver","语言切换");
 //        dialogMenu.start();//刷新资源
 
     }

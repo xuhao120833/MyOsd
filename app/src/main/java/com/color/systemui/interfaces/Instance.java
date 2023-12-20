@@ -1,12 +1,10 @@
 package com.color.systemui.interfaces;
 
-import android.util.Log;
-
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.utils.InstanceUtils;
 
 public interface Instance<T> {
 
-    StaticInstanceUtils STATIC_INSTANCE_UTILS = new StaticInstanceUtils();
+    InstanceUtils STATIC_INSTANCE_UTILS = new InstanceUtils();
 
 
     default T getInstance(T object) {
@@ -17,7 +15,7 @@ public interface Instance<T> {
 
     default void setInstance(T object) {
 
-        Log.d("Instance<T>","setInstance");
+        //Log.d("Instance<T>","setInstance");
         STATIC_INSTANCE_UTILS.setInstanc(object);
 
     }

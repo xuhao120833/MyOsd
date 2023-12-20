@@ -107,12 +107,12 @@ public class FunctionBind {
     public void removeItemViewByMenuState(MenuState menuState) {
         if (menuState == MenuState.MENU_VOLUME || menuState == MenuState.MENU_VOLUME_DIRECT
                 || menuState == MenuState.MENU_VOLUME_FOCUS) {
-            Log.d("TAG", "removeItemViewByMenuState: menu_volume remove");
+            //Log.d("TAG", "removeItemViewByMenuState: menu_volume remove");
             menu_volume.removeView();
         }
 
         if (menuState == MenuState.MENU_BRIGHTNESS || menuState == MenuState.MENU_BRIGHTNESS_DIRECT) {
-            Log.d("TAG", "removeItemViewByMenuState: menu_brightness remove");
+            //Log.d("TAG", "removeItemViewByMenuState: menu_brightness remove");
             menu_brightness.removeView();
         }
     }

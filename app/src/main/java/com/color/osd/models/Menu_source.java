@@ -4,7 +4,6 @@ import static com.color.osd.models.service.MenuService.menuOn;
 
 import android.content.Context;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -12,9 +11,10 @@ import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.interfaces.DispatchKeyEventInterface;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.DialogMenu;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 
-public class Menu_source implements DispatchKeyEventInterface {
+public class Menu_source implements DispatchKeyEventInterface, Instance {
 
     Context mycontext;
 
@@ -39,7 +39,7 @@ public class Menu_source implements DispatchKeyEventInterface {
 
     public void setOnclick(View menu_source) {
         menu_source.setOnClickListener(v -> {
-            StaticInstanceUtils.source.Source.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
             //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 1);
             sourceon = true;
             MenuService.menuState = MenuState.MENU_SOURCE;
@@ -79,7 +79,7 @@ public class Menu_source implements DispatchKeyEventInterface {
             MenuService.menuState = MenuState.NULL;
 
 
-            Log.d(TAG, "关闭Menu");
+            //Log.d(TAG, "关闭Menu");
 
             return true;
         }
@@ -92,7 +92,7 @@ public class Menu_source implements DispatchKeyEventInterface {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && sourceon == true) {
 
             Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
-            Log.d("Menu_source", "发消息");
+            //Log.d("Menu_source", "发消息");
             sourceon = false;
             MenuService.menuState = MenuState.NULL;
             //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 2);

@@ -19,7 +19,7 @@ public abstract class AbstractAutoClose {
 
 
     public void autoClose(View view){
-        Log.d(TAG, "autoClose: " + view.getClass());
+        //Log.d(TAG, "autoClose: " + view.getClass());
         autoClose(view, defaultDelayMillis);
     }
 
@@ -34,7 +34,7 @@ public abstract class AbstractAutoClose {
             try{
                 FunctionBind.mavts.clearView(view);
             }catch (Exception e){
-                Log.d(TAG, "autoClose: auto clear view error: " + e.getMessage());
+                //Log.d(TAG, "autoClose: auto clear view error: " + e.getMessage());
             }
             MenuService.settingVolumeChange = false;
             MenuService.menuState = MenuState.NULL;

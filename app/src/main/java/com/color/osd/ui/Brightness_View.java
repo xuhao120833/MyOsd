@@ -42,7 +42,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         } catch (Settings.SettingNotFoundException e) {
             throw new RuntimeException(e);
         }
-        Log.d("TAG", "Brightness_View: " + brightness);
+        //Log.d("TAG", "Brightness_View: " + brightness);
         initView();
         initLp();
     }
@@ -56,7 +56,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         source.setSeekBarIconPositive(ContextCompat.getDrawable(mContext, R.drawable.white_brightness));
         source.setSeekBarIconNegative(ContextCompat.getDrawable(mContext, R.drawable.dark_brightness));
         source.setOnFocusChangeListener((v, hasFocus) -> {
-            Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
+            //Log.d(TAG, "setOnFocusChangeListener: " + hasFocus);
             if (cltBrightnessAndVolumeView == null){
                 MenuService.menuState = MenuState.MENU_BRIGHTNESS;    // 亮度被聚焦了（被选择了）
             }else {
@@ -85,7 +85,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
 
     public void updateBrightness(int delta){
         brightness = delta > 0 ? Math.min(255, brightness + delta) : Math.max(0, brightness + delta);
-        Log.d("TAG", "upBrightness: " + brightness);
+        //Log.d("TAG", "upBrightness: " + brightness);
         // 设置系统亮度
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
         source.setProgress(brightness);
@@ -103,7 +103,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
 
     @Override
     public void onKeyDownFromBaseView(boolean positive) {
-        Log.d(TAG, "onKeyDownFromBaseView: here brightness view event: " + (cltBrightnessAndVolumeView == null));
+        //Log.d(TAG, "onKeyDownFromBaseView: here brightness view event: " + (cltBrightnessAndVolumeView == null));
         // 拿到从source中响应的按键事件
         if (positive) {
             updateBrightness(13);

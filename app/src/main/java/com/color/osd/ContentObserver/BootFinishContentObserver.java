@@ -37,7 +37,7 @@ public class BootFinishContentObserver extends ContentObserver {
             mySystemUI = new MySystemUI(mcontext);
             mySystemUI.start();
 
-            Log.d("BootFinishContentObserver","开机引导完成");
+            //Log.d("BootFinishContentObserver","开机引导完成");
             MenuService.initcomplete = true;
 
         }

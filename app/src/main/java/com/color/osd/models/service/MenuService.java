@@ -35,6 +35,7 @@ import com.color.osd.ContentObserver.BrightnessObeserver;
 import com.color.osd.models.interfaces.BrightnessChangeListener;
 import com.color.osd.broadcast.VolumeFromFWReceiver;
 import com.color.systemui.MySystemUI;
+import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class MenuService extends AccessibilityService implements VolumeChangeListener, BrightnessChangeListener {
+public class MenuService extends AccessibilityService implements VolumeChangeListener, BrightnessChangeListener, Instance {
 
     Context mycontext;
 
@@ -122,13 +123,19 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     private MySystemUI mySystemUI;
 
-    private boolean SystemUIFirstBoot = true;//保证SystemUI在onCreate中只执行一次
+    private boolean SystemUIFirstBoot = true;//保证SystemUI在onCreate中只在开机启动时执行一次
+
+    private boolean NotificationFirstBoot = true;//保证SystemUI在onCreate中只在开机启动时执行一次
 
     private MyNotificationService myNotificationService = new MyNotificationService();
+
+    private Intent start_notification_service;
 
     @Override
     public void onCreate() {
         mycontext = this;
+
+        Log.d(TAG,String.valueOf(mycontext));
 
         fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
                 "tv_user_setup_complete", 5);
@@ -145,20 +152,20 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         bootObserver = new BootFinishContentObserver(mycontext);
         mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
 
-        //启动消息通知服务
-//        Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-        Log.d("BootFinishContentObserver","启动消息通知服务");
-        myNotificationService.setContext(mycontext);
-        Intent intent1 = new Intent(mycontext, MyNotificationService.class);
-        mycontext.startService(intent1);
+        if (NotificationFirstBoot) {
+            //启动消息通知服务
+            //Log.d("BootFinishContentObserver", "启动消息通知服务");
+            setInstance(myNotificationService);
+            start_notification_service = new Intent(mycontext, MyNotificationService.class);
+            mycontext.startService(start_notification_service);
+            NotificationFirstBoot = false;
+        }
 
         init();
     }
 
     public void init() {//开机向导结束后，再init，防止开机向导期间可以唤出Osd菜单，相关类BootFinishContentObserver
-        Log.d(TAG, "服务启动: !!!!");
+        //Log.d(TAG, "服务启动: !!!!");
         super.onCreate();
         menuState = NULL;
         if (listenerList != null && !listenerList.isEmpty()) {
@@ -229,12 +236,12 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         myevent = event;
 
-        Log.d("onAccessibilityEvent allTypes", "检测到" + String.valueOf(event.getEventType()));
+        //Log.d("onAccessibilityEvent allTypes", "检测到" + String.valueOf(event.getEventType()));
         //判断事件是否被消费
         int eventType = event.getEventType();
 
         if (eventType == AccessibilityEvent.WINDOWS_CHANGE_PIP && event.getText().contains("ClickBlandUp")) {
-            Log.d("onAccessibilityEvent WINDOWS_CHANGE_PIP", "全局点击");
+            //Log.d("onAccessibilityEvent WINDOWS_CHANGE_PIP", "全局点击");
             clickList.add(eventType);
 
             execut();
@@ -244,13 +251,13 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             // 处理点击事件
             clickList.add(eventType);
 
-            Log.d("onAccessibilityEvent TYPE_VIEW_CLICKED", "检测到点击功能按键");
+            //Log.d("onAccessibilityEvent TYPE_VIEW_CLICKED", "检测到点击功能按键");
         }
 
         if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
             // 处理点击事件
             clickList.add(eventType);
-            Log.d("onAccessibilityEvent TYPE_WINDOW_STATE_CHANGED", "检测到窗口发生变化");
+            //Log.d("onAccessibilityEvent TYPE_WINDOW_STATE_CHANGED", "检测到窗口发生变化");
 
         }
 
@@ -272,10 +279,10 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 e.printStackTrace();
             }
             size = clickList.size();
-            Log.d("onAccessibilityEvent execut", " " + String.valueOf(clickList.get(size - 1)));
+            //Log.d("onAccessibilityEvent execut", " " + String.valueOf(clickList.get(size - 1)));
 
             if (clickList.get(size - 1) == AccessibilityEvent.WINDOWS_CHANGE_PIP) {
-                Log.d("mtimeManager", " 全局空白处点击" + String.valueOf(StaticVariableUtils.TimeManagerRunning));
+                //Log.d("mtimeManager", " 全局空白处点击" + String.valueOf(StaticVariableUtils.TimeManagerRunning));
 
                 //屏蔽掉全局空白无功能处点击控制悬浮球、导航栏显示与否的方案，使用侧滑唤起方案
                 //Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 1);
@@ -307,9 +314,9 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         super.onConfigurationChanged(newConfig);
 
         //1、语言变化
-        Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
+        //Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
         if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
-            Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
+            //Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
 
             if (DialogMenu.mydialog.isShowing()) {
                 DialogMenu.mydialog.dismiss();
@@ -326,16 +333,16 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         screenHeightDp = newConfig.screenHeightDp;
         if (screenWidthDp != lastWidthDp ||
                 screenHeightDp != lastHeightDp) {
-            Log.d("onConfigurationChanged", "分辨率发生变化 宽" + screenWidthDp + "  高" + screenHeightDp);
+            //Log.d("onConfigurationChanged", "分辨率发生变化 宽" + screenWidthDp + "  高" + screenHeightDp);
             // 执行相应的操作
             lastWidthDp = screenWidthDp;
             lastHeightDp = screenHeightDp;
 
-            Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
+            //Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
 
             //写Setting值通知ColorSystemUI
             b = screenWidthDp * (int) Math.pow(10, judge(screenHeightDp)) + screenHeightDp;
-            Log.d("onConfigurationChanged", "分辨率Dp" + b);
+            //Log.d("onConfigurationChanged", "分辨率Dp" + b);
             Settings.System.putInt(mycontext.getContentResolver(), SYSTEM_RESOLUTION_CHANGE, b);
 
             // osd 界面适配与计算
@@ -360,7 +367,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     @Override
     protected boolean onKeyEvent(KeyEvent event) {//Menu 键 keyCode = 82
 
-        Log.d(TAG, String.valueOf(event.getKeyCode()) + ", " + event.getAction());
+        //Log.d(TAG, String.valueOf(event.getKeyCode()) + ", " + event.getAction());
         // 单独处理按键小板上的亮度加减按键
         if (event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_UP ||
                 event.getKeyCode() == KeyEvent.KEYCODE_BRIGHTNESS_DOWN) {
@@ -372,7 +379,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 executors.submit(brightnessLongClickRunnable);
             } else if (event.getAction() == KeyEvent.ACTION_UP) {
                 brightnessLongClickRunnable.isDown = false;   // 按键小板亮度按钮松手 取消子线程处理按键逻辑
-                Log.d(TAG, "onKeyEvent555: up");
+                //Log.d(TAG, "onKeyEvent555: up");
             }
         }
 
@@ -404,13 +411,13 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     @Override
     public boolean onGesture(@NonNull AccessibilityGestureEvent gestureEvent) {
-        Log.d("onGesture", "监听全局手势");
+        //Log.d("onGesture", "监听全局手势");
         return super.onGesture(gestureEvent);
     }
 
 
     private boolean disPatchKeyEvent(KeyEvent event) {
-        Log.d(TAG, "进入 disPatchKeyEvent");
+        //Log.d(TAG, "进入 disPatchKeyEvent");
 
         //1、菜单键唤起、隐藏
         isMenuOnByKeyEvent(event);
@@ -469,14 +476,14 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     private void isMenuOnByKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && menuOn == false) {
 
-            Log.d(TAG, "启动Menu");
+            //Log.d(TAG, "启动Menu");
 
             DialogMenu.mydialog.show();//展示Osd 菜单
             menuOn = true;
 
         } else if (event.getKeyCode() == KeyEvent.KEYCODE_MENU && menuOn == true) {
 
-            Log.d(TAG, "关闭Menu");
+            //Log.d(TAG, "关闭Menu");
 
             if (Menu_source.sourceon == true) {
                 //FunctionBind.mavts.clearView(Source_View.source);
@@ -588,8 +595,8 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         ConstantProperties.DENSITY = Math.min(width / ConstantProperties.DESIGN_SCREEN_WIDTH_DP,
                 height / ConstantProperties.DESIGN_SCREEN_HEIGHT_DP);
-        Log.d(TAG, "setDensityForAdaptation - change: width=" + width + ", height=" + height
-                + ", mDensity=" + ConstantProperties.DENSITY);
+        //Log.d(TAG, "setDensityForAdaptation - change: width=" + width + ", height=" + height
+                //+ ", mDensity=" + ConstantProperties.DENSITY);
     }
 
     class LongClickSimulate implements Runnable {

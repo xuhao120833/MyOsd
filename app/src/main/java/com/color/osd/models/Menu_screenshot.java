@@ -19,14 +19,14 @@ public class Menu_screenshot {
 
     public void setOnclick(View baseView) {
         if (baseView == null) {
-            Log.d("TAG", "setOnclick: baseView is null");
+            //Log.d("TAG", "setOnclick: baseView is null");
             return;
         }
         baseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 开始截屏
-                Log.d("TAG", "onClick: screen shot");
+                //Log.d("TAG", "onClick: screen shot");
                 DialogMenu.mydialog.dismiss();//收起菜单
                 MenuService.menuOn = false;
 

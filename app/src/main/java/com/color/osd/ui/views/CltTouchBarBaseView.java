@@ -92,10 +92,10 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d(TAG, "onMeasure: " + width + ", " + height);
+        //Log.d(TAG, "onMeasure: " + width + ", " + height);
         seekBar.measure(MeasureSpec.makeMeasureSpec(seekBarWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(seekBarHeight, MeasureSpec.EXACTLY));
-        Log.d(TAG, "onMeasure-seekbar: " + seekBarWidth + ", " + seekBarHeight);
+        //Log.d(TAG, "onMeasure-seekbar: " + seekBarWidth + ", " + seekBarHeight);
 
         circleRight.measure(MeasureSpec.makeMeasureSpec(circleViewSize, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(circleViewSize, MeasureSpec.EXACTLY));
@@ -105,12 +105,12 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.d(TAG, "onLayout: " + l + ", " + t + ", " + r + ", " + b);
+        //Log.d(TAG, "onLayout: " + l + ", " + t + ", " + r + ", " + b);
         // 摆放seekBar
         int measuredWidthSeekBar = seekBar.getMeasuredWidth();
         int measuredHeightSeekBar = seekBar.getMeasuredHeight();
-        Log.d(TAG, "onLayout: measuredWidthSeekBar=" + measuredWidthSeekBar
-                + ", measuredHeightSeekBar=" + measuredHeightSeekBar);
+        //Log.d(TAG, "onLayout: measuredWidthSeekBar=" + measuredWidthSeekBar
+                //+ ", measuredHeightSeekBar=" + measuredHeightSeekBar);
         int seekBarLeft = circleLeftMargin;
         int seekBarTop = (getHeight() - measuredHeightSeekBar) / 2;
         seekBar.layout(seekBarLeft, seekBarTop, seekBarLeft + measuredWidthSeekBar , seekBarTop + measuredHeightSeekBar);
@@ -127,7 +127,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d(TAG, "onDraw: here");
+        //Log.d(TAG, "onDraw: here");
 
         // 绘制背景
         RectF tempRect = new RectF();
@@ -141,7 +141,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     public void setProgress(int progress){
         mProgress = progress;
         mProgressPercent = toPercent(progress);   // 转化成百分比
-        Log.d(TAG, "setProgress: " + mProgressPercent);
+        //Log.d(TAG, "setProgress: " + mProgressPercent);
         updateUI();
     }
 
@@ -191,7 +191,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 这种view的keyDown回调中是监听不到音量、亮度变化的。所以按键小板的音量和亮度加减单独走一套逻辑，不会走这里。
-        Log.d(TAG, "onKeyDown: CltTouchBarBaseView down" + event.getKeyCode() + ", " + keyCode);
+        //Log.d(TAG, "onKeyDown: CltTouchBarBaseView down" + event.getKeyCode() + ", " + keyCode);
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
             parentView.onKeyDownFromBaseView(false);    // 把这个事件传递出去
             return true;
@@ -205,7 +205,7 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Log.d(TAG, "onKeyDown: CltTouchBarBaseView up " + keyCode);
+        //Log.d(TAG, "onKeyDown: CltTouchBarBaseView up " + keyCode);
         if (keyCode == KeyEvent.KEYCODE_BACK){   // 专门针对取消按键，在up抬起的时候时候传递出去
             parentView.onKeyUpClose();
         }

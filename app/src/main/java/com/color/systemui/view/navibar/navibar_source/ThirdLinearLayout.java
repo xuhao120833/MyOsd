@@ -35,8 +35,8 @@ public class ThirdLinearLayout extends LinearLayout {
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         //sizeWidth = sizeHeight * 1920 / 1080;
 
-        Log.d("sizefWidth ThirdLinearLayout", String.valueOf(sizeWidth));
-        Log.d("sizefHeight ThirdLinearLayout", String.valueOf(sizeHeight));
+//        Log.d("sizefWidth ThirdLinearLayout", String.valueOf(sizeWidth));
+//        Log.d("sizefHeight ThirdLinearLayout", String.valueOf(sizeHeight));
 
         //MeasureSource();
 

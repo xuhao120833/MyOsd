@@ -4,13 +4,14 @@ import android.content.Context;
 import android.view.View;
 
 import com.color.osd.R;
-import com.color.systemui.utils.StaticInstanceUtils;
+import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.InstanceUtils;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-public class HoverballLinearLayout extends LinearLayout {
+public class HoverballLinearLayout extends LinearLayout implements Instance {
 
     int modeWidth;
     int modeHeight;
@@ -37,11 +38,11 @@ public class HoverballLinearLayout extends LinearLayout {
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         sizeWidth = sizeHeight * 1920/1080;
 
-        hoverball2 = StaticInstanceUtils.hoverball.leftlayout.findViewById(R.id.hoverball_left);
+        hoverball2 = STATIC_INSTANCE_UTILS.hoverball.leftlayout.findViewById(R.id.hoverball_left);
         hoverball2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 50 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 100 / 1080, MeasureSpec.EXACTLY));
 
-        hoverball3 = StaticInstanceUtils.hoverball.rightlayout.findViewById(R.id.hoverball_right);
+        hoverball3 = STATIC_INSTANCE_UTILS.hoverball.rightlayout.findViewById(R.id.hoverball_right);
         //android.widget.LinearLayout.LayoutParams lphover2=(android.widget.LinearLayout.LayoutParams)hoverball2.getLayoutParams();
         hoverball3.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 50 / 1920, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(sizeHeight * 100 / 1080, MeasureSpec.EXACTLY));

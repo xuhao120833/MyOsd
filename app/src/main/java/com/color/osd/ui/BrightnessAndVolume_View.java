@@ -36,7 +36,7 @@ public class BrightnessAndVolume_View extends AbstractAutoClose {
     }
 
     public void initView(){
-        Log.d(TAG, "initView: here");
+        //Log.d(TAG, "initView: here");
 
         source = new CltBrightnessAndVolumeView(mContext);   // 初始化本身对应的背景View
 
