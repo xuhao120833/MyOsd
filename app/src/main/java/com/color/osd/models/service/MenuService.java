@@ -21,7 +21,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.annotation.NonNull;
 
-import com.color.notification.models.service.MyNotificationService;
+//import com.color.notification.models.service.MyNotificationService;
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.ContentObserver.WindowManagerServiceObserver;
 import com.color.osd.models.Enum.MenuState;
@@ -125,20 +125,24 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
     private boolean SystemUIFirstBoot = true;//保证SystemUI在onCreate中只在开机启动时执行一次
 
-    private boolean NotificationFirstBoot = true;//保证SystemUI在onCreate中只在开机启动时执行一次
+//    private boolean NotificationFirstBoot = true;//保证SystemUI在onCreate中只在开机启动时执行一次
 
-    private MyNotificationService myNotificationService = new MyNotificationService();
+//    private MyNotificationService myNotificationService = new MyNotificationService();
 
-    private Intent start_notification_service;
+//    private Intent start_notification_service;
 
     @Override
     public void onCreate() {
         mycontext = this;
 
-        Log.d(TAG,String.valueOf(mycontext));
+//        Log.d(TAG,String.valueOf(mycontext));
 
         fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
                 "tv_user_setup_complete", 5);
+
+        //监听开机引导完成标志位
+        bootObserver = new BootFinishContentObserver(mycontext);
+        mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
 
         //开机启动ColorSystemUI
         if (SystemUIFirstBoot && fswitch == 1) {
@@ -148,18 +152,14 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         }
 
-        //监听开机引导完成标志位
-        bootObserver = new BootFinishContentObserver(mycontext);
-        mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
-
-        if (NotificationFirstBoot) {
-            //启动消息通知服务
-            //Log.d("BootFinishContentObserver", "启动消息通知服务");
-            setInstance(myNotificationService);
-            start_notification_service = new Intent(mycontext, MyNotificationService.class);
-            mycontext.startService(start_notification_service);
-            NotificationFirstBoot = false;
-        }
+//        if (NotificationFirstBoot && fswitch == 1) {
+//            //启动消息通知服务
+//            //Log.d("BootFinishContentObserver", "启动消息通知服务");
+//            setInstance(myNotificationService);
+//            start_notification_service = new Intent(mycontext, MyNotificationService.class);
+//            mycontext.startService(start_notification_service);
+//            NotificationFirstBoot = false;
+//        }
 
         init();
     }

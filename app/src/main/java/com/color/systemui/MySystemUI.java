@@ -138,7 +138,7 @@ public class MySystemUI implements Instance {
         setInstance(buttonBoardSourceChangeObserver);
         mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(STATIC_INSTANCE_UTILS.buttonBoardSourceChangeObserver.CURRENT_SOURCE),true,buttonBoardSourceChangeObserver);
 
-        //7、将各个View添加到屏幕上显示
+//        //7、将各个View添加到屏幕上显示
         startAddView();
 
     }

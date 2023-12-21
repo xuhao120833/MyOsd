@@ -1,5 +1,7 @@
 package com.color.systemui.utils;
 
+import com.color.notification.NotificationCenter;
+import com.color.notification.models.RecycleViewAdapter;
 import com.color.notification.models.service.MyNotificationService;
 import com.color.osd.models.AddViewToScreen;
 import com.color.systemui.Contentobserver.ResolutionChangeObserver;
@@ -49,7 +51,11 @@ public class InstanceUtils<T> {
 
 
     //另一个功能，通知消息中心
-    public MyNotificationService myNotificationService = new MyNotificationService();
+    public MyNotificationService myNotificationService;
+
+    public NotificationCenter notificationCenter;
+
+    public RecycleViewAdapter recycleViewAdapter;
 
 
     public T getInstance(T object) {
@@ -144,6 +150,16 @@ public class InstanceUtils<T> {
         if (object instanceof MyNotificationService) {
             myNotificationService = (MyNotificationService) object;
             //Log.d("SetwhichOne", myNotificationService.toString() + " MyNotificationService");
+        }
+
+        if (object instanceof NotificationCenter) {
+            notificationCenter = (NotificationCenter) object;
+            //Log.d("SetwhichOne", notificationCenter.toString() + " NotificationCenter");
+        }
+
+        if (object instanceof RecycleViewAdapter) {
+            recycleViewAdapter = (RecycleViewAdapter) object;
+            //Log.d("SetwhichOne", recycleViewAdapter.toString() + " RecycleViewAdapter");
         }
 
     }

@@ -98,7 +98,6 @@
             android:foregroundServiceType="mediaProjection"/>
 
         <service android:name="com.color.notification.models.service.MyNotificationService"
-            android:enabled="true"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="true">
 

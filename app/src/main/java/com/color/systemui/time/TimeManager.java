@@ -1,6 +1,7 @@
 package com.color.systemui.time;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 
@@ -39,15 +40,19 @@ public class TimeManager {
 
     // 开始计时
     public void Time_handler_postDelayed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (!handler.hasCallbacks(runnable)) {
                 handler.postDelayed(runnable, Timing_Duration);
             }
+        }
     }
 
     // removeCallbacks 可以当暂停计时来用
     public void Time_handler_removeCallbacks() {
-        if (handler.hasCallbacks(runnable)) {
-            handler.removeCallbacks(runnable);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (handler.hasCallbacks(runnable)) {
+                handler.removeCallbacks(runnable);
+            }
         }
     }
 

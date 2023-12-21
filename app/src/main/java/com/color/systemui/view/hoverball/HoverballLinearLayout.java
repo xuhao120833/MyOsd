@@ -1,6 +1,7 @@
 package com.color.systemui.view.hoverball;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.color.osd.R;
@@ -32,6 +33,8 @@ public class HoverballLinearLayout extends LinearLayout implements Instance {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {//分辨率变化，onMeasure会被执行四次
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        Log.d("HoverballLinearLayout"," onMeasure执行");
         modeWidth = MeasureSpec.getMode(widthMeasureSpec);
         modeHeight = MeasureSpec.getMode(heightMeasureSpec);
         //sizeWidth = MeasureSpec.getSize(widthMeasureSpec);

@@ -27,9 +27,9 @@ public class NavigationBar implements Instance {
 
     private Context mycontext;
 
-    private ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftcollapse;
+    public ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftcollapse, leftdline1, leftdline2 ;
 
-    private ImageView rightback, righthome, rightrecent, rightsource, rightcomments, rightwhiteboard, rightcollapse;
+    public ImageView rightback, righthome, rightrecent, rightsource, rightcomments, rightwhiteboard, rightcollapse, rightdline1, rightdline2;
 
     private Intent leftcomments_intent = new Intent(), leftwhiteboard_intent,
             rightcomments_intent = new Intent(), rightwhiteboard_intent;
@@ -125,6 +125,8 @@ public class NavigationBar implements Instance {
         leftcomments = (ImageView) leftNavibar.findViewById(R.id.Comments);
         leftwhiteboard = (ImageView) leftNavibar.findViewById(R.id.Whiteboard);
         leftcollapse = (ImageView) leftNavibar.findViewById(R.id.Collapse);
+        leftdline1 = (ImageView) leftNavibar.findViewById(R.id.Dline1);
+        leftdline2 = (ImageView) leftNavibar.findViewById(R.id.Dline2);
 
         rightback = (ImageView) rightNavibar.findViewById(R.id.Back2);
         righthome = (ImageView) rightNavibar.findViewById(R.id.Home2);
@@ -133,6 +135,8 @@ public class NavigationBar implements Instance {
         rightcomments = (ImageView) rightNavibar.findViewById(R.id.Comments2);
         rightwhiteboard = (ImageView) rightNavibar.findViewById(R.id.Whiteboard2);
         rightcollapse = (ImageView) rightNavibar.findViewById(R.id.Collapse2);
+        rightdline1 = (ImageView) rightNavibar.findViewById(R.id.Dline1);
+        rightdline2 = (ImageView) rightNavibar.findViewById(R.id.Dline2);
 
     }
 
@@ -377,8 +381,6 @@ public class NavigationBar implements Instance {
 
     public void start() {
 
-        leftNavibar.setVisibility(View.GONE);
-        rightNavibar.setVisibility(View.GONE);
         STATIC_INSTANCE_UTILS.mavts.addView(leftNavibar, lp);
         STATIC_INSTANCE_UTILS.mavts.addView(rightNavibar, lp2);
 

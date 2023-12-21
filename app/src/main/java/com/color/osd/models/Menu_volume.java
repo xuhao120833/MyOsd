@@ -31,7 +31,7 @@ public class Menu_volume implements DispatchKeyEventInterface {
     }
 
     public void setOnclick(View baseView){
-        //Log.d(TAG, "setOnclick: here");
+        Log.d(TAG, "setOnclick: here");
         // 1、添加view的点击事件（弹出亮度设置的view）
         baseView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class Menu_volume implements DispatchKeyEventInterface {
                 volumeView.source.setFocusable(true);    // view开启聚焦，可以监听onKeyDown事件
                 volumeView.initSystemVolume();     // 每次点击事件加载view之前都初始化下当前progress的音量值，避免其他地方改了，当前的volumeView对象的值没有变
                 if (MenuService.menuState == MenuState.NULL){
-                    //Log.d(TAG, "onClick: 音量的普通状态");
+                    Log.d(TAG, "onClick: 音量的普通状态");
                     // 说明是来源于OSD的一级音量菜单点击事件，正统路线
                     // 改变当前Menu_state
                     MenuService.menuState = MenuState.MENU_VOLUME;
@@ -52,7 +52,7 @@ public class Menu_volume implements DispatchKeyEventInterface {
                         MenuService.menuState == MenuState.MENU_BRIGHTNESS_DIRECT){
                     // 说明是二级菜单亮度的touchBar已经被唤出
                     // 那么这里要变身复合态
-                    //Log.d(TAG, "onClick: 我要变成复合态，且首先操控音量~");
+                    Log.d(TAG, "onClick: 我要变成复合态，且首先操控音量~");
                     if (brightnessAndVolumeView != null){
                         MenuState oldMenuState = MenuService.menuState;
                         MenuService.menuState = MenuState.MENU_BRIGHTNESS_VOLUME;
@@ -86,7 +86,7 @@ public class Menu_volume implements DispatchKeyEventInterface {
 
     @Override
     public boolean onKeyEvent(KeyEvent event, MenuState menuState) {
-        //Log.d(TAG, "onKeyEvent: " + event.getKeyCode());
+        Log.d(TAG, "onKeyEvent: " + event.getKeyCode());
         // 屏蔽掉非音量加减相关的event
         if (event.getKeyCode() != KeyEvent.KEYCODE_VOLUME_DOWN &&
                 event.getKeyCode() != KeyEvent.KEYCODE_VOLUME_UP){
