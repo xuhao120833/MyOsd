@@ -1,6 +1,7 @@
 package com.color.systemui.anim;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -51,6 +52,7 @@ public class AnimationManager implements Instance {
                         if (STATIC_INSTANCE_UTILS.windowManagerToOsdObserver.globalClick == 0
                                                 || StaticVariableUtils.Proactive_triggering_lefthoverball_hide == 0) {
                             //InstanceUtils.windowManagerToOsdObserver.globalClick 是定时标志，HoverballView.vvGone是主动触发消失
+                            Log.d("SettingsControlHoverballObserver"," 动画执行完毕");
                             STATIC_INSTANCE_UTILS.hoverball.leftlayout.setVisibility(View.GONE);
                             StaticVariableUtils.Proactive_triggering_lefthoverball_hide = 1;
                         }

@@ -78,22 +78,22 @@ public class MyNotificationService extends NotificationListenerService implement
         packageManager = mycontext.getPackageManager();
 
         //添加消息通知View到桌面
-        notificationCenter.setContext(mycontext);
-        setInstance(notificationCenter);
-        recyclerView = STATIC_INSTANCE_UTILS.notificationCenter.view.findViewById(R.id.recycleView);
+//        notificationCenter.setContext(mycontext);
+//        setInstance(notificationCenter);
+//        recyclerView = STATIC_INSTANCE_UTILS.notificationCenter.view.findViewById(R.id.recycleView);
 
-        //初始化RecycleViewAdapter
-        try {
-            recycleViewAdapter.setContext(mycontext, list);
-            setInstance(recycleViewAdapter);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        LinearLayoutManager manager = new LinearLayoutManager(mycontext);
-
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(recycleViewAdapter);
+//        //初始化RecycleViewAdapter
+//        try {
+//            recycleViewAdapter.setContext(mycontext, list);
+//            setInstance(recycleViewAdapter);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        LinearLayoutManager manager = new LinearLayoutManager(mycontext);
+//
+//        manager.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(manager);
+//        recyclerView.setAdapter(recycleViewAdapter);
     }
 
     @Override
@@ -111,11 +111,11 @@ public class MyNotificationService extends NotificationListenerService implement
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         //Log.d(TAG, "onNotificationPosted");
-        try {
-            showMsg(sbn);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            showMsg(sbn);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private void showMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {

@@ -74,6 +74,7 @@ public class Source implements Instance {
         text = (TextView) Source.findViewById(R.id.text);
         X = (ImageView) Source.findViewById(R.id.X);
         OPS = (ImageView) Source.findViewById(R.id.OPS);
+//        OPS.requestFocus();//默认OPS获取到焦点
         Android = (ImageView) Source.findViewById(R.id.Android);
         HDMI1 = (ImageView) Source.findViewById(R.id.HDMI1);
         HDMI2 = (ImageView) Source.findViewById(R.id.HDMI2);
@@ -311,6 +312,8 @@ public class Source implements Instance {
 
         Source.setVisibility(View.GONE);
         STATIC_INSTANCE_UTILS.mavts.addView(Source,lp);
+        OPS.clearFocus();
+        OPS.requestFocus();//默认OPS获取到焦点
 
     }
 

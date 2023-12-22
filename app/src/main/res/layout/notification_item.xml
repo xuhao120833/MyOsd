@@ -7,7 +7,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     android:background="@drawable/shapetop"
-    android:focusable="true">
+    android:focusable="false">
 
     <ImageView
         android:id="@+id/Icon"

@@ -1,6 +1,7 @@
 package com.color.systemui.Contentobserver.hoverball;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import com.color.systemui.interfaces.Instance;
@@ -36,6 +37,7 @@ public class SettingsControlHoverballObserver extends ContentObserver implements
         if(hoverballswitch == 0) {
 //            InstanceUtils.hoverball.leftlayout.setVisibility(View.GONE);
 //            InstanceUtils.hoverball.rightlayout.setVisibility(View.GONE);
+            Log.d("SettingsControlHoverballObserver"," 主动触发消失动画");
             if(STATIC_INSTANCE_UTILS.hoverball.leftlayout.getVisibility() == View.VISIBLE){
                 StaticVariableUtils.Proactive_triggering_lefthoverball_hide = 0;
                 STATIC_INSTANCE_UTILS.manimationManager.lefthoverballHideAnimation();

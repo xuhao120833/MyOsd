@@ -2,6 +2,8 @@ package com.color.systemui.view.navibar.navibar_source;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import android.util.Log;
@@ -39,6 +41,22 @@ public class ThirdLinearLayout extends LinearLayout {
 //        Log.d("sizefHeight ThirdLinearLayout", String.valueOf(sizeHeight));
 
         //MeasureSource();
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (i == 0) {
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                layoutParams.leftMargin = sizeWidth * 140 / 600;
+                layoutParams.rightMargin = sizeWidth * 60 / 600;
+                child.setLayoutParams(layoutParams);
+                child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 600, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 230, MeasureSpec.EXACTLY));
+            }
+            if (i == 1) {
+                child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 600, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 230, MeasureSpec.EXACTLY));
+            }
+        }
+
 
         setMeasuredDimension(sizeWidth, sizeHeight);
     }

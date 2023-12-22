@@ -140,17 +140,17 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
                 "tv_user_setup_complete", 5);
 
-        //监听开机引导完成标志位
-        bootObserver = new BootFinishContentObserver(mycontext);
-        mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
-
         //开机启动ColorSystemUI
         if (SystemUIFirstBoot && fswitch == 1) {
             mySystemUI = new MySystemUI(mycontext);
             mySystemUI.start();
             SystemUIFirstBoot = false;
-
         }
+
+        //监听开机引导完成标志位
+        bootObserver = new BootFinishContentObserver(mycontext);
+        mycontext.getContentResolver().registerContentObserver(Settings.Secure.getUriFor("tv_user_setup_complete"), true, bootObserver);
+
 
 //        if (NotificationFirstBoot && fswitch == 1) {
 //            //启动消息通知服务

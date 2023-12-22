@@ -2,9 +2,15 @@ package com.color.systemui.view.navibar.navibar_source;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.color.osd.R;
 
 
 public class SecondLinearLayout extends LinearLayout {
@@ -41,6 +47,21 @@ public class SecondLinearLayout extends LinearLayout {
 //        Log.d("sizefHeight SecondLinearLayout", String.valueOf(sizeHeight));
 
         //MeasureSource();
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (i == 0) {
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                layoutParams.leftMargin = sizeWidth * 140 / 600;
+                layoutParams.rightMargin = sizeWidth * 60 / 600;
+                child.setLayoutParams(layoutParams);
+                child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 600, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 200, MeasureSpec.EXACTLY));
+            }
+            if (i == 1) {
+                child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 600, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 200, MeasureSpec.EXACTLY));
+            }
+        }
 
         setMeasuredDimension(sizeWidth, sizeHeight);
     }

@@ -54,10 +54,10 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
     public boolean onKeyEvent(KeyEvent event, MenuState menuState) {
 
         //1、判断Home键
-        //isHomeKeyEvent(event);
+        isHomeKeyEvent(event);
 
         //2、判断Back键
-        //isBackKeyEvent(event);
+        isBackKeyEvent(event);
 
         if (!menuState.equals(MenuState.MENU_SOURCE))
             return false;
@@ -74,7 +74,8 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
     public boolean isHomeKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_HOME && sourceon == true) {
 
-            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
+            //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
+            STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.GONE);
             Menu_source.sourceon = false;
             MenuService.menuState = MenuState.NULL;
 
@@ -91,11 +92,13 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
     public boolean isBackKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && sourceon == true) {
 
-            Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
+            //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 0);
             //Log.d("Menu_source", "发消息");
+            STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.GONE);
             sourceon = false;
             MenuService.menuState = MenuState.NULL;
             //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 2);
+
             DialogMenu.mydialog.show();//展示Osd 菜单
             MenuService.menuOn = true;
             return true;
