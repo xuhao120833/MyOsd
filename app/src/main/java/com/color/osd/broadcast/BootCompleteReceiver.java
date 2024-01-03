@@ -9,18 +9,27 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.color.osd.models.AddViewToScreen;
 import com.color.osd.models.service.MenuService;
+import com.color.systemui.interfaces.Instance;
 
-public class BootCompleteReceiver extends BroadcastReceiver {
+public class BootCompleteReceiver extends BroadcastReceiver implements Instance {
 
     private final static String TAG = "MyBootCompleteReceiver";
     private static final boolean DBG = true;
+
+//    private AddViewToScreen avts = new AddViewToScreen();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (DBG)
             Log.d(TAG, "收到广播....");
 
+        //1、初始话工具类
+//        avts.setContext(context);
+//        setInstance(avts);
+
+        //2、启动无障碍服务
         StartMyAccessibilityService(context);
 
     }

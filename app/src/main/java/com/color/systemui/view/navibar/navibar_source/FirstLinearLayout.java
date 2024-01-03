@@ -54,6 +54,7 @@ public class FirstLinearLayout extends LinearLayout {
                 layoutParams.topMargin = sizeHeight * 22 / 70;
                 textView.setLayoutParams(layoutParams);
                 Log.d("FirstLinearLayout 标题上边距", String.valueOf(sizeHeight * 22 / 70));
+                Log.d("FirstLinearLayout 标题下边距", String.valueOf(layoutParams.bottomMargin));
                 textView.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 520 / 600, MeasureSpec.EXACTLY),
                         MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 70, MeasureSpec.EXACTLY));
             }

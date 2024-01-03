@@ -1,9 +1,12 @@
 package com.color.systemui.utils;
 
-import com.color.notification.NotificationCenter;
-import com.color.notification.models.RecycleViewAdapter;
+import com.color.notification.MyNotification;
+import com.color.notification.models.Notification_Center_Adapter;
+import com.color.notification.models.Notification_Quick_Settings_Adapter;
 import com.color.notification.models.service.MyNotificationService;
+import com.color.notification.utils.BrightnessChangeCompute;
 import com.color.osd.models.AddViewToScreen;
+import com.color.osd.models.FunctionBind;
 import com.color.systemui.Contentobserver.ResolutionChangeObserver;
 import com.color.systemui.Contentobserver.WindowManagerToOsdObserver;
 import com.color.systemui.Contentobserver.hoverball.SettingsControlHoverballObserver;
@@ -53,9 +56,15 @@ public class InstanceUtils<T> {
     //另一个功能，通知消息中心
     public MyNotificationService myNotificationService;
 
-    public NotificationCenter notificationCenter;
+    public MyNotification myNotification;
 
-    public RecycleViewAdapter recycleViewAdapter;
+    public Notification_Center_Adapter notificationCenterAdapter;
+
+    public Notification_Quick_Settings_Adapter notification_quick_settings_adapter;
+
+    public BrightnessChangeCompute brightnessChangeCompute;
+
+    public FunctionBind functionBind;
 
 
     public T getInstance(T object) {
@@ -152,14 +161,29 @@ public class InstanceUtils<T> {
             //Log.d("SetwhichOne", myNotificationService.toString() + " MyNotificationService");
         }
 
-        if (object instanceof NotificationCenter) {
-            notificationCenter = (NotificationCenter) object;
-            //Log.d("SetwhichOne", notificationCenter.toString() + " NotificationCenter");
+        if (object instanceof MyNotification) {
+            myNotification = (MyNotification) object;
+            //Log.d("SetwhichOne", myNotification.toString() + " MyNotification");
         }
 
-        if (object instanceof RecycleViewAdapter) {
-            recycleViewAdapter = (RecycleViewAdapter) object;
-            //Log.d("SetwhichOne", recycleViewAdapter.toString() + " RecycleViewAdapter");
+        if (object instanceof Notification_Center_Adapter) {
+            notificationCenterAdapter = (Notification_Center_Adapter) object;
+            //Log.d("SetwhichOne", notificationCenterAdapter.toString() + " Notification_Center_Adapter");
+        }
+
+        if (object instanceof Notification_Quick_Settings_Adapter) {
+            notification_quick_settings_adapter = (Notification_Quick_Settings_Adapter) object;
+            //Log.d("SetwhichOne", notification_quick_settings_adapter.toString() + " Notification_Quick_Settings_Adapter");
+        }
+
+        if (object instanceof BrightnessChangeCompute) {
+            brightnessChangeCompute = (BrightnessChangeCompute) object;
+            //Log.d("SetwhichOne", brightnessChangeCompute.toString() + " BrightnessChangeCompute");
+        }
+
+        if (object instanceof FunctionBind) {
+            functionBind = (FunctionBind) object;
+            //Log.d("SetwhichOne", functionBind.toString() + " FunctionBind");
         }
 
     }

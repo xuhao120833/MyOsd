@@ -2,6 +2,7 @@ package com.color.systemui;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.color.osd.models.AddViewToScreen;
 import com.color.systemui.Contentobserver.ResolutionChangeObserver;
@@ -72,6 +73,8 @@ public class MySystemUI implements Instance {
         //view添加、更新、移除
         mavts.setContext(mycontext);
         setInstance(mavts);
+        Log.d("mavts","MySystemUI初始化avts工具类");
+        //initNotification();
         //计算view初始Y坐标
         mcalculateYposition = new CalculateYposition(mycontext);
         setInstance(mcalculateYposition);
@@ -192,5 +195,13 @@ public class MySystemUI implements Instance {
         statusBar.start();
     }
 
+    private void initNotification() {
+        mavts.setContext(mycontext);
+        mavts.addView(STATIC_INSTANCE_UTILS.myNotification.notification,STATIC_INSTANCE_UTILS.myNotification.lp);
+
+        STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
+        STATIC_INSTANCE_UTILS.myNotification.quick_settings_linear.clearFocus();
+        STATIC_INSTANCE_UTILS.myNotification.notification_quick_settings.clearFocus();
+    }
 
 }

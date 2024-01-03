@@ -107,9 +107,10 @@ public class Source implements Instance {
                     }
                     setDrawable(select_source);//设置上一个被选中的信源的图片切换
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "0");
+                    broadcast_to_webserver.putExtra("data", "3");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
+                    Log.d("Source 切换OPS","广播成功发出");
                     select_source = "OPS";
                     Source.setVisibility(View.GONE);
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
@@ -131,7 +132,7 @@ public class Source implements Instance {
                     select_source = "Android";
                     Log.d("select的值 ", select_source);
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "3");
+                    broadcast_to_webserver.putExtra("data", "0");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
@@ -154,7 +155,7 @@ public class Source implements Instance {
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
                     setDrawable(select_source);
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "3");
+                    broadcast_to_webserver.putExtra("data", "0");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
                     select_source = "Android";
@@ -209,7 +210,7 @@ public class Source implements Instance {
                     }
                     select_source = "Android";
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "3");
+                    broadcast_to_webserver.putExtra("data", "0");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
@@ -258,7 +259,7 @@ public class Source implements Instance {
                     }
                     select_source = "Android";
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "3");
+                    broadcast_to_webserver.putExtra("data", "0");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
                     Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));

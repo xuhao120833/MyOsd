@@ -21,7 +21,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.annotation.NonNull;
 
-//import com.color.notification.models.service.MyNotificationService;
+//import com.color.myNotification.models.service.MyNotificationService;
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.ContentObserver.WindowManagerServiceObserver;
 import com.color.osd.models.Enum.MenuState;
@@ -137,6 +137,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
 //        Log.d(TAG,String.valueOf(mycontext));
 
+        //开机完成标志位
         fswitch = Settings.Secure.getInt(mycontext.getContentResolver(),
                 "tv_user_setup_complete", 5);
 

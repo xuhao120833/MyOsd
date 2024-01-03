@@ -115,16 +115,16 @@ public class SourceLinearLayout extends LinearLayout implements Instance {
 //                MeasureSpec.makeMeasureSpec(sizeHeight * 200 / 1080, MeasureSpec.EXACTLY));
 
         //信源 OPS
-        opslp = (LayoutParams) STATIC_INSTANCE_UTILS.source.OPS.getLayoutParams();
-        opslp.leftMargin = sizeWidth * 140 / 1920;
-        opslp.rightMargin = sizeWidth * 60 / 1920;
-        STATIC_INSTANCE_UTILS.source.OPS.setLayoutParams(opslp);
-        STATIC_INSTANCE_UTILS.source.OPS.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
-
-        //Android
-        STATIC_INSTANCE_UTILS.source.Android.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
+//        opslp = (LayoutParams) STATIC_INSTANCE_UTILS.source.OPS.getLayoutParams();
+//        opslp.leftMargin = sizeWidth * 140 / 1920;
+//        opslp.rightMargin = sizeWidth * 60 / 1920;
+//        STATIC_INSTANCE_UTILS.source.OPS.setLayoutParams(opslp);
+//        STATIC_INSTANCE_UTILS.source.OPS.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
+//                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
+//
+//        //Android
+//        STATIC_INSTANCE_UTILS.source.Android.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
+//                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
 
         //thirdLinearLayout
 //        thirdLinearLayout = STATIC_INSTANCE_UTILS.source.Source.findViewById(R.id.Third_line);
@@ -132,16 +132,16 @@ public class SourceLinearLayout extends LinearLayout implements Instance {
 //                MeasureSpec.makeMeasureSpec(sizeHeight * 230 / 1080, MeasureSpec.EXACTLY));
 
         //HDMI1
-        hdmi1lp = (LayoutParams) STATIC_INSTANCE_UTILS.source.HDMI1.getLayoutParams();
-        hdmi1lp.leftMargin = sizeWidth * 140 / 1920;
-        hdmi1lp.rightMargin = sizeWidth * 60 / 1920;
-        STATIC_INSTANCE_UTILS.source.HDMI1.setLayoutParams(hdmi1lp);
-        STATIC_INSTANCE_UTILS.source.HDMI1.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
-
-        //HDMI2
-        STATIC_INSTANCE_UTILS.source.HDMI2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
+//        hdmi1lp = (LayoutParams) STATIC_INSTANCE_UTILS.source.HDMI1.getLayoutParams();
+//        hdmi1lp.leftMargin = sizeWidth * 140 / 1920;
+//        hdmi1lp.rightMargin = sizeWidth * 60 / 1920;
+//        STATIC_INSTANCE_UTILS.source.HDMI1.setLayoutParams(hdmi1lp);
+//        STATIC_INSTANCE_UTILS.source.HDMI1.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
+//                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
+//
+//        //HDMI2
+//        STATIC_INSTANCE_UTILS.source.HDMI2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 1920, MeasureSpec.EXACTLY),
+//                MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 1080, MeasureSpec.EXACTLY));
     }
 
 }

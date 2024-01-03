@@ -8,8 +8,9 @@ import android.view.View;
 import com.color.osd.ContentObserver.ColorSystemUiContentOberver;
 import com.color.osd.ui.BrightnessAndVolume_View;
 import com.color.osd.models.Enum.MenuState;
+import com.color.systemui.interfaces.Instance;
 
-public class FunctionBind {
+public class FunctionBind implements Instance {
 
     Context mycontext;
 
@@ -25,7 +26,7 @@ public class FunctionBind {
 
     Menu_eye menu_eye;
 
-    Menu_screenshot menu_screenshot;
+    public Menu_screenshot menu_screenshot;
 
     Menu_comments menu_comments;
 
@@ -86,10 +87,11 @@ public class FunctionBind {
         //监听SystemUI的信源设置，做到同步效果
         //mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(OSD_OPEN_OTHER_SOURCE), true, systemUiContentOberver);
 
+        //2、亮度 音量
         menu_brightness.setOnclick(Menu_brightness);
         menu_volume.setOnclick(Menu_volume);
 
-        //最近按钮
+        //3、最近按钮
         menu_recent.setOnclick(Menu_recent);
 
 

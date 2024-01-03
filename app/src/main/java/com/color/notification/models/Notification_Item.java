@@ -2,7 +2,7 @@ package com.color.notification.models;
 
 import android.graphics.drawable.Drawable;
 
-public class Notifi {
+public class Notification_Item {
     public String appName;
 
     public String content;

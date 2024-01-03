@@ -12,11 +12,17 @@ public class AddViewToScreen {
 
     public void addView(View v, WindowManager.LayoutParams p) {
         // 添加一个view之前先尝试删除这个view, 避免重复添加
-        try {
-            wm.removeViewImmediate(v);
-        } catch (Exception e) {
-            //Log.d("AddViewToScreen", "addView : removeView has Error： " + e.getMessage());
+        Log.d("AddViewToScreen", "v.isAttachedToWindow() " + String.valueOf(v.isAttachedToWindow()));
+        if (v.isAttachedToWindow()) {
+            // 视图已经添加到屏幕上
+            try {
+                v.clearFocus();
+                wm.removeViewImmediate(v);
+            } catch (Exception e) {
+                Log.d("AddViewToScreen", "addView : removeView has Error： " + e.getMessage());
+            }
         }
+        v.clearFocus();
         wm.addView(v, p);
     }
 

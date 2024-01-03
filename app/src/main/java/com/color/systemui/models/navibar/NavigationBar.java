@@ -1,5 +1,6 @@
 package com.color.systemui.models.navibar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.Gravity;
@@ -157,6 +158,14 @@ public class NavigationBar implements Instance {
 
                 });
 
+//                executorService.submit(() -> {
+//                    try {
+//                        ((Activity) mycontext).onBackPressed();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
@@ -274,6 +283,14 @@ public class NavigationBar implements Instance {
                     }
 
                 });
+
+//                executorService.submit(() -> {
+//                    try {
+//                        ((Activity) mycontext).onBackPressed();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                });
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();

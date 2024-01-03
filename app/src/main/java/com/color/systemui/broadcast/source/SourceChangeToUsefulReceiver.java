@@ -13,7 +13,7 @@ public class SourceChangeToUsefulReceiver extends BroadcastReceiver implements I
 
     private Context mycontext;
 
-    private String source = null;//source 0->ops 1->hdmi1 2->hdmi2 3->android
+    private String source = null;//source 3->ops 1->hdmi1 2->hdmi2 0->android
 
     private String plug = null;//plug 1 表示信源可用，0表示信源不可用
 
@@ -41,7 +41,7 @@ public class SourceChangeToUsefulReceiver extends BroadcastReceiver implements I
 
     //source 0->ops 1->hdmi1 2->hdmi2 3->android
     private void setWhichSource (String myselect_source, String mysource, String myplug) {
-        if("0".equals(mysource) && "1".equals(myplug)) { //volume_image1
+        if("3".equals(mysource) && "1".equals(myplug)) { //volume_image1
             ops_useful = true;
             //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             switch (myselect_source){
@@ -54,7 +54,7 @@ public class SourceChangeToUsefulReceiver extends BroadcastReceiver implements I
 
             }
         }
-        if ("0".equals(mysource) && "0".equals(myplug)) {
+        if ("3".equals(mysource) && "0".equals(myplug)) {
             //Log.d("信源收到广播 ","source的值"+source + "plug的值" +plug);
             ops_useful = false;
             switch (myselect_source){

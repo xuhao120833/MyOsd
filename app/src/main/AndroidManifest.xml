@@ -67,6 +67,7 @@
         <activity
             android:name=".ScreenShotActivity"
             android:theme="@android:style/Theme.Translucent"
+            android:excludeFromRecents="true"
             android:exported="true">
         </activity>
 

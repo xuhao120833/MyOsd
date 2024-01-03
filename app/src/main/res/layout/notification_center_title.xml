@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="214dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="12dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="消息中心"
+        android:textColor="@color/white"
+        android:textSize="20px">
+
+    </TextView>
+
+    <ImageView
+        android:id="@+id/quit"
+        android:layout_width="11dp"
+        android:layout_height="11dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="162dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:src="@drawable/notification_center_x">
+
+    </ImageView>
+
+
+</LinearLayout>

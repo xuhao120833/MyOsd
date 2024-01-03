@@ -21,9 +21,10 @@ import com.color.osd.models.Menu_brightness;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.utils.ConstantProperties;
 import com.color.osd.utils.DensityUtil;
+import com.color.systemui.interfaces.Instance;
 
 
-public class DialogMenu extends Dialog {
+public class DialogMenu extends Dialog implements Instance {
     Context mycontext;
     Window wm;
 
@@ -41,7 +42,7 @@ public class DialogMenu extends Dialog {
         mydialog = new CustomDialog(mycontext);
 
         mybind = new FunctionBind(mycontext);
-
+        setInstance(mybind);
     }
 
     public void start() {

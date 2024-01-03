@@ -39,8 +39,8 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
         buttonboard_select_source = Settings.Global.getInt(mycontext.getContentResolver(),
                 CURRENT_SOURCE, 5);
 
-        if (buttonboard_select_source == 0) {
-            //Log.d("ButtonBoardSourceObserver", "按键小板切到Osd信源");
+        if (buttonboard_select_source == 3) {
+            //Log.d("ButtonBoardSourceObserver", "按键小板切到Ops信源");
 
             //信源界面打开则关闭信源界面
             if(STATIC_INSTANCE_UTILS.source.Source.getVisibility() == View.VISIBLE) {
@@ -59,7 +59,7 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
             //状态栏
             STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
 
-            changeImage(0);
+            changeImage(3);
 
 
         }
@@ -112,7 +112,7 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
 
         }
 
-        if (buttonboard_select_source == 3) {
+        if (buttonboard_select_source == 0) {
 
 
             STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
@@ -121,7 +121,7 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
                 STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
             }
 
-            changeImage(3);
+            changeImage(0);
 
 
         }
@@ -130,7 +130,7 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
 
     public void changeImage(int i) {
         switch (i) {
-            case 0:
+            case 3:
                 if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
                     STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_select_useful));
                 } else {
@@ -186,7 +186,7 @@ public class ButtonBoardSourceChangeObserver extends ContentObserver implements 
                 }
                 break;
 
-            case 3:
+            case 0:
                 if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
                     STATIC_INSTANCE_UTILS.source.OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
                 } else {

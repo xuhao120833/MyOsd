@@ -64,4 +64,13 @@ public class StaticVariableUtils {
 
     public static String leftSlide_Or_rightSlide = " ";
 
+
+
+    //下面为快捷设置、消息中心使用变量
+    public static final String EYE_PROTECT_MODE = "eye_protect_mode";
+
+    public static String eye_protection_state = "off";
+
+    public static String camera_rotate_degrees = "0"; //0 90 180 270
+
 }
