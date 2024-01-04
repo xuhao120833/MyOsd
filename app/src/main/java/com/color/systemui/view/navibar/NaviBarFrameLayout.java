@@ -85,11 +85,11 @@ public class NaviBarFrameLayout extends FrameLayout implements Instance {
         if (getChildCount() > 0) {
             View child = getChildAt(0);
             child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 84 / 1920, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(sizeHeight * 508 / 1080, MeasureSpec.EXACTLY));
+                    MeasureSpec.makeMeasureSpec(sizeHeight * 568 / 1080, MeasureSpec.EXACTLY));
         }
 
 
-        setMeasuredDimension(sizeWidth * 108 / 1920, sizeHeight * 508 / 1080); //告诉父view自己要多大空间
+        setMeasuredDimension(sizeWidth * 108 / 1920, sizeHeight * 568 / 1080); //告诉父view自己要多大空间
 
 
     }

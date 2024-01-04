@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/naviFrame2"
     android:layout_width="54dp"
-    android:layout_height="254dp"
+    android:layout_height="284dp"
     android:layout_gravity="right"
     android:visibility="gone">
 
@@ -26,7 +26,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/naviLinear2"
         android:layout_width="42dp"
-        android:layout_height="254dp"
+        android:layout_height="284dp"
         android:layout_gravity="left"
         android:background="@drawable/shapetop"
         android:orientation="vertical">
@@ -104,6 +104,18 @@
             android:focusable="false"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/navibar_whiteboard_button">
+
+        </com.color.systemui.view.navibar.NaviBarImageView>
+
+
+        <com.color.systemui.view.navibar.NaviBarImageView
+            android:id="@+id/Notification2"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:focusable="false"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/navibar_notification_button">
 
         </com.color.systemui.view.navibar.NaviBarImageView>
 

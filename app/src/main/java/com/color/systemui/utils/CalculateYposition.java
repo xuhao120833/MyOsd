@@ -48,19 +48,19 @@ public class CalculateYposition {
     public int GetHoverballTop() {
         height = defaultDisplay.getHeight();
         //Log.d("CalculateYposition TOP", String.valueOf(height * 508 / 1080 / 2 - height * 100 / 1080 / 2));
-        return height * 508 / 1080 / 2 - height * 100 / 1080 / 2;
+        return height * 568 / 1080 / 2 - height * 100 / 1080 / 2;
     }
 
     public int GetHoverballBottom() {
         height = defaultDisplay.getHeight();
         //Log.d("CalculateYposition Bottom", String.valueOf(height - 254 * dpi / 160 / 2 - 50 * dpi / 160 / 2));
-        return height - height * 508 / 1080 / 2 - height * 100 / 1080 / 2;
+        return height - height * 568 / 1080 / 2 - height * 100 / 1080 / 2;
     }
 
     public int GetNavibarY() {
         height = defaultDisplay.getHeight();
         //Log.d("CalculateYposition 导航栏Y坐标", String.valueOf(height / 2 - 254 * dpi / 160 / 2));
-        return height / 2 - height * 508 / 1080 / 2;
+        return height / 2 - height * 568 / 1080 / 2;
     }
 
 }

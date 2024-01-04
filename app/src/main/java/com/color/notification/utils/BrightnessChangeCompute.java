@@ -26,14 +26,25 @@ public class BrightnessChangeCompute {
         // 设置系统亮度
 //        Settings.System.putInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
 
-        Log.d("CustomSeekBar_Brightness"," 亮度值"+String.valueOf(toPercent(brightness)));
+        Log.d("BrightnessChangeCompute"," 亮度值"+String.valueOf(toPercent(brightness)));
 
         return toPercent(brightness);
     }
 
-    private int toPercent(int brightness){
+    public int toPercent(int brightness){
         // 映射到百分比, 四舍五入取整
         return Math.round((brightness / brightness_maximum) * 100.0f);
+    }
+
+    public int updateBrightnessByTouch(int delta) throws Settings.SettingNotFoundException {
+        delta = Math.min(255, delta);
+        //Log.d("TAG", "upBrightness: " + brightness);
+        // 设置系统亮度
+        Settings.System.putInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, delta);
+
+        Log.d("CustomSeekBar_Brightness", " 亮度值" + String.valueOf(toPercent(delta)));
+
+        return toPercent(delta);
     }
 
 }

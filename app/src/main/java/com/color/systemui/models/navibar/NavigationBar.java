@@ -3,6 +3,7 @@ package com.color.systemui.models.navibar;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,9 +29,9 @@ public class NavigationBar implements Instance {
 
     private Context mycontext;
 
-    public ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftcollapse, leftdline1, leftdline2 ;
+    public ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftnotification, leftcollapse, leftdline1, leftdline2 ;
 
-    public ImageView rightback, righthome, rightrecent, rightsource, rightcomments, rightwhiteboard, rightcollapse, rightdline1, rightdline2;
+    public ImageView rightback, righthome, rightrecent, rightsource, rightcomments, rightwhiteboard, rightnotification, rightcollapse, rightdline1, rightdline2;
 
     private Intent leftcomments_intent = new Intent(), leftwhiteboard_intent,
             rightcomments_intent = new Intent(), rightwhiteboard_intent;
@@ -125,6 +126,7 @@ public class NavigationBar implements Instance {
         leftsource = (ImageView) leftNavibar.findViewById(R.id.Source);
         leftcomments = (ImageView) leftNavibar.findViewById(R.id.Comments);
         leftwhiteboard = (ImageView) leftNavibar.findViewById(R.id.Whiteboard);
+        leftnotification = (ImageView) leftNavibar.findViewById(R.id.Notification);
         leftcollapse = (ImageView) leftNavibar.findViewById(R.id.Collapse);
         leftdline1 = (ImageView) leftNavibar.findViewById(R.id.Dline1);
         leftdline2 = (ImageView) leftNavibar.findViewById(R.id.Dline2);
@@ -135,6 +137,7 @@ public class NavigationBar implements Instance {
         rightsource = (ImageView) rightNavibar.findViewById(R.id.Source2);
         rightcomments = (ImageView) rightNavibar.findViewById(R.id.Comments2);
         rightwhiteboard = (ImageView) rightNavibar.findViewById(R.id.Whiteboard2);
+        rightnotification = (ImageView) rightNavibar.findViewById(R.id.Notification2);
         rightcollapse = (ImageView) rightNavibar.findViewById(R.id.Collapse2);
         rightdline1 = (ImageView) rightNavibar.findViewById(R.id.Dline1);
         rightdline2 = (ImageView) rightNavibar.findViewById(R.id.Dline2);
@@ -166,12 +169,18 @@ public class NavigationBar implements Instance {
 //                    }
 //                });
 
+                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
+
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
             }
         });
+
+        //我想生成一个计算素数的方法
 
         lefthome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,6 +258,21 @@ public class NavigationBar implements Instance {
             }
         });
 
+        leftnotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+                } else if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
+
+                //有操作，则重新计时
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
+            }
+        });
+
         leftcollapse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +315,10 @@ public class NavigationBar implements Instance {
 //                        e.printStackTrace();
 //                    }
 //                });
+
+                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -372,6 +400,21 @@ public class NavigationBar implements Instance {
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
 
+            }
+        });
+
+        rightnotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+                } else if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
+
+                //有操作，则重新计时
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
             }
         });
 

@@ -2,6 +2,7 @@ package com.color.notification.models;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.os.SystemProperties;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,9 +30,15 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
 
     private View notification_quick_settings;
 
+    private AudioManager audioManager;
+
+    int brightness = 0;
+
+    int volume = 0;
+
     public ImageView screenshot, eye_protection, camera;
 
-    public TextView camera_text, brightnessSeekBar_text;
+    public TextView camera_text, brightnessSeekBar_text, volumeSeekBar_text;
 
     public CustomSeekBar_Brightness brightnessSeekBar;
     public CustomSeekBar_Volume volumeSeekBar;
@@ -43,6 +51,11 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
 
     public void setContext(Context context) {
         mycontext = context;
+
+        if (audioManager == null) {
+            audioManager = (AudioManager) mycontext.getSystemService(Context.AUDIO_SERVICE);
+        }
+        volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
     }
 
     @NonNull
@@ -79,8 +92,18 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
 
         brightnessSeekBar = (CustomSeekBar_Brightness) notification_quick_settings.findViewById(R.id.brightnessSeekBar);
         brightnessSeekBar_text = (TextView) notification_quick_settings.findViewById(R.id.brightnessSeekBar_text);
+        try {
+            brightness = Settings.System.getInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        brightnessSeekBar.setProgress(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness));
+        brightnessSeekBar_text.setText(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness) + "%");
 
         volumeSeekBar = (CustomSeekBar_Volume) notification_quick_settings.findViewById(R.id.volumeSeekBar);
+        volumeSeekBar.setProgress(volume);
+        volumeSeekBar_text = (TextView) notification_quick_settings.findViewById(R.id.volumeSeekBar_text);
+        volumeSeekBar_text.setText((int)(((float) volume / 15) * 100) + "%");
 
         screenshot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,17 +118,17 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         eye_protection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Notification_Quick_Settings_Adapter","eye_protection.setOnClickListener");
+                Log.d("Notification_Quick_Settings_Adapter", "eye_protection.setOnClickListener");
                 if (StaticVariableUtils.eye_protection_state.equals("off")) {
                     Settings.Global.putInt(mycontext.getContentResolver(), StaticVariableUtils.EYE_PROTECT_MODE, 1);
                     eye_protection.setImageResource(R.drawable.quick_settings_eye_protection_on);
                     StaticVariableUtils.eye_protection_state = "on";
-                    Log.d("Notification_Quick_Settings_Adapter","打开护眼模式");
-                }else if(StaticVariableUtils.eye_protection_state.equals("on")) {
+                    Log.d("Notification_Quick_Settings_Adapter", "打开护眼模式");
+                } else if (StaticVariableUtils.eye_protection_state.equals("on")) {
                     Settings.Global.putInt(mycontext.getContentResolver(), StaticVariableUtils.EYE_PROTECT_MODE, 0);
                     eye_protection.setImageResource(R.drawable.quick_settings_eye_protection);
                     StaticVariableUtils.eye_protection_state = "off";
-                    Log.d("Notification_Quick_Settings_Adapter","打开护眼模式");
+                    Log.d("Notification_Quick_Settings_Adapter", "打开护眼模式");
                     return;
                 }
             }
@@ -114,7 +137,7 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(StaticVariableUtils.camera_rotate_degrees.equals("0")) {
+                if (StaticVariableUtils.camera_rotate_degrees.equals("0")) {
                     SystemProperties.set("sys.camera.orientation", "90");
                     StaticVariableUtils.camera_rotate_degrees = "90";
                     camera.setImageResource(R.drawable.quick_settings_camera_90);
@@ -138,41 +161,51 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
             }
         });
 
-//        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                Log.d("Notification_Quick_Settings_Adapter","onProgressChanged");
-//                // 将进度调整为5的倍数
-//                int adjustedProgress = (int) (Math.ceil(progress / 5.0) * 5);
-//
-//                // 判断用户是增加还是减少
-//                if (progress > adjustedProgress) {
-//                    // 减少，设置为adjustedProgress - 5
-//                    adjustedProgress = Math.max(0, adjustedProgress - 5);
-//                } else {
-//                    // 增加，设置为adjustedProgress + 5
-//                    adjustedProgress = Math.min(seekBar.getMax(), adjustedProgress + 5);
-//                }
-//
-//                // 设置调整后的进度给SeekBar
-//                seekBar.setProgress(adjustedProgress);
-//
-//                // 更新文本显示
-//                brightnessSeekBar_text.setText(adjustedProgress + "%");
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {//开始滑动
-//                Log.d("Notification_Quick_Settings_Adapter","onStartTrackingTouch");
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {//停止滑动
-//                Log.d("Notification_Quick_Settings_Adapter","onStopTrackingTouch");
-//            }
-//        });
+        brightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // 进度发生改变时的操作
+                Log.d("CustomSeekBar_Brightness", " 进度条被拖动" + String.valueOf(progress));
+                int myprogress =  (int) ((float) progress / 100.0f * 255);
+                Log.d("CustomSeekBar_Brightness", " 设置的亮度值" + String.valueOf(myprogress));
+                Settings.System.putInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, myprogress);
+                brightnessSeekBar_text.setText(progress + "%");
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // 用户开始拖动SeekBar时的操作
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 用户停止拖动SeekBar时的操作
+            }
+        });
+
+        volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // 更新SeekBar的进度
+//                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeSeekBar.setProgress(progress);
+                if (audioManager != null) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);
+                }
+//                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeSeekBar_text.setText((int)(((float) progress / 15) * 100) + "%");
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // 用户开始拖动SeekBar时的操作
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 用户停止拖动SeekBar时的操作
+            }
+        });
 
 
     }

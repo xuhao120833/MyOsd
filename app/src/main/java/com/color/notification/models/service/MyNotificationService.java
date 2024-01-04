@@ -1,6 +1,7 @@
 package com.color.notification.models.service;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
+import com.color.notification.broadcast.VolumeChangeReceiver;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.models.Notification_Quick_Settings_Adapter;
@@ -62,6 +64,8 @@ public class MyNotificationService extends NotificationListenerService implement
     private BrightnessChangeObserver brightnessChangeObserver = new BrightnessChangeObserver();
 
     private BrightnessChangeCompute brightnessChangeCompute = new BrightnessChangeCompute();
+
+    private VolumeChangeReceiver volumeChangeReceiver = new VolumeChangeReceiver();
 
     public android.app.Notification notification;
 
@@ -132,6 +136,12 @@ public class MyNotificationService extends NotificationListenerService implement
         //亮度变化
         brightnessChangeObserver.setContext(mycontext);
         mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, brightnessChangeObserver);
+
+        //5、各种Broadcast
+        //音量变化
+        volumeChangeReceiver.setContext(mycontext);
+        IntentFilter intentFilter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+        registerReceiver(volumeChangeReceiver, intentFilter);
 
         STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
     }

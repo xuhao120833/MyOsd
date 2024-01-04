@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import com.color.systemui.interfaces.Instance;
 
@@ -37,6 +38,7 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
         maskPaint = new Paint();
         // 设置遮罩层颜色为激活状态的颜色
         maskPaint.setColor(Color.argb(80, 200, 200, 200));
+
     }
 
     private int getActivatedColor() {
@@ -55,7 +57,7 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
 
         isSelected = gainFocus;
-        invalidate(); // 重新绘制SeekBar
+        //invalidate(); // 重新绘制SeekBar
     }
 
     @Override
@@ -67,39 +69,29 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
             canvas.drawRect(0, 0, getWidth(), getHeight(), maskPaint);
         }
 
-        int brightness = 0;
-        try {
-            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-        } catch (Settings.SettingNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        setProgress(toPercent(brightness));
-        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(toPercent(brightness)+"%");
-
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 这种view的keyDown回调中是监听不到音量、亮度变化的。所以按键小板的音量和亮度加减单独走一套逻辑，不会走这里。
-        //Log.d(TAG, "onKeyDown: CltTouchBarBaseView down" + event.getKeyCode() + ", " + keyCode);
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT){
+        Log.d("CustomSeekBar_Brightness", " 进入判读");
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
             try {
-                Log.d("CustomSeekBar_Brightness"," 向右调节亮度");
+                Log.d("CustomSeekBar_Brightness", " 向左调节亮度");
                 int percentage = updateBrightness(-13);
                 setProgress(percentage);
-                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage+"%");
+                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
 
             } catch (Settings.SettingNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Log.d("CustomSeekBar_Brightness"," 向左调节亮度");
             return true;
-        }else if(keyCode == KeyEvent.KEYCODE_DPAD_RIGHT){
+        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
             try {
-                Log.d("CustomSeekBar_Brightness"," 向右调节亮度");
+                Log.d("CustomSeekBar_Brightness", " 向右调节亮度");
                 int percentage = updateBrightness(13);
                 setProgress(percentage);
-                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage+"%");
+                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
             } catch (Settings.SettingNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -109,6 +101,7 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
         return super.onKeyDown(keyCode, event);
     }
 
+
     public int updateBrightness(int delta) throws Settings.SettingNotFoundException {
         int brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
 
@@ -117,12 +110,12 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
         // 设置系统亮度
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
 
-        Log.d("CustomSeekBar_Brightness"," 亮度值"+String.valueOf(toPercent(brightness)));
+        Log.d("CustomSeekBar_Brightness", " 亮度值" + String.valueOf(toPercent(brightness)));
 
         return toPercent(brightness);
     }
 
-    private int toPercent(int brightness){
+    private int toPercent(int brightness) {
         // 映射到百分比, 四舍五入取整
         return Math.round((brightness / brightness_maximum) * 100.0f);
     }

@@ -42,38 +42,38 @@ public class NaviBarLinearLayout extends LinearLayout {
             View child = getChildAt(i);
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
             if (i == 0) {
-                layoutParams.topMargin = sizeHeight * 32 / 508;
-                layoutParams.bottomMargin = sizeHeight * 10 / 508;
+                layoutParams.topMargin = sizeHeight * 32 / 568;
+                layoutParams.bottomMargin = sizeHeight * 10 / 568;
                 layoutParams.width = sizeWidth * 60 / 84;
-                layoutParams.height = sizeHeight * 40 / 508;
+                layoutParams.height = sizeHeight * 40 / 568;
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 60 / 84, MeasureSpec.EXACTLY),
-                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 508, MeasureSpec.EXACTLY));
-            } else if (i == 3 || i == 7) {
-                layoutParams.topMargin = sizeHeight * 10 / 508;
-                layoutParams.bottomMargin = sizeHeight * 10 / 508;
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 568, MeasureSpec.EXACTLY));
+            } else if (i == 3 || i == 8) {
+                layoutParams.topMargin = sizeHeight * 10 / 568;
+                layoutParams.bottomMargin = sizeHeight * 10 / 568;
                 layoutParams.width = sizeWidth * 40 / 84;
-                layoutParams.height = sizeHeight * 2 / 508;
+                layoutParams.height = sizeHeight * 2 / 568;
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 84, MeasureSpec.EXACTLY),
-                        MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 508, MeasureSpec.EXACTLY));
-            } else if (i == 8) {
-                layoutParams.topMargin = sizeHeight * 10 / 508;
-                layoutParams.bottomMargin = sizeHeight * 32 / 508;
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 2 / 568, MeasureSpec.EXACTLY));
+            } else if (i == 9) {
+                layoutParams.topMargin = sizeHeight * 10 / 568;
+                layoutParams.bottomMargin = sizeHeight * 32 / 568;
                 layoutParams.width = sizeWidth * 60 / 84;
-                layoutParams.height = sizeHeight * 40 / 508;
+                layoutParams.height = sizeHeight * 40 / 568;
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 60 / 84, MeasureSpec.EXACTLY),
-                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 508, MeasureSpec.EXACTLY));
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 568, MeasureSpec.EXACTLY));
             } else {
 
-                layoutParams.topMargin = sizeHeight * 10 / 508;
-                layoutParams.bottomMargin = sizeHeight * 10 / 508;
+                layoutParams.topMargin = sizeHeight * 10 / 568;
+                layoutParams.bottomMargin = sizeHeight * 10 / 568;
                 layoutParams.width = sizeWidth * 60 / 84;
-                layoutParams.height = sizeHeight * 40 / 508;
+                layoutParams.height = sizeHeight * 40 / 568;
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 60 / 84, MeasureSpec.EXACTLY),
-                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 508, MeasureSpec.EXACTLY));
+                        MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 568, MeasureSpec.EXACTLY));
             }
 
         }
