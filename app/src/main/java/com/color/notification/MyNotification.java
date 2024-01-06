@@ -41,6 +41,8 @@ public class MyNotification implements Instance {
 
     public View down;
 
+    public View notification_quit;
+
     public MyNotification() {
 
     }
@@ -96,6 +98,7 @@ public class MyNotification implements Instance {
         notification_quick_settings = notification.findViewById(R.id.notification_quick_settings);
         up = notification.findViewById(R.id.up);
         down = notification.findViewById(R.id.down);
+        notification_quit = notification.findViewById(R.id.quit);
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            notification.setForeground(null);
@@ -121,6 +124,15 @@ public class MyNotification implements Instance {
 //                return false;
 //            }
 //        });
+
+        notification_quit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                notification.setVisibility(View.GONE);
+                STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
+                STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 

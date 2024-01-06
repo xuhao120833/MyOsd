@@ -1,5 +1,6 @@
 package com.color.notification.models.service;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -15,6 +16,7 @@ import android.util.Log;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.internal.globalactions.Action;
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
@@ -66,6 +68,9 @@ public class MyNotificationService extends NotificationListenerService implement
     private BrightnessChangeCompute brightnessChangeCompute = new BrightnessChangeCompute();
 
     private VolumeChangeReceiver volumeChangeReceiver = new VolumeChangeReceiver();
+
+    public LinearLayoutManager notification_center_manager;
+    public LinearLayoutManager quick_settings_manager;
 
     public android.app.Notification notification;
 
@@ -120,13 +125,15 @@ public class MyNotificationService extends NotificationListenerService implement
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException(e);
         }
-        LinearLayoutManager manager = new LinearLayoutManager(mycontext);
-        LinearLayoutManager manager2 = new LinearLayoutManager(mycontext);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        manager2.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
+        notification_center_manager = new LinearLayoutManager(mycontext);
+        quick_settings_manager = new LinearLayoutManager(mycontext);
+        notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
+        quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
+        notification_center_manager.setStackFromEnd(true);
+        notification_center_manager.setReverseLayout(true);
+        recyclerView.setLayoutManager(notification_center_manager);
         recyclerView.setAdapter(notification_center_adapter);
-        recyclerView_quick_settings.setLayoutManager(manager2);
+        recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
         recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
 
         //4、各种ContentObserver
@@ -171,10 +178,25 @@ public class MyNotificationService extends NotificationListenerService implement
     private void showMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {
 
         notification = sbn.getNotification();
+        Log.d("showMsg","打印通知 "+String.valueOf(notification));
         bundle = sbn.getNotification().extras;
+        Log.d("showMsg","打印extras "+String.valueOf(bundle));
         packageName = sbn.getPackageName();
         appName = getAppName();
         appIcon = getAppIcon();
+
+        // 从contentIntent中获取链接
+        // PendingIntent contentIntent = notification.contentIntent;
+//        if (contentIntent != null) {
+//            try {
+//                contentIntent.send();
+//                Log.d("showMsg"," notification.contentIntent" +String.valueOf(contentIntent));
+//                // 如果有链接，这里可以进行进一步的处理
+//            } catch (PendingIntent.CanceledException e) {
+//                Log.e(TAG, "Error sending contentIntent: " + e.getMessage());
+//            }
+//        }
+
 
         if (notification != null) {
             // 获取通知内容
@@ -182,10 +204,12 @@ public class MyNotificationService extends NotificationListenerService implement
             notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
 
             notificationItem = new Notification_Item();
-            notificationItem.time = String.valueOf(number++);
+//            notificationItem.time = String.valueOf(number++);
+            notificationItem.time = "现在";
             notificationItem.appName = appName;
             notificationItem.Icon = appIcon;
             notificationItem.content = notificationText;
+            notificationItem.pendingIntent = notification.contentIntent;
 
             list.add(notificationItem);
 //            Log.d(TAG, "内容: " + notificationText);
@@ -196,7 +220,6 @@ public class MyNotificationService extends NotificationListenerService implement
 //            //Log.d(TAG, "APP图标大小： " + "高——>" + String.valueOf(appIcon.getIntrinsicHeight()) + " 宽——>" + String.valueOf(appIcon.getIntrinsicWidth()));
 //            Log.d(TAG, "   ");
             notification_center_adapter.notifyItemInserted(list.size() - 1);
-
 
         } else {
             Log.d(TAG, "myNotification is null ...." + packageName);
