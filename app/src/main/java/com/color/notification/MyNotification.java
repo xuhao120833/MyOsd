@@ -16,6 +16,9 @@ import androidx.core.widget.NestedScrollView;
 import com.color.osd.R;
 import com.color.osd.models.AddViewToScreen;
 import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.StaticVariableUtils;
+
+import java.util.ArrayList;
 
 public class MyNotification implements Instance {
 
@@ -129,8 +132,13 @@ public class MyNotification implements Instance {
             @Override
             public void onClick(View v) {
 //                notification.setVisibility(View.GONE);
-                STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
-                STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+                if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
+                    StaticVariableUtils.recyclerView.removeAllViews();
+                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+                }
+
             }
         });
     }

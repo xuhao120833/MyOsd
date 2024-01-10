@@ -25,6 +25,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * @创建者 kevinxu
+ * @创建时间 2023/12/28 10:11
+ * @类描述 {TODO}消息中心适配器
+ */
 public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<T> implements Instance {
 
     private Context mycontext;
@@ -36,6 +41,9 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 //    private ApplicationInfo applicationInfo;
 //
 //    private Drawable drawable;
+
+    //定义变量接收接口
+    private OnItemClickListener mOnItemClickListener;
 
     public List<Notification_Item> list = new ArrayList<>();
 
@@ -67,7 +75,9 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     @NonNull
     @Override
     public T onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("onCreateViewHolder", " " + String.valueOf(number));
+        Log.d("MyNotificationService", " 走到onCreateViewHolder");
+
+        Log.d("notification_xu_su ", "4、 onCreateViewHolder");
 //        if (number == 0) {
 //            number++;
 //            notification_center_title = LayoutInflater.from(mycontext).inflate(R.layout.notification_center_title, parent, false);
@@ -76,10 +86,12 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 //            return (T) center_title_viewHolder;
 //        } else if (number > 0) {
 //            number++;
-        notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, parent, false);
-        Timer timer = new Timer();
-        center_viewHolder = new Center_ViewHolder(notification_center);
-        return (T) center_viewHolder;
+        if(list.size() != 0) {
+            notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, parent, false);
+            center_viewHolder = new Center_ViewHolder(notification_center);
+            return (T) center_viewHolder;
+        }
+        return null;
 //        }
 
 //        return null;
@@ -88,28 +100,21 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     @Override
     public void onBindViewHolder(@NonNull T holder, @SuppressLint("RecyclerView") int position) {
         if (holder.getClass() == Center_ViewHolder.class) {
-            bindItemViewHolder((Center_ViewHolder) holder, position);
 
-            notification_center.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        if (((Center_ViewHolder) holder).pendingIntent != null) {
-                            ((Center_ViewHolder) holder).pendingIntent.send();
-                            list.remove(position);
-                            notifyItemRemoved(position);
-                            notifyItemChanged(0, list.size());
-                        } else {
-                            list.remove(position);
-                            notifyItemRemoved(position);
-                            notifyItemChanged(0, list.size());
-                        }
-                    } catch (PendingIntent.CanceledException e) {
-                        Log.d(TAG, "pendingIntent 为空");
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
+            Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应position值为 "+String.valueOf(position));
+//            Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应list中的APP是 "+String.valueOf(list.get(position).appName));
+//            Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应list中的content是 "+String.valueOf(list.get(position).content));
+//            Log.d("notification_xu_su ", "5、 onBindViewHolder ，现在holder中的content是 "+String.valueOf(((Center_ViewHolder) holder).content));
+//            Log.d("notification_xu_su ", "5、 onBindViewHolder ，现在holder中的APP是 "+String.valueOf(((Center_ViewHolder) holder).appName));
+//            bindItemViewHolder((Center_ViewHolder) holder, position);
+
+            if(list.get(position).mynotification_center == null) {
+                Log.d("notification_xu_su ", "5、 绑定点击事件");
+                bindItemViewHolder((Center_ViewHolder) holder, position);
+                list.get(position).mynotification_center = notification_center;
+            }
+//            bindItemViewHolder((Center_ViewHolder) holder, position);
+//            list.get(position).mynotification_center = notification_center;
         } else if (holder.getClass() == Center_Title_ViewHolder.class) {
             // 处理 Quick_Settings_ViewHolder 的逻辑
             // 例如：quick_settings_viewHolder.appName.setText(...)
@@ -119,7 +124,13 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     @Override
     public int getItemCount() {
+
+//        Log.d("notification_xu_su ", "6、 getItemCount");
+//
+//        Log.d("MyNotificationService"," 走到getItemCount，列表的大小"+String.valueOf(list.size()));\
+        Log.d("notification_xu_su ", "3、 list 大小 " + String.valueOf(list.size()));
         return list.size();
+
     }
 
     @Override
@@ -135,13 +146,16 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         private Handler handler = new Handler(Looper.getMainLooper());
 
-        TextView appName, time, content;
+        TextView appName = null, time = null, content = null;
 
-        ImageView Icon;
+        ImageView Icon =null;
 
-        PendingIntent pendingIntent;
+        PendingIntent pendingIntent = null;
 
-        int position;
+        Notification_Item notification_item = null;
+
+
+        public View mynotification_center = null;
 
         public Center_ViewHolder(View view) {
             super(view);
@@ -153,6 +167,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             content = (TextView) view.findViewById(R.id.content);
 
             Icon = (ImageView) view.findViewById(R.id.Icon);
+
+            if(mynotification_center == null) {
+                mynotification_center = view;
+            }
 
             //定时任务
 
@@ -303,7 +321,48 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             holder.content.setText(list.get(position).content);
             holder.Icon.setImageDrawable(list.get(position).Icon);
             holder.pendingIntent = list.get(position).pendingIntent;
-            holder.position = position;
+            holder.notification_item = list.get(position);
+
+            holder.mynotification_center.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        int mypostion = list.indexOf(holder.notification_item);
+                        Log.d("notification_xu_su ", "bindItemViewHolder mypostion的值 "+String.valueOf(mypostion));
+                        if (list.get(mypostion).isMultiple_Messages && list.get(mypostion).isExpand == false) {
+                            ImageView imageView = (ImageView) list.get(mypostion).mynotification_center.findViewById(R.id.Up_Or_Down);
+                            imageView.setImageResource(R.drawable.notification_center_up);
+                            list.get(mypostion).isExpand = true;
+                            Log.d(TAG, " 可折叠");
+                        } else if(list.get(mypostion).isMultiple_Messages && list.get(mypostion).isExpand == true) {
+                            ImageView imageView = (ImageView) list.get(mypostion).mynotification_center.findViewById(R.id.Up_Or_Down);
+                            imageView.setImageResource(R.drawable.notification_center_down);
+                            list.get(mypostion).isExpand = false;
+                            Log.d(TAG, " 可打开");
+                        }
+                        Log.d(TAG, " 点击事件触发");
+                        if (holder.pendingIntent != null && !list.get(mypostion).isMultiple_Messages) {
+                            Log.d(TAG, " 点击打开URL，移除通知");
+                            holder.pendingIntent.send();
+                            list.remove(mypostion);
+                            notifyItemRemoved(mypostion);
+
+                            //会去执行一次onBindViewHolder
+                            notifyItemChanged(0, list.size());
+
+                        } else if(holder.pendingIntent == null && !list.get(mypostion).isMultiple_Messages) {
+                            list.remove(mypostion);
+                            notifyItemRemoved(mypostion);
+
+                            notifyItemChanged(0, list.size());
+                            Log.d(TAG, " 点击，移除通知");
+
+                        }
+                    } catch (PendingIntent.CanceledException e) {
+                        Log.d(TAG, "pendingIntent 打不开");
+                    }
+                }
+            });
 
         }
     }
@@ -322,5 +381,18 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             }
         });
     }
+
+    //定义接口：点击事件
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);//单击
+
+        void onItemLongClick(View view, int position);//长按
+    }
+
+    //设置接口接收的方法
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
 
 }

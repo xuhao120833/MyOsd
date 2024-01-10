@@ -223,6 +223,7 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
+                setFocusableByNavibar();
                 STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
@@ -367,7 +368,7 @@ public class NavigationBar implements Instance {
         rightsource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setFocusableByNavibar();
                 STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
@@ -444,6 +445,14 @@ public class NavigationBar implements Instance {
         STATIC_INSTANCE_UTILS.mavts.addView(leftNavibar, lp);
         STATIC_INSTANCE_UTILS.mavts.addView(rightNavibar, lp2);
 
+    }
+
+    private void setFocusableByNavibar() {
+        STATIC_INSTANCE_UTILS.source.X.setFocusable(false);
+        STATIC_INSTANCE_UTILS.source.OPS.setFocusable(false);
+        STATIC_INSTANCE_UTILS.source.Android.setFocusable(false);
+        STATIC_INSTANCE_UTILS.source.HDMI1.setFocusable(false);
+        STATIC_INSTANCE_UTILS.source.HDMI2.setFocusable(false);
     }
 
 

@@ -1,5 +1,7 @@
 package com.color.systemui.utils;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public class StaticVariableUtils {
 
     //1、状态栏
@@ -71,6 +73,8 @@ public class StaticVariableUtils {
 
     public static String eye_protection_state = "off";
 
-    public static String camera_rotate_degrees = "0"; //0 90 180 270
+    public static String camera_rotate_degrees = "0"; //摄像头选装，默认值为0，取值：0 90 180 270
+
+    public static RecyclerView recyclerView;
 
 }

@@ -39,7 +39,11 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
 
     public void setOnclick(View menu_source) {
         menu_source.setOnClickListener(v -> {
+            setFocusableByMenu_source();
             STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
+            //打开信源界面，默认焦点落在用户已选择的信源图标上
+            setFocus();
+
             //Settings.System.putInt(mycontext.getContentResolver(), OSD_OPEN_OTHER_SOURCE, 1);
             sourceon = true;
             MenuService.menuState = MenuState.MENU_SOURCE;
@@ -48,6 +52,31 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
 //            fromOsd = true;
 
         });
+    }
+
+    private void setFocusableByMenu_source() {
+        STATIC_INSTANCE_UTILS.source.OPS.setFocusable(true);
+        STATIC_INSTANCE_UTILS.source.Android.setFocusable(true);
+        STATIC_INSTANCE_UTILS.source.HDMI1.setFocusable(true);
+        STATIC_INSTANCE_UTILS.source.HDMI2.setFocusable(true);
+        STATIC_INSTANCE_UTILS.source.X.setFocusable(true);
+    }
+
+    public void setFocus() {
+        switch (STATIC_INSTANCE_UTILS.source.select_source) {
+            case "OPS":
+                STATIC_INSTANCE_UTILS.source.OPS.requestFocus();
+                break;
+            case "Android":
+                STATIC_INSTANCE_UTILS.source.Android.requestFocus();
+                break;
+            case "HDMI1":
+                STATIC_INSTANCE_UTILS.source.HDMI1.requestFocus();
+                break;
+            case "HDMI2":
+                STATIC_INSTANCE_UTILS.source.HDMI2.requestFocus();
+                break;
+        }
     }
 
     @Override

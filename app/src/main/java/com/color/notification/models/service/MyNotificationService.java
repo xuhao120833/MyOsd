@@ -12,6 +12,9 @@ import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +52,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
     private RecyclerView recyclerView_quick_settings;
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     private Notification_Center_Adapter notification_center_adapter = new Notification_Center_Adapter();
 
@@ -59,7 +62,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
     private int number = 0;//消息通知计数
 
-    private List<Notification_Item> list = new ArrayList<>();
+    public List<Notification_Item> list = new ArrayList<>();
 
     private EyeProtectionObserver eyeProtectionObserver = new EyeProtectionObserver();
 
@@ -110,6 +113,7 @@ public class MyNotificationService extends NotificationListenerService implement
         mynotification.setContext(mycontext);
         setInstance(mynotification);
         recyclerView = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_center);
+        StaticVariableUtils.recyclerView = recyclerView;
         recyclerView_quick_settings = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_quick_settings);
 
         //3、初始化RecycleViewAdapter，并添加管理器
@@ -133,6 +137,18 @@ public class MyNotificationService extends NotificationListenerService implement
         notification_center_manager.setReverseLayout(true);
         recyclerView.setLayoutManager(notification_center_manager);
         recyclerView.setAdapter(notification_center_adapter);
+        Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
+//        notification_center_adapter.setOnItemClickListener(new Notification_Center_Adapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//
+//            }
+//
+//            @Override
+//            public void onItemLongClick(View view, int position) {
+//
+//            }
+//        });
         recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
         recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
 
@@ -169,7 +185,10 @@ public class MyNotificationService extends NotificationListenerService implement
     public void onNotificationPosted(StatusBarNotification sbn) {
         Log.d(TAG, "onNotificationPosted");
         try {
-            showMsg(sbn);
+            synchronized (mycontext) {
+                Log.d("notification_xu_su ", "2、 showMsg");
+                showMsg(sbn);
+            }
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -178,9 +197,9 @@ public class MyNotificationService extends NotificationListenerService implement
     private void showMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {
 
         notification = sbn.getNotification();
-        Log.d("showMsg","打印通知 "+String.valueOf(notification));
+        Log.d("showMsg", "打印通知 " + String.valueOf(notification));
         bundle = sbn.getNotification().extras;
-        Log.d("showMsg","打印extras "+String.valueOf(bundle));
+        Log.d("showMsg", "打印extras " + String.valueOf(bundle));
         packageName = sbn.getPackageName();
         appName = getAppName();
         appIcon = getAppIcon();
@@ -199,19 +218,64 @@ public class MyNotificationService extends NotificationListenerService implement
 
 
         if (notification != null) {
+
+            //遍历list，同一个APP发出的消息就不再重复添加到list中
+            int i =-1;//-1表示没有找到同名APP
+            i = traverse_list(appName);
+            Log.d(TAG, " App名字 :"+appName);
+            Log.d(TAG, " App包名 :"+packageName);
+//            Log.d(TAG,String.valueOf(i));
+            Log.d("notification_xu_su ", "3、 同名APP下标值 "+ String.valueOf(i));
             // 获取通知内容
             notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
             notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
 
-            notificationItem = new Notification_Item();
-//            notificationItem.time = String.valueOf(number++);
-            notificationItem.time = "现在";
-            notificationItem.appName = appName;
-            notificationItem.Icon = appIcon;
-            notificationItem.content = notificationText;
-            notificationItem.pendingIntent = notification.contentIntent;
+            //遍历text，只有当APP名字相同，但是text内容不同时，才会判定为同一个APP的另一个有效通知
+            if (i != -1) {
+                //同一个APP的不重复消息，做折叠操作，重复消息不做处理
+                //notifyItemChanged(i);
+                try {
+                    Log.d(TAG, " mynotification_center :"+String.valueOf(list.get(i).mynotification_center));
+                    TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
+                    ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
+                    list.get(i).number++;
+                    content.setText(list.get(i).number + "个通知");
+                    Log.d(TAG, appName+"有"+String.valueOf(list.get(i).number)+ "个通知");
+                    Log.d(TAG, " text值"+String.valueOf(content.getContext()));
+                    list.get(i).content = String.valueOf(content.getContext());
 
-            list.add(notificationItem);
+                    imageView.setVisibility(View.VISIBLE);
+                    list.get(i).isMultiple_Messages = true;
+                    Log.d("notification_xu_su ", "3、 i != -1 ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //通知是新的，走一般路线。
+                notificationItem = new Notification_Item();
+//            notificationItem.time = String.valueOf(number++);
+                notificationItem.time = "现在";
+                notificationItem.appName = appName;
+                notificationItem.Icon = appIcon;
+                notificationItem.content = notificationText;
+                notificationItem.pendingIntent = notification.contentIntent;
+
+                list.add(notificationItem);
+                notification_center_adapter.notifyItemInserted(list.size() - 1);
+                Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
+            }
+//            Log.d(TAG,"list.size() - 1 的值 "+String.valueOf(list.size() - 1));
+//            Log.d(TAG,"     ");
+
+//            notificationItem = new Notification_Item();
+////            notificationItem.time = String.valueOf(number++);
+//            notificationItem.time = "现在";
+//            notificationItem.appName = appName;
+//            notificationItem.Icon = appIcon;
+//            notificationItem.content = notificationText;
+//            notificationItem.pendingIntent = notification.contentIntent;
+//
+//            list.add(notificationItem);
 //            Log.d(TAG, "内容: " + notificationText);
 //            Log.d(TAG, "标题: " + notificationTitle);
 //            Log.d(TAG, "APP包名: " + packageName);
@@ -219,7 +283,7 @@ public class MyNotificationService extends NotificationListenerService implement
 //            Log.d(TAG, "APP图标: " + String.valueOf(appIcon));
 //            //Log.d(TAG, "APP图标大小： " + "高——>" + String.valueOf(appIcon.getIntrinsicHeight()) + " 宽——>" + String.valueOf(appIcon.getIntrinsicWidth()));
 //            Log.d(TAG, "   ");
-            notification_center_adapter.notifyItemInserted(list.size() - 1);
+//            notification_center_adapter.notifyItemInserted(list.size() - 1);
 
         } else {
             Log.d(TAG, "myNotification is null ...." + packageName);
@@ -243,6 +307,36 @@ public class MyNotificationService extends NotificationListenerService implement
         return packageManager.getApplicationInfo(packageName, 0).loadIcon(getPackageManager());
     }
 
+    private int traverse_list(String appName) {
+
+        int subscript = -1;
+
+        if(list.size() == 0) {
+
+            Log.d(TAG,"第一次收到通知，直接返回");
+            return subscript;
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            Notification_Item notificationItem = list.get(i);
+            if (notificationItem.appName.equals(appName)) {
+                subscript = i;  // 找到相同应用程序名称，更新下标值
+                Log.d(TAG,"traverse_list 找到同名APP");
+                break;  // 找到后可以提前结束循环
+            }
+        }
+
+        //返回下标值
+        return subscript;
+    }
+
+    private boolean traverse_text(String text, int i) {
+
+        if (list.get(i).content.equals(text)) {
+            return true;//有重复的消息
+        }
+        //返回下标值
+        return false;
+    }
 
 }
-

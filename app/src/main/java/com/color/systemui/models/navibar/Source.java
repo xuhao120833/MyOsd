@@ -276,6 +276,23 @@ public class Source implements Instance {
 
     }
 
+    public void setFocus() {
+        switch (STATIC_INSTANCE_UTILS.source.select_source) {
+            case "OPS":
+                STATIC_INSTANCE_UTILS.source.OPS.requestFocus();
+                break;
+            case "Android":
+                STATIC_INSTANCE_UTILS.source.Android.requestFocus();
+                break;
+            case "HDMI1":
+                STATIC_INSTANCE_UTILS.source.HDMI1.requestFocus();
+                break;
+            case "HDMI2":
+                STATIC_INSTANCE_UTILS.source.HDMI2.requestFocus();
+                break;
+        }
+    }
+
     private void setDrawable(String select) {
         switch (select) {
             case "OPS":
@@ -313,8 +330,8 @@ public class Source implements Instance {
 
         Source.setVisibility(View.GONE);
         STATIC_INSTANCE_UTILS.mavts.addView(Source,lp);
-        OPS.clearFocus();
-        OPS.requestFocus();//默认OPS获取到焦点
+//        OPS.clearFocus();
+//        OPS.requestFocus();//默认OPS获取到焦点
 
     }
 
