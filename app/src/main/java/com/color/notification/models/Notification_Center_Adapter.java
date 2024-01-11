@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     private int number = 0;
 
+    private LayoutInflater inflater;
+
+    private ViewGroup myparent;
+
     public View notification_center;
 
     public View notification_center_title;
@@ -67,6 +72,8 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         mycontext = context;
         this.list = list;
 
+        inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 //        packageManager = mycontext.getPackageManager();
 //        applicationInfo = packageManager.getApplicationInfo("com.mphotool.whiteboard", 0);
 //        drawable = applicationInfo.loadIcon(packageManager);
@@ -75,9 +82,11 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     @NonNull
     @Override
     public T onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        myparent = parent;
         Log.d("MyNotificationService", " 走到onCreateViewHolder");
 
-        Log.d("notification_xu_su ", "4、 onCreateViewHolder");
+        Log.d("notification_xu_su ", "4、 onCreateViewHolder " + String.valueOf(viewType));
 //        if (number == 0) {
 //            number++;
 //            notification_center_title = LayoutInflater.from(mycontext).inflate(R.layout.notification_center_title, parent, false);
@@ -87,8 +96,12 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 //        } else if (number > 0) {
 //            number++;
         if(list.size() != 0) {
-            notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, parent, false);
+//            inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            leftNavibar = inflater.inflate(R.layout.navibar_left, null);
+//            notification_center = inflater.inflate(R.layout.notification_center, null);
+            notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, myparent, false);
             center_viewHolder = new Center_ViewHolder(notification_center);
+            StaticVariableUtils.onCreate_To_onBind = true;
             return (T) center_viewHolder;
         }
         return null;
@@ -99,7 +112,16 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     @Override
     public void onBindViewHolder(@NonNull T holder, @SuppressLint("RecyclerView") int position) {
+
+        if(!StaticVariableUtils.onCreate_To_onBind) {
+//            notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, myparent, false);
+//            center_viewHolder = new Center_ViewHolder(notification_center);
+//            holder = (T) center_viewHolder;
+
+        }
+
         if (holder.getClass() == Center_ViewHolder.class) {
+
 
             Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应position值为 "+String.valueOf(position));
 //            Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应list中的APP是 "+String.valueOf(list.get(position).appName));
@@ -119,6 +141,8 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             // 处理 Quick_Settings_ViewHolder 的逻辑
             // 例如：quick_settings_viewHolder.appName.setText(...)
         }
+
+        StaticVariableUtils.onCreate_To_onBind = false;
 
     }
 
@@ -329,14 +353,20 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                     try {
                         int mypostion = list.indexOf(holder.notification_item);
                         Log.d("notification_xu_su ", "bindItemViewHolder mypostion的值 "+String.valueOf(mypostion));
-                        if (list.get(mypostion).isMultiple_Messages && list.get(mypostion).isExpand == false) {
+                        if (list.get(mypostion).isMultiple_Messages && !list.get(mypostion).isExpand) {
                             ImageView imageView = (ImageView) list.get(mypostion).mynotification_center.findViewById(R.id.Up_Or_Down);
                             imageView.setImageResource(R.drawable.notification_center_up);
+                            //通知展开操作
+                            unfold(holder);
+                            mypostion = list.indexOf(holder.notification_item);
                             list.get(mypostion).isExpand = true;
                             Log.d(TAG, " 可折叠");
-                        } else if(list.get(mypostion).isMultiple_Messages && list.get(mypostion).isExpand == true) {
+                        } else if(list.get(mypostion).isMultiple_Messages && list.get(mypostion).isExpand) {
                             ImageView imageView = (ImageView) list.get(mypostion).mynotification_center.findViewById(R.id.Up_Or_Down);
                             imageView.setImageResource(R.drawable.notification_center_down);
+                            //通知的收起操作
+                            collapse(holder);
+                            mypostion = list.indexOf(holder.notification_item);
                             list.get(mypostion).isExpand = false;
                             Log.d(TAG, " 可打开");
                         }
@@ -394,5 +424,41 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         mOnItemClickListener = onItemClickListener;
     }
 
+
+    private void unfold(Center_ViewHolder center_viewHolder) {
+
+        int mypostion = list.indexOf(center_viewHolder.notification_item);
+        for(String string : list.get(list.indexOf(center_viewHolder.notification_item)).multiple_content) {
+            //mypostion后面添加multiple_content个Item
+            Log.d(TAG," unfold展开 "+String.valueOf(mypostion));
+            Notification_Item notification_item = new Notification_Item();
+            notification_item.appName = list.get(mypostion).appName;
+            notification_item.Icon = list.get(mypostion).Icon;
+            notification_item.content = string;
+            notification_item.parent_ViewHolder = center_viewHolder;
+            StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+            list.add(mypostion ,notification_item);
+            notifyItemInserted(mypostion);
+
+        }
+    }
+
+    //同个APP，多条通知展开后的收起操作
+    private void collapse(Center_ViewHolder center_viewHolder) {//同个APP，多条通知展开
+
+        for(String string : list.get(list.indexOf(center_viewHolder.notification_item)).multiple_content) {
+            //mypostion后面收起 multiple_content个Item
+            int mypostion = list.indexOf(center_viewHolder.notification_item);
+
+
+            list.remove(mypostion-1);
+            notifyItemRemoved(mypostion-1);
+
+            notifyItemChanged(0, list.size());
+
+//            StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+
+        }
+    }
 
 }

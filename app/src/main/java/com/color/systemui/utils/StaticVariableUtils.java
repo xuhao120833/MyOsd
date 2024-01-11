@@ -77,4 +77,12 @@ public class StaticVariableUtils {
 
     public static RecyclerView recyclerView;
 
+    //notification_center_adapter.notifyItemInserted(list.size() - 1);
+    //注意，notifyItemInserted有个比较恶心的特性：插入的位置在list末尾会按照 onCreateViewHolder ——> onBindViewHolder 的顺序调用
+    //插入的位置如果在list中间，则会直接调用onBindViewHolder
+    //
+    //由于上述这个恶心的特性，我需要一个标志位在调用nBindViewHolder时判断之前是否已经调用过onCreateViewHolder，如果没有那么一些初始化的工作就需要在
+    //onBindViewHolder中重新去做。
+    public static boolean onCreate_To_onBind =false;//false 调用nBindViewHolder没有调用过onCreateViewHolder
+
 }

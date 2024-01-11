@@ -3,6 +3,7 @@ package com.color.notification.models;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.color.notification.utils.BrightnessUtils;
 import com.color.notification.view.quick_settings.CustomSeekBar_Brightness;
 import com.color.notification.view.quick_settings.CustomSeekBar_Volume;
 import com.color.osd.R;
@@ -91,14 +93,21 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         camera_text = (TextView) notification_quick_settings.findViewById(R.id.camera_text);
 
         brightnessSeekBar = (CustomSeekBar_Brightness) notification_quick_settings.findViewById(R.id.brightnessSeekBar);
-        brightnessSeekBar_text = (TextView) notification_quick_settings.findViewById(R.id.brightnessSeekBar_text);
-        try {
-            brightness = Settings.System.getInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-        } catch (Settings.SettingNotFoundException e) {
-            throw new RuntimeException(e);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            brightnessSeekBar.setMin(0);
         }
-        brightnessSeekBar.setProgress(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness));
-        brightnessSeekBar_text.setText(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness) + "%");
+        brightnessSeekBar.setMax(255);
+        brightnessSeekBar_text = (TextView) notification_quick_settings.findViewById(R.id.brightnessSeekBar_text);
+//        try {
+//            brightness = Settings.System.getInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+//        } catch (Settings.SettingNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        brightnessSeekBar.setProgress(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness));
+//        brightnessSeekBar_text.setText(STATIC_INSTANCE_UTILS.brightnessChangeCompute.toPercent(brightness) + "%");
+        brightness = BrightnessManager.readTemporaryBrightness(mycontext);
+        brightnessSeekBar.setProgress(brightness);
+        brightnessSeekBar_text.setText(Math.round(brightness/2.55)+"%");
 
         volumeSeekBar = (CustomSeekBar_Volume) notification_quick_settings.findViewById(R.id.volumeSeekBar);
         volumeSeekBar.setProgress(volume);
@@ -166,10 +175,11 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // 进度发生改变时的操作
                 Log.d("CustomSeekBar_Brightness", " 进度条被拖动" + String.valueOf(progress));
-                int myprogress =  (int) ((float) progress / 100.0f * 255);
-                Log.d("CustomSeekBar_Brightness", " 设置的亮度值" + String.valueOf(myprogress));
-                Settings.System.putInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, myprogress);
-                brightnessSeekBar_text.setText(progress + "%");
+//                int myprogress =  (int) ((float) progress / 100.0f * 255);
+//                Log.d("CustomSeekBar_Brightness", " 设置的亮度值" + String.valueOf(myprogress));
+//                Settings.System.putInt(mycontext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, myprogress);
+                BrightnessManager.setBrightness(progress,mycontext);
+                brightnessSeekBar_text.setText(Math.round(progress/2.55) + "%");
 
             }
 

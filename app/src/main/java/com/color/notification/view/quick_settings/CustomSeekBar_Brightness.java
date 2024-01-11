@@ -75,28 +75,28 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 这种view的keyDown回调中是监听不到音量、亮度变化的。所以按键小板的音量和亮度加减单独走一套逻辑，不会走这里。
         Log.d("CustomSeekBar_Brightness", " 进入判读");
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            try {
-                Log.d("CustomSeekBar_Brightness", " 向左调节亮度");
-                int percentage = updateBrightness(-13);
-                setProgress(percentage);
-                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
-
-            } catch (Settings.SettingNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            try {
-                Log.d("CustomSeekBar_Brightness", " 向右调节亮度");
-                int percentage = updateBrightness(13);
-                setProgress(percentage);
-                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
-            } catch (Settings.SettingNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            return true;
-        }
+//        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+//            try {
+//                Log.d("CustomSeekBar_Brightness", " 向左调节亮度");
+//                int percentage = updateBrightness(-13);
+//                setProgress(percentage);
+//                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
+//
+//            } catch (Settings.SettingNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//            return true;
+//        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+//            try {
+//                Log.d("CustomSeekBar_Brightness", " 向右调节亮度");
+//                int percentage = updateBrightness(13);
+//                setProgress(percentage);
+//                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setText(percentage + "%");
+//            } catch (Settings.SettingNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//            return true;
+//        }
 
         return super.onKeyDown(keyCode, event);
     }

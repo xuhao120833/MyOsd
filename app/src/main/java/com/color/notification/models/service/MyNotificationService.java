@@ -6,6 +6,8 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.hardware.display.DisplayManager;
+import android.hardware.display.DisplayManagerGlobal;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -23,6 +25,7 @@ import com.android.internal.globalactions.Action;
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
+import com.color.notification.broadcast.BrightnessListener;
 import com.color.notification.broadcast.VolumeChangeReceiver;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
@@ -71,6 +74,8 @@ public class MyNotificationService extends NotificationListenerService implement
     private BrightnessChangeCompute brightnessChangeCompute = new BrightnessChangeCompute();
 
     private VolumeChangeReceiver volumeChangeReceiver = new VolumeChangeReceiver();
+
+    private BrightnessListener brightnessListener = new BrightnessListener();
 
     public LinearLayoutManager notification_center_manager;
     public LinearLayoutManager quick_settings_manager;
@@ -156,9 +161,11 @@ public class MyNotificationService extends NotificationListenerService implement
         //护眼模式
         eyeProtectionObserver.setContext(mycontext);
         mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(StaticVariableUtils.EYE_PROTECT_MODE), true, eyeProtectionObserver);
-        //亮度变化
-        brightnessChangeObserver.setContext(mycontext);
-        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, brightnessChangeObserver);
+//        //亮度变化
+        brightnessListener.setContext(mycontext);
+        DisplayManagerGlobal.getInstance().registerDisplayListener(brightnessListener, null, DisplayManager.EVENT_FLAG_DISPLAY_BRIGHTNESS);
+//        brightnessChangeObserver.setContext(mycontext);
+//        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, brightnessChangeObserver);
 
         //5、各种Broadcast
         //音量变化
@@ -203,6 +210,9 @@ public class MyNotificationService extends NotificationListenerService implement
         packageName = sbn.getPackageName();
         appName = getAppName();
         appIcon = getAppIcon();
+        // 获取通知内容
+        notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
+        notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
 
         // 从contentIntent中获取链接
         // PendingIntent contentIntent = notification.contentIntent;
@@ -226,19 +236,19 @@ public class MyNotificationService extends NotificationListenerService implement
             Log.d(TAG, " App包名 :"+packageName);
 //            Log.d(TAG,String.valueOf(i));
             Log.d("notification_xu_su ", "3、 同名APP下标值 "+ String.valueOf(i));
-            // 获取通知内容
-            notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
-            notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
+//            // 获取通知内容
+//            notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
+//            notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
 
             //遍历text，只有当APP名字相同，但是text内容不同时，才会判定为同一个APP的另一个有效通知
             if (i != -1) {
                 //同一个APP的不重复消息，做折叠操作，重复消息不做处理
                 //notifyItemChanged(i);
                 try {
-                    Log.d(TAG, " mynotification_center :"+String.valueOf(list.get(i).mynotification_center));
+//                    Log.d(TAG, " mynotification_center :"+String.valueOf(list.get(i).mynotification_center));
                     TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
                     ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
-                    list.get(i).number++;
+//                    list.get(i).number++;
                     content.setText(list.get(i).number + "个通知");
                     Log.d(TAG, appName+"有"+String.valueOf(list.get(i).number)+ "个通知");
                     Log.d(TAG, " text值"+String.valueOf(content.getContext()));
@@ -250,6 +260,11 @@ public class MyNotificationService extends NotificationListenerService implement
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                for(Notification_Item notification_item : list) {
+                    Log.d("MoreXu ", String.valueOf(notification_item.multiple_content));
+
+                }
             } else {
                 //通知是新的，走一般路线。
                 notificationItem = new Notification_Item();
@@ -257,11 +272,16 @@ public class MyNotificationService extends NotificationListenerService implement
                 notificationItem.time = "现在";
                 notificationItem.appName = appName;
                 notificationItem.Icon = appIcon;
+                notificationItem.multiple_content.add(notificationText);
                 notificationItem.content = notificationText;
                 notificationItem.pendingIntent = notification.contentIntent;
 
+                Log.d("notification_xu_su ", " list.size()大小 " + String.valueOf(list.size()));
+
                 list.add(notificationItem);
                 notification_center_adapter.notifyItemInserted(list.size() - 1);
+                //注意，notifyItemInserted有个比较恶心的特性：插入的位置在list末尾会按照 onCreateViewHolder ——> onBindViewHolder 的顺序调用
+                //插入的位置如果在list中间，则会直接调用onBindViewHolder
                 Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
             }
 //            Log.d(TAG,"list.size() - 1 的值 "+String.valueOf(list.size() - 1));
@@ -321,6 +341,8 @@ public class MyNotificationService extends NotificationListenerService implement
             Notification_Item notificationItem = list.get(i);
             if (notificationItem.appName.equals(appName)) {
                 subscript = i;  // 找到相同应用程序名称，更新下标值
+                list.get(i).number++;
+                list.get(i).multiple_content.add(notificationText);
                 Log.d(TAG,"traverse_list 找到同名APP");
                 break;  // 找到后可以提前结束循环
             }

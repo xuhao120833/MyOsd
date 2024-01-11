@@ -134,7 +134,7 @@ public class MyNotification implements Instance {
 //                notification.setVisibility(View.GONE);
                 if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
                     StaticVariableUtils.recyclerView.removeAllViews();
-                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
                     STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
                     STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
                 }
