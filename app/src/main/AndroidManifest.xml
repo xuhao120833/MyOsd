@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CONTROL_DISPLAY_BRIGHTNESS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT" />
     <uses-permission
         android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
         tools:ignore="ProtectedPermissions,ReservedSystemPermission" />
@@ -72,6 +74,12 @@
             android:exported="true">
         </activity>
 
+        <activity
+            android:name=".ScreenRecordActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:exported="true">
+        </activity>
+
         <receiver
             android:name=".broadcast.BootCompleteReceiver"
             android:enabled="true"
@@ -99,6 +107,7 @@
             android:exported="true"
             android:foregroundServiceType="mediaProjection"/>
 
+
         <service android:name="com.color.notification.models.service.MyNotificationService"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="true">
@@ -107,6 +116,16 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
 
+        </service>
+
+
+        <service android:name=".models.service.ScreenRecordService"
+            android:exported="true"
+            android:enabled="true"
+            android:foregroundServiceType="mediaProjection">
+            <intent-filter>
+                <action android:name="com.color.osd.SCREEN_RECORD" />
+            </intent-filter>
         </service>
 
     </application>

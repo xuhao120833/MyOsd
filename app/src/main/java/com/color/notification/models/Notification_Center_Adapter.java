@@ -23,6 +23,7 @@ import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -376,15 +377,20 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             holder.pendingIntent.send();
                             list.remove(mypostion);
                             notifyItemRemoved(mypostion);
-
-                            //会去执行一次onBindViewHolder
+                            //notifyItemChanged会去执行一次onBindViewHolder
                             notifyItemChanged(0, list.size());
+
+                            judgeParent(holder , mypostion);
+
 
                         } else if(holder.pendingIntent == null && !list.get(mypostion).isMultiple_Messages) {
                             list.remove(mypostion);
+                            //notifyItemChanged会去执行一次onBindViewHolder
                             notifyItemRemoved(mypostion);
-
                             notifyItemChanged(0, list.size());
+
+                            judgeParent(holder , mypostion);
+
                             Log.d(TAG, " 点击，移除通知");
 
                         }
@@ -428,23 +434,28 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     private void unfold(Center_ViewHolder center_viewHolder) {
 
         int mypostion = list.indexOf(center_viewHolder.notification_item);
+        int subpostion = 0;//在展开的通知中的位置
         for(String string : list.get(list.indexOf(center_viewHolder.notification_item)).multiple_content) {
             //mypostion后面添加multiple_content个Item
             Log.d(TAG," unfold展开 "+String.valueOf(mypostion));
             Notification_Item notification_item = new Notification_Item();
             notification_item.appName = list.get(mypostion).appName;
             notification_item.Icon = list.get(mypostion).Icon;
+            notification_item.subpostion = subpostion;
             notification_item.content = string;
+            notification_item.pendingIntent =  list.get(list.indexOf(center_viewHolder.notification_item)).multiple_Intent.get(subpostion);
             notification_item.parent_ViewHolder = center_viewHolder;
+            notification_item.parent_notification_item = center_viewHolder.notification_item;
             StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
             list.add(mypostion ,notification_item);
             notifyItemInserted(mypostion);
+            subpostion++;
 
         }
     }
 
     //同个APP，多条通知展开后的收起操作
-    private void collapse(Center_ViewHolder center_viewHolder) {//同个APP，多条通知展开
+    private void collapse(Center_ViewHolder center_viewHolder) {//同个APP，多条通知收起
 
         for(String string : list.get(list.indexOf(center_viewHolder.notification_item)).multiple_content) {
             //mypostion后面收起 multiple_content个Item
@@ -459,6 +470,45 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 //            StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
 
         }
+    }
+
+    private void judgeParent(Center_ViewHolder holder , int mypostion) {
+
+        if(holder.notification_item.parent_notification_item == null) {
+            return;
+        }
+
+        Log.d("judgeParent"," 父通知的content" +String.valueOf(holder.notification_item.parent_notification_item.content));
+        holder.notification_item.parent_notification_item.number--;
+        if (holder.notification_item.parent_notification_item.number >= 0) {
+            holder.notification_item.parent_notification_item.multiple_content.remove(holder.notification_item.parent_notification_item.number);
+            holder.notification_item.parent_notification_item.multiple_Intent.remove(holder.notification_item.parent_notification_item.number);
+            holder.notification_item.parent_ViewHolder.content.setText(holder.notification_item.parent_notification_item.number+1 + "个通知");
+
+        } else if (holder.notification_item.parent_notification_item.number < 0) {
+
+            mypostion = list.indexOf(holder.notification_item.parent_notification_item);
+            list.remove(mypostion);
+            notifyItemRemoved(mypostion);
+            notifyItemChanged(0, list.size());
+            StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+        }
+//        else if(holder.notification_item.parent_notification_item.number == 0) {
+//            //collapse(holder.notification_item.parent_ViewHolder);
+//
+////            mypostion = list.indexOf(holder.notification_item.parent_notification_item);
+////            list.remove(mypostion-1);
+////            notifyItemRemoved(mypostion-1);
+////            notifyItemChanged(0, list.size());
+//
+//            ImageView imageView = (ImageView) holder.notification_item.parent_ViewHolder.mynotification_center.findViewById(R.id.Up_Or_Down);
+//            imageView.setImageResource(R.drawable.notification_center_down);
+//            imageView.setVisibility(View.GONE);
+//            holder.notification_item.parent_notification_item.isMultiple_Messages = false;
+//            holder.notification_item.parent_ViewHolder.content.setText(holder.notification_item.parent_notification_item.content);
+//
+//        }
+
     }
 
 }

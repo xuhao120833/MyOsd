@@ -2,18 +2,20 @@ package com.color.osd.ui;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.provider.Settings;
-import android.util.Log;
+import android.hardware.display.DisplayManager;
+import android.hardware.display.DisplayManagerGlobal;
 import android.view.Gravity;
 import android.view.WindowManager;
 
 import androidx.core.content.ContextCompat;
 
+import com.color.notification.models.BrightnessManager;
 import com.color.osd.R;
 import com.color.osd.models.Enum.MenuState;
 import com.color.osd.models.FunctionBind;
 import com.color.osd.models.interfaces.AbstractAutoClose;
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
+import com.color.osd.models.interfaces.OSDBrightnessListener;
 import com.color.osd.models.service.MenuService;
 import com.color.osd.ui.views.CltBrightnessAndVolumeView;
 import com.color.osd.ui.views.CltTouchBarBaseView;
@@ -26,6 +28,7 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
     public CltTouchBarBaseView source;
     public WindowManager.LayoutParams lp;
     private int brightness = 0;
+    private OSDBrightnessListener mBrightnessListener;
 
     // 这个对象用来判断当前对象是否是由BrightnessAndVolume_View创建的，如果true：此对象的自动关闭行为由其控制
     private CltBrightnessAndVolumeView cltBrightnessAndVolumeView;
@@ -38,13 +41,18 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         this.mContext = context;
         try {
             // 初始化当前类的时候先取出当前系统的亮度
-            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-        } catch (Settings.SettingNotFoundException e) {
+//            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            brightness = BrightnessManager.readTemporaryBrightness(mContext);   // 换成新的方式读取亮度值
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         //Log.d("TAG", "Brightness_View: " + brightness);
         initView();
         initLp();
+
+        mBrightnessListener = new OSDBrightnessListener(mContext, source);
+        DisplayManagerGlobal.getInstance().registerDisplayListener(mBrightnessListener,
+                null, DisplayManager.EVENT_FLAG_DISPLAY_BRIGHTNESS);
     }
 
     public void initView(){
@@ -87,7 +95,8 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
         brightness = delta > 0 ? Math.min(255, brightness + delta) : Math.max(0, brightness + delta);
         //Log.d("TAG", "upBrightness: " + brightness);
         // 设置系统亮度
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+//        Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+        BrightnessManager.setBrightness(brightness, mContext);
         source.setProgress(brightness);
         source.reRenderView();  // 刷新界面
     }
@@ -95,7 +104,8 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
     @Override
     public void setProgressFromTouchEvent(int progress) {
         this.brightness = progress;
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+//        Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+        BrightnessManager.setBrightness(brightness, mContext);
 
         // 触摸进度条的时候，也要重置"自动关闭任务"，否则人还在拖动呢，view给干没了
         reClose(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
@@ -124,10 +134,11 @@ public class Brightness_View extends AbstractAutoClose implements MenuBrightness
     public void initSystemBrightness(){
         try {
             // 初始化当前类的时候先取出当前系统的亮度
-            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+//            brightness = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            brightness = BrightnessManager.readTemporaryBrightness(mContext);
             source.baseValue = 255;   // 设置基底
             source.setProgress(brightness);
-        } catch (Settings.SettingNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

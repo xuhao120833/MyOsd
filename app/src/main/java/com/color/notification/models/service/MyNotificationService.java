@@ -94,6 +94,8 @@ public class MyNotificationService extends NotificationListenerService implement
 
     public String notificationTitle;
 
+    public PendingIntent contextIntent;
+
     public MyNotificationService() {
 
     }
@@ -214,6 +216,8 @@ public class MyNotificationService extends NotificationListenerService implement
         notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
         notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
 
+        contextIntent = notification.contentIntent;
+
         // 从contentIntent中获取链接
         // PendingIntent contentIntent = notification.contentIntent;
 //        if (contentIntent != null) {
@@ -227,7 +231,7 @@ public class MyNotificationService extends NotificationListenerService implement
 //        }
 
 
-        if (notification != null) {
+        if (notification != null) {//-1表示有重复通知
 
             //遍历list，同一个APP发出的消息就不再重复添加到list中
             int i =-1;//-1表示没有找到同名APP
@@ -249,7 +253,7 @@ public class MyNotificationService extends NotificationListenerService implement
                     TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
                     ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
 //                    list.get(i).number++;
-                    content.setText(list.get(i).number + "个通知");
+                    content.setText((list.get(i).number+1) + "个通知");
                     Log.d(TAG, appName+"有"+String.valueOf(list.get(i).number)+ "个通知");
                     Log.d(TAG, " text值"+String.valueOf(content.getContext()));
                     list.get(i).content = String.valueOf(content.getContext());
@@ -272,9 +276,10 @@ public class MyNotificationService extends NotificationListenerService implement
                 notificationItem.time = "现在";
                 notificationItem.appName = appName;
                 notificationItem.Icon = appIcon;
-                notificationItem.multiple_content.add(notificationText);
                 notificationItem.content = notificationText;
-                notificationItem.pendingIntent = notification.contentIntent;
+                notificationItem.pendingIntent = contextIntent;
+                notificationItem.multiple_content.add(notificationText);
+                notificationItem.multiple_Intent.add(contextIntent);
 
                 Log.d("notification_xu_su ", " list.size()大小 " + String.valueOf(list.size()));
 
@@ -343,6 +348,7 @@ public class MyNotificationService extends NotificationListenerService implement
                 subscript = i;  // 找到相同应用程序名称，更新下标值
                 list.get(i).number++;
                 list.get(i).multiple_content.add(notificationText);
+                list.get(i).multiple_Intent.add(contextIntent);
                 Log.d(TAG,"traverse_list 找到同名APP");
                 break;  // 找到后可以提前结束循环
             }
