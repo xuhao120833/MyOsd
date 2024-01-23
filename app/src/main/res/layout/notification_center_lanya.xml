@@ -77,7 +77,7 @@
 
                 <com.color.notification.view.CustomSeekBar
                     android:id="@+id/seekbar_lanya"
-                    android:layout_width="140dp"
+                    android:layout_width="130dp"
                     android:layout_height="5dp"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
@@ -85,6 +85,9 @@
                     android:layout_gravity="center|left"
                     android:max="100"
                     android:min="0"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:progressDrawable="@drawable/custom_brightness_seekbar"
                     android:thumb="@null">
 

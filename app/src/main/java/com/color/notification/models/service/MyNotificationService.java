@@ -127,9 +127,13 @@ public class MyNotificationService extends NotificationListenerService implement
 
     public float sNoncompatScaledDensity = 0;
 
-    public String lanya_android_text;
+    //保证第一次出现android.text 过滤数字，且只过滤一次，后续用作判断传输完成的标志
+    public boolean lanya_first_accept_android_text = true;
 
-    public boolean lanya_first_accept = true;
+    public int lanya_number = -1;
+
+    //蓝牙传输进度
+    int android_lanya_progress = -1;
 
     public MyNotificationService() {
 
@@ -321,21 +325,27 @@ public class MyNotificationService extends NotificationListenerService implement
         contextIntent = notification.contentIntent;
 
         //蓝牙的单独拿出来处理，并从这里直接返回，后续逻辑不再执行
-        if("蓝牙".equals(appName) && notification.extras!=null) {
+        if ("蓝牙".equals(appName) && notification.extras != null) {
             try {
-                Log.d("lanya"," 消息" +String.valueOf(notification.extras));
+
+                Log.d("lanya", " 消息" + String.valueOf(notification.extras));
 
                 //传输进度100%的判断
-//                if(notification.extras.containsKey("android.text") && lanya_first_accept) {
-//                    lanya_android_text = notification.extras.getString("android.text");
-//                    lanya_first_accept = false;
-//
-//                }
+                if (notification.extras.containsKey("android.text") && lanya_first_accept_android_text) {
+                    String lanya_android_text = notification.extras.getString("android.text");
 
-                if(notification.extras.containsKey("android.progress")) {
+                    //提取出text中的数字，提取第一个就行
+                    lanya_number = extractNumberFromAndroidText(lanya_android_text);
+
+                    Log.d("lanya", " lanya_android_text " + String.valueOf(lanya_number));
+                    lanya_first_accept_android_text = false;
+
+                }
+
+                if (notification.extras.containsKey("android.progress")) {
                     Log.d("lanya", " 蓝牙传输百分比" + String.valueOf(notification.extras.getInt("android.progress", 0)));
-                    int android_progress = notification.extras.getInt("android.progress", 0);
-                    if(android_progress == 0) {
+                    android_lanya_progress = notification.extras.getInt("android.progress", 0);
+                    if (android_lanya_progress == 0 && StaticVariableUtils.lanya_first_get_progress_0) {
                         //首次收到蓝牙传输通知，往RecyclerView中添加蓝牙传输进度Item
                         StaticVariableUtils.bluetooth_delivery = "on";
 
@@ -344,43 +354,101 @@ public class MyNotificationService extends NotificationListenerService implement
                         notificationItem.time = "现在";
                         notificationItem.appName = appName;
                         notificationItem.Icon = appIcon;
-                        notificationItem.lanya_progress = android_progress;
-                        notificationItem.multiple_Intent.add(contextIntent);
+                        notificationItem.lanya_progress = android_lanya_progress;
+                        notificationItem.pendingIntent = contextIntent;
 
-                        Log.d("notification_xu_su ", " list.size()大小 " + String.valueOf(list.size()));
+                        Log.d("lanya", " 添加蓝牙进度通知");
+
                         StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
 
                         list.add(notificationItem);
                         notification_center_adapter.notifyItemInserted(list.size() - 1);
+
+                        StaticVariableUtils.lanya_first_get_progress_0 = false;
 
                     } else {
                         //后面就是动态的改变传输的进度
                         int i = -1;
                         i = traverse_list("蓝牙");
                         TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
-                        lanya_progress.setText(android_progress+"%");
+                        lanya_progress.setText(android_lanya_progress + "%");
 
                         CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
-                        lanya_seekbar.setProgress(android_progress);
+                        lanya_seekbar.setProgress(android_lanya_progress);
                     }
                 }
 
-//                Log.d("lanya"," android.appInfo " +String.valueOf(notification.extras.getString("android.text")));
                 //传输进度100%的判断
-//                if(notification.extras.containsKey("android.text") && lanya_android_text != notification.extras.getString("android.text")) {
-//                    int i = -1;
-//                    i = traverse_list("蓝牙");
-//                    TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
-//                    lanya_progress.setText(100+"%");
-//
-//                    CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
-//                    lanya_seekbar.setProgress(100);
-//
-//                    lanya_first_accept = true;
-//                }
+                if (!StaticVariableUtils.lanya_first_transmit) {
+                    if (notification.extras.containsKey("android.text")) {
+                        String lanya_android_text = notification.extras.getString("android.text");
+
+
+                        //提取出text中的数字
+                        int mynumber = extractNumberFromAndroidText(lanya_android_text);
+                        Log.d("lanya", " 蓝牙传输number" + mynumber);
+
+                        if (mynumber != lanya_number && lanya_number != -1) {
+                            int i = -1;
+                            i = traverse_list("蓝牙");
+                            TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
+                            lanya_appName.setText("蓝牙传输已完成，点击查看");
+
+                            TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
+                            lanya_progress.setText(100 + "%");
+
+                            CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
+                            lanya_seekbar.setProgress(100);
+
+
+                            lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_first_get_progress_0 = true;
+                            lanya_number = -1;
+                            android_lanya_progress = -1;
+
+                        }
+
+                    }
+                } else if(StaticVariableUtils.lanya_first_transmit) {
+
+                    if (notification.extras.containsKey("android.text")) {
+                        String lanya_android_text = notification.extras.getString("android.text");
+                        //提取出text中的数字
+                        int mynumber = extractNumberFromAndroidText(lanya_android_text);
+                        if (mynumber == lanya_number && lanya_number != -1) {
+                            int i = -1;
+                            i = traverse_list("蓝牙");
+                            TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
+                            lanya_appName.setText("蓝牙传输已完成，点击查看");
+
+                            TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
+                            lanya_progress.setText(100 + "%");
+
+                            CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
+                            lanya_seekbar.setProgress(100);
+
+                            //归位所有需要归位的值
+                            lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_first_get_progress_0 = true;
+                            lanya_number = -1;
+                            android_lanya_progress = -1;
+                            StaticVariableUtils.lanya_first_transmit = false;
+                        }
+                    }
+                }
+
+                //首次启用蓝牙传输，走特殊逻辑
+                if (android_lanya_progress > 90 && lanya_number == -1) {
+                    StaticVariableUtils.lanya_first_transmit = true;
+                }
+
+                int i = -1;
+                i = traverse_list("蓝牙");
+                list.get(i).pendingIntent = contextIntent;
+
 
                 return;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -395,12 +463,12 @@ public class MyNotificationService extends NotificationListenerService implement
             return;
         }
 
-        if (notification != null) {//-1表示有重复通知
+        if (notification != null) {
 
             //遍历list，同一个APP发出的消息就不再重复添加到list中
             int i = -1;//-1表示没有找到同名APP，-2表示找到了同名APP，但是内容相同就过滤掉了，同样不做处理
             i = traverse_list(appName);
-            if(i == -2) {
+            if (i == -2) {
                 return;
             }
 
@@ -551,7 +619,7 @@ public class MyNotificationService extends NotificationListenerService implement
             list.get(subscript).number++;
             list.get(subscript).multiple_content.add(notificationText);
             list.get(subscript).multiple_Intent.add(contextIntent);
-        } else if(traverse_text(notificationText, subscript)) {
+        } else if (traverse_text(notificationText, subscript)) {
             return -2;
         }
 
@@ -563,10 +631,22 @@ public class MyNotificationService extends NotificationListenerService implement
     private boolean traverse_text(String text, int i) {
 
         try {
+            //过滤特定位置的通知，无折叠的情况
             if (list.get(i).content.equals(text)) {
                 Log.d("traverse_text", " 重复通知返回");
                 return true;//有重复的消息
             }
+
+            //有折叠还要过滤一下子通知的内容，看一下子通知是否有重复的
+            for (int n = 0; n < list.get(i).multiple_content.size(); n++) {
+                String content = list.get(i).multiple_content.get(n);
+
+                if(text.equals(content)) {
+                    return true;
+                }
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -669,7 +749,7 @@ public class MyNotificationService extends NotificationListenerService implement
         if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
             //Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
 
-            if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility()==View.VISIBLE) {
+            if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
 
 //                notification_center_adapter.notifyDataSetChanged();
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
@@ -681,6 +761,17 @@ public class MyNotificationService extends NotificationListenerService implement
             }
 
         }
+    }
+
+    // 提取数字的方法
+    private int extractNumberFromAndroidText(String androidText) {
+        // 使用正则表达式提取数字
+        String numberStr = androidText.replaceAll("\\D+", "");
+
+        // 将提取的数字字符串转换为整数
+        int number = Integer.parseInt(numberStr);
+
+        return number;
     }
 
 

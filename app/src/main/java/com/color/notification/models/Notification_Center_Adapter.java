@@ -144,7 +144,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         }
 
         StaticVariableUtils.onCreate_To_onBind = false;
-        if(StaticVariableUtils.bluetooth_delivery.equals("on")) {
+        if (StaticVariableUtils.bluetooth_delivery.equals("on")) {
             StaticVariableUtils.bluetooth_delivery = "off";
         }
 
@@ -554,7 +554,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     private void bindSeekbarHolder(Center_Title_ViewHolder holder, int position) {
         if (list.size() != 0) {
-            holder.appName.setText(list.get(position).appName+"正在传输文件");
+            holder.appName.setText(list.get(position).appName + "正在传输文件");
             holder.time.setText(list.get(position).time);
             holder.Icon.setImageDrawable(list.get(position).Icon);
             holder.lanya_seekbar.setProgress(list.get(position).lanya_progress);
@@ -566,6 +566,13 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                 public void onClick(View v) {
                     try {
                         int mypostion = list.indexOf(holder.notification_item);
+
+                        if(list.get(mypostion).pendingIntent != null){
+                            list.get(mypostion).pendingIntent.send();
+                        }
+                        list.get(mypostion).mynotification_center.clearFocus();
+                        list.remove(mypostion);
+                        notifyItemRemoved(mypostion);
 
                     } catch (Exception e) {
                         e.printStackTrace();
