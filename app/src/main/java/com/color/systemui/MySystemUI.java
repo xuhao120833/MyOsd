@@ -200,7 +200,7 @@ public class MySystemUI implements Instance {
         mavts.addView(STATIC_INSTANCE_UTILS.myNotification.notification,STATIC_INSTANCE_UTILS.myNotification.lp);
 
         STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
-        STATIC_INSTANCE_UTILS.myNotification.quick_settings_linear.clearFocus();
+        STATIC_INSTANCE_UTILS.myNotification.quick_settings_frame.clearFocus();
         STATIC_INSTANCE_UTILS.myNotification.notification_quick_settings.clearFocus();
     }
 

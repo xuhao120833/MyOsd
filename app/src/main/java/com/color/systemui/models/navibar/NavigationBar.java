@@ -29,7 +29,7 @@ public class NavigationBar implements Instance {
 
     private Context mycontext;
 
-    public ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftnotification, leftcollapse, leftdline1, leftdline2 ;
+    public ImageView leftback, lefthome, leftrecent, leftsource, leftcomments, leftwhiteboard, leftnotification, leftcollapse, leftdline1, leftdline2;
 
     public ImageView rightback, righthome, rightrecent, rightsource, rightcomments, rightwhiteboard, rightnotification, rightcollapse, rightdline1, rightdline2;
 
@@ -60,18 +60,24 @@ public class NavigationBar implements Instance {
         mycontext = context;
 
         //初始化一些需要用到的工具类
-        if (packageManager == null) {
-            packageManager = mycontext.getPackageManager();
+        try {
+
+            if (packageManager == null) {
+                packageManager = mycontext.getPackageManager();
+            }
+            if (componentName == null) {
+                componentName = new ComponentName(PACKAGE_MARK, PACKAGE_MARK + ".MarkService");
+            }
+            leftcomments_intent.setComponent(componentName);
+            leftwhiteboard_intent = packageManager.getLaunchIntentForPackage(PACKAGE_WHITEBOARD);
+            leftwhiteboard_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            rightcomments_intent.setComponent(componentName);
+            rightwhiteboard_intent = packageManager.getLaunchIntentForPackage(PACKAGE_WHITEBOARD);
+            rightwhiteboard_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        if (componentName == null) {
-            componentName = new ComponentName(PACKAGE_MARK, PACKAGE_MARK + ".MarkService");
-        }
-        leftcomments_intent.setComponent(componentName);
-        leftwhiteboard_intent = packageManager.getLaunchIntentForPackage(PACKAGE_WHITEBOARD);
-        leftwhiteboard_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        rightcomments_intent.setComponent(componentName);
-        rightwhiteboard_intent = packageManager.getLaunchIntentForPackage(PACKAGE_WHITEBOARD);
-        rightwhiteboard_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         //1、初始化LayoutParams描述工具
         initLayoutParams();
@@ -169,7 +175,7 @@ public class NavigationBar implements Instance {
 //                    }
 //                });
 
-                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 }
 
@@ -193,6 +199,10 @@ public class NavigationBar implements Instance {
                     }
 
                 });
+
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -237,7 +247,11 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
-                mycontext.startService(leftcomments_intent);
+                try {
+                    mycontext.startService(leftcomments_intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -250,7 +264,12 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
-                mycontext.startActivity(leftwhiteboard_intent);
+                try {
+                    mycontext.startActivity(leftwhiteboard_intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -262,15 +281,24 @@ public class NavigationBar implements Instance {
         leftnotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+                    STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.LEFT;
+
+                    STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
+
+                    StaticVariableUtils.left_or_right = "left";//快捷中心在右侧打开
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
-                } else if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+
+                    STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.setVisibility(View.GONE);
+
+
+                } else if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 }
 
-                //有操作，则重新计时
-                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
-                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
+//                //有操作，则重新计时
+//                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+//                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
             }
         });
 
@@ -317,7 +345,7 @@ public class NavigationBar implements Instance {
 //                    }
 //                });
 
-                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 }
 
@@ -339,6 +367,10 @@ public class NavigationBar implements Instance {
                     }
 
                 });
+
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -382,7 +414,12 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
-                mycontext.startService(rightcomments_intent);
+                try {
+                    mycontext.startService(rightcomments_intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -395,7 +432,11 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
-                mycontext.startActivity(rightwhiteboard_intent);
+                try {
+                    mycontext.startActivity(rightwhiteboard_intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 //有操作，则重新计时
                 STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
@@ -407,15 +448,25 @@ public class NavigationBar implements Instance {
         rightnotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+
+                    STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.RIGHT;
+//                    STATIC_INSTANCE_UTILS.myNotification.lp.x = 1500;
+                    STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
+
+                    StaticVariableUtils.left_or_right = "right";//快捷中心在右侧打开
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
-                } else if(STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+
+                    STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.setVisibility(View.GONE);
+
+
+                } else if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 }
 
-                //有操作，则重新计时
-                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
-                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
+//                //有操作，则重新计时
+//                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
+//                STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_postDelayed();
             }
         });
 

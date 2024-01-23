@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -15,6 +16,8 @@ import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -22,6 +25,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.annotation.NonNull;
 
 //import com.color.myNotification.models.service.MyNotificationService;
+import com.blankj.utilcode.util.AdaptScreenUtils;
+import com.color.notification.models.Notification_Item;
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.ContentObserver.WindowManagerServiceObserver;
 import com.color.osd.models.Enum.MenuState;
@@ -164,6 +169,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
 
         init();
     }
+
 
     public void init() {//开机向导结束后，再init，防止开机向导期间可以唤出Osd菜单，相关类BootFinishContentObserver
         //Log.d(TAG, "服务启动: !!!!");
@@ -334,12 +340,17 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         screenHeightDp = newConfig.screenHeightDp;
         if (screenWidthDp != lastWidthDp ||
                 screenHeightDp != lastHeightDp) {
-            //Log.d("onConfigurationChanged", "分辨率发生变化 宽" + screenWidthDp + "  高" + screenHeightDp);
+//            Log.d("onConfigurationChanged", "分辨率发生变化 宽" + screenWidthDp + "  高" + screenHeightDp);
             // 执行相应的操作
             lastWidthDp = screenWidthDp;
             lastHeightDp = screenHeightDp;
 
-            //Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
+            StaticVariableUtils.widthPixels = screenWidthDp * 2;
+            StaticVariableUtils.heightPixels = screenWidthDp * 2 * 1080 / 1920;
+            Log.d("onConfigurationChanged", "分辨率发生变化 宽" + StaticVariableUtils.widthPixels + "  高" + StaticVariableUtils.heightPixels);
+            Adaptable_resolution();
+
+            Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
 
             //写Setting值通知ColorSystemUI
             b = screenWidthDp * (int) Math.pow(10, judge(screenHeightDp)) + screenHeightDp;
@@ -378,7 +389,9 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 brightnessLongClickRunnable.isDown = true;
                 brightnessLongClickRunnable.currKeyEvent = event;
                 executors.submit(brightnessLongClickRunnable);
+                Log.d(TAG, "brightnessDebug: brightness action down");
             } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                Log.d(TAG, "brightnessDebug: brightness action up");
                 brightnessLongClickRunnable.isDown = false;   // 按键小板亮度按钮松手 取消子线程处理按键逻辑
                 //Log.d(TAG, "onKeyEvent555: up");
             }
@@ -463,6 +476,15 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             menuState = NULL;
             DialogMenu.mydialog.dismiss();//收起菜单
             menuOn = false;
+
+            //快捷中心打开的话，将其关闭
+            try {
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         //4、二级菜单 KeyEvent判断处理
@@ -506,6 +528,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     private boolean whichOne(KeyEvent event) {
         for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
             if (KeyEventDispatcher.onKeyEvent(event, menuState)) {
+                Log.d("22BUG","MenuService whichOne 返回true");
                 return true;
             }
         }
@@ -597,7 +620,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         ConstantProperties.DENSITY = Math.min(width / ConstantProperties.DESIGN_SCREEN_WIDTH_DP,
                 height / ConstantProperties.DESIGN_SCREEN_HEIGHT_DP);
         //Log.d(TAG, "setDensityForAdaptation - change: width=" + width + ", height=" + height
-                //+ ", mDensity=" + ConstantProperties.DENSITY);
+        //+ ", mDensity=" + ConstantProperties.DENSITY);
     }
 
     class LongClickSimulate implements Runnable {
@@ -609,6 +632,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             // 为啥要加个while循环，因为如果一直按着按键小板亮度调整按键（触发长按事件），所以每隔300秒要处理一次按键
             while (isDown) {
                 mainHandler.post(() -> {
+                    Log.d(TAG, "brightnessDebug: brightness change in mainHandler");
                     for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
                         KeyEventDispatcher.onKeyEvent(currKeyEvent, menuState);
                     }
@@ -638,6 +662,150 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             volumeLongClickRunnable.isDown = false;   // 按键小板音量按钮松手 取消子线程处理按键逻辑
 //            Log.d(TAG, "onKeyEvent555: up");
         }
+
+    }
+
+    public void Adaptable_resolution() {
+
+        ViewGroup.MarginLayoutParams layoutParams;
+
+        //整个快捷中心的位置
+        STATIC_INSTANCE_UTILS.myNotification.lp.x = 20 * StaticVariableUtils.widthPixels / 1920;
+        STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
+
+//        //1、notification.xml
+//        //CustomFrameLayout 的各种外边距
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.quick_settings_frame.getLayoutParams();
+//        layoutParams.setMargins(0, 0, 0, 20 * StaticVariableUtils.heightPixels / 1080);
+//        STATIC_INSTANCE_UTILS.myNotification.quick_settings_frame.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        //CustomLinearLayout 的各种外边距
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.notification_center_linear.getLayoutParams();
+//        layoutParams.setMargins(0,0,0,20 * StaticVariableUtils.heightPixels / 1080);
+//        STATIC_INSTANCE_UTILS.myNotification.notification_center_linear.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.notification_center_title.getLayoutParams();
+//        layoutParams.setMargins(24 * StaticVariableUtils.widthPixels/1920,28 * StaticVariableUtils.heightPixels/1080,24 * StaticVariableUtils.widthPixels/1920,0);
+////        layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
+//        STATIC_INSTANCE_UTILS.myNotification.notification_center_title.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        //CustomRecyclerView 各种边距
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.notification_quick_settings.getLayoutParams();
+//        layoutParams.setMargins(0,20*StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.myNotification.notification_quick_settings.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.notification_center.getLayoutParams();
+//        layoutParams.setMargins(0,10*StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.myNotification.notification_center.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        //ImageView 各种烦人边距
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.notification_quit.getLayoutParams();
+//        layoutParams.setMargins(324* StaticVariableUtils.widthPixels / 1920, 6* StaticVariableUtils.heightPixels/1080, 0, 0);
+//        STATIC_INSTANCE_UTILS.myNotification.notification_quit.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.myNotification.down.getLayoutParams();
+//        layoutParams.setMargins(0, 0, 0, 20* StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.myNotification.down.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//
+//
+//        //2、notification_quick_settings.xml
+//        //CustomFrameLayout 的各种外边距
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightness_frame.getLayoutParams();
+//        layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 0, 0, 0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightness_frame.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volume_frame.getLayoutParams();
+//        layoutParams.setMargins(24 * StaticVariableUtils.widthPixels/1920,0,0,16 * StaticVariableUtils.heightPixels / 1080);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volume_frame.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.quick_settings.getLayoutParams();
+//        layoutParams.setMargins(24 * StaticVariableUtils.widthPixels/1920,6 * StaticVariableUtils.heightPixels/1080,24 * StaticVariableUtils.widthPixels/1920,6 * StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.quick_settings.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.screenshot_linear.getLayoutParams();
+//        layoutParams.setMargins(24 * StaticVariableUtils.widthPixels/1920,0,0,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.screenshot_linear.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.eye_protection_linear.getLayoutParams();
+//        layoutParams.setMargins(46 * StaticVariableUtils.widthPixels/1920,0,0,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.eye_protection_linear.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.camera_linear.getLayoutParams();
+//        layoutParams.setMargins(46 * StaticVariableUtils.widthPixels/1920,0,0,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.camera_linear.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.screenrecord_linear.getLayoutParams();
+//        layoutParams.setMargins(48 * StaticVariableUtils.widthPixels/1920,0,0,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.screenrecord_linear.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        //CustomTextView
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.tools.getLayoutParams();
+//        layoutParams.setMargins(24*StaticVariableUtils.widthPixels/1920,24* StaticVariableUtils.heightPixels/1080,0,8*StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.tools.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessTitle_text.getLayoutParams();
+//        layoutParams.setMargins(24*StaticVariableUtils.widthPixels/1920,16* StaticVariableUtils.heightPixels/1080,0,8*StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessTitle_text.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.getLayoutParams();
+//        layoutParams.setMargins(0,0,8*StaticVariableUtils.widthPixels/1920,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightnessSeekBar_text.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeTitle_text.getLayoutParams();
+//        layoutParams.setMargins(24*StaticVariableUtils.widthPixels/1920,16* StaticVariableUtils.heightPixels/1080,0,8*StaticVariableUtils.heightPixels/1080);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeTitle_text.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeSeekBar_text.getLayoutParams();
+//        layoutParams.setMargins(0,0,8*StaticVariableUtils.widthPixels/1920,0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeSeekBar_text.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightness_icon.getLayoutParams();
+//        layoutParams.setMargins(8*StaticVariableUtils.widthPixels/1920, 0, 0, 0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.brightness_icon.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        layoutParams = (ViewGroup.MarginLayoutParams) STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volume_icon.getLayoutParams();
+//        layoutParams.setMargins(8*StaticVariableUtils.widthPixels/1920, 0, 0, 0);
+//        STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volume_icon.setLayoutParams(layoutParams);
+//        layoutParams = null;
+//
+//        //3、notification_center.xml
+//        for(int i = 0; i<StaticVariableUtils.list.size();i++) {
+//            layoutParams = (ViewGroup.MarginLayoutParams) StaticVariableUtils.list.get(i).notification_center_item.getLayoutParams();
+//            layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
+//            StaticVariableUtils.list.get(i).notification_center_item.setLayoutParams(layoutParams);
+//            layoutParams = null;
+//
+//            layoutParams = (ViewGroup.MarginLayoutParams) StaticVariableUtils.list.get(i).notification_center_item_content.getLayoutParams();
+//            layoutParams.setMargins(0, 20 * StaticVariableUtils.heightPixels / 1080, 20 * StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080);
+//            StaticVariableUtils.list.get(i).notification_center_item_content.setLayoutParams(layoutParams);
+//            layoutParams = null;
+//
+//            layoutParams = (ViewGroup.MarginLayoutParams) StaticVariableUtils.list.get(i).icon.getLayoutParams();
+//            layoutParams.setMargins(16 * StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080, 12 * StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080);
+//            StaticVariableUtils.list.get(i).icon.setLayoutParams(layoutParams);
+//            layoutParams = null;
+//        }
 
     }
 

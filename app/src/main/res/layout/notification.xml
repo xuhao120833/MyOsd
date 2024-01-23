@@ -1,50 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.color.notification.view.MyNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.color.notification.view.CustomNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:visibility="gone">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linear1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/quick_settings_linear"
+        <com.color.notification.view.CustomFrameLayout
+            android:id="@+id/quick_settings_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/shapetop_notification">
 
-            <androidx.recyclerview.widget.RecyclerView
+<!--            <View-->
+<!--                android:id="@+id/blurView"-->
+<!--                android:layout_width="238dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/shapetop_notification" />-->
+
+            <com.color.notification.view.CustomRecyclerView
                 android:id="@+id/notification_quick_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="1dp" />
+                tools:ignore="MissingConstraints" />
 
-        </LinearLayout>
+        </com.color.notification.view.CustomFrameLayout>
 
-        <ImageView
+        <com.color.notification.view.CustomImageView
             android:id="@+id/up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="false"
             android:src="@drawable/notification_up"
             android:visibility="visible">
 
-        </ImageView>
+        </com.color.notification.view.CustomImageView>
 
-        <LinearLayout
+        <com.color.notification.view.CustomLinearLayout
             android:id="@+id/notification_center_linear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,8 +57,9 @@
             android:background="@drawable/shapetop_notification"
             android:orientation="vertical">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/notification_center_title"
                 android:layout_width="214dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -61,17 +67,17 @@
                 android:layout_marginRight="12dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/appName"
+                <com.color.notification.view.CustomTextView
+                    android:id="@+id/center_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="消息中心"
                     android:textColor="@color/white"
                     android:textSize="20px">
 
-                </TextView>
+                </com.color.notification.view.CustomTextView>
 
-                <ImageView
+                <com.color.notification.view.CustomImageView
                     android:id="@+id/quit"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
@@ -82,27 +88,25 @@
                     android:focusableInTouchMode="false"
                     android:src="@drawable/notification_center_x">
 
-                </ImageView>
+                </com.color.notification.view.CustomImageView>
 
 
-            </LinearLayout>
+            </com.color.notification.view.CustomLinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.color.notification.view.CustomRecyclerView
                 android:id="@+id/notification_center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="1dp" />
-        </LinearLayout>
+                tools:ignore="MissingConstraints" />
+        </com.color.notification.view.CustomLinearLayout>
 
-        <ImageView
+        <com.color.notification.view.CustomImageView
             android:id="@+id/down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="false"
@@ -110,8 +114,8 @@
             android:src="@drawable/notification_down"
             android:visibility="gone">
 
-        </ImageView>
+        </com.color.notification.view.CustomImageView>
 
 
-    </LinearLayout>
-</com.color.notification.view.MyNestedScrollView>
+    </com.color.notification.view.CustomLinearLayout>
+</com.color.notification.view.CustomNestedScrollView>

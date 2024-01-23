@@ -1,282 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="214dp"
+<com.color.notification.view.CustomFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame2"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="12dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginBottom="3dp"
-    android:background="@drawable/shapetop_notification_item"
     android:focusable="false"
-    android:focusableInTouchMode="false"
-    android:orientation="vertical">
+    android:focusableInTouchMode="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp"
-        android:text="工具"
-        android:textColor="@color/white"
-        android:textSize="20px">
-
-    </TextView>
-
-
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/quick_settings"
         android:layout_width="214dp"
-        android:layout_height="46dp"
-        android:layout_gravity="center"
-        android:columnCount="4"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:rowCount="2">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/shapetop_notification_item"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.color.notification.view.CustomTextView
+            android:id="@+id/tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/screenshot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/quick_settings_screenshot">
-
-            </ImageView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="截图"
-                android:textColor="@color/white"
-                android:textSize="20px"
-                tools:ignore="GridLayout">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginLeft="23dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/eye_protection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/quick_settings_eye_protection">
-
-            </ImageView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="护眼"
-                android:textColor="@color/white"
-                android:textSize="20px"
-                tools:ignore="GridLayout">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginLeft="23dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/quick_settings_camera_0">
-
-            </ImageView>
-
-            <TextView
-                android:id="@+id/camera_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="摄像头"
-                android:textColor="@color/white"
-                android:textSize="20px"
-                tools:ignore="GridLayout">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginLeft="24dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:src="@drawable/quick_settings_screen_record">
-
-            </ImageView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="录屏"
-                android:textColor="@color/white"
-                android:textSize="20px"
-                tools:ignore="GridLayout">
-
-            </TextView>
-
-        </LinearLayout>
-
-        <!-- Add your views (buttons, images, etc.) here -->
-
-    </GridLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="亮度"
-        android:textColor="@color/white"
-        android:textSize="20px">
-
-    </TextView>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:orientation="horizontal">
-
-        <com.color.notification.view.quick_settings.CustomSeekBar_Brightness
-            android:id="@+id/brightnessSeekBar"
-            android:layout_width="190dp"
-            android:layout_height="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="false"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
-            android:background="@android:color/transparent"
-            android:progressDrawable="@drawable/custom_brightness_seekbar"
-            android:thumb="@null" />
-
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/quick_settings_brightness">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/brightnessSeekBar_text"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="4dp"
-            android:gravity="center"
-            android:text="100%"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/工具"
             android:textColor="@color/white"
             android:textSize="20px">
 
-        </TextView>
-
-    </FrameLayout>
+        </com.color.notification.view.CustomTextView>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="音量"
-        android:textColor="@color/white"
-        android:textSize="20px">
-
-    </TextView>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="8dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:orientation="horizontal">
-
-        <com.color.notification.view.quick_settings.CustomSeekBar_Volume
-            android:id="@+id/volumeSeekBar"
-            android:layout_width="190dp"
-            android:layout_height="20dp"
-            android:clickable="true"
-            android:focusable="true"
+        <com.color.notification.view.CustomGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gridlayout"
+            android:layout_width="214dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center"
+            android:columnCount="4"
+            android:focusable="false"
             android:focusableInTouchMode="false"
-            android:max="15"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp"
-            android:progress="7"
-            android:background="@android:color/transparent"
-            android:progressDrawable="@drawable/custom_volume_seekbar"
-            android:thumb="@null" />
+            android:rowCount="2">
 
-<!--        android:thumb="@null"-->
+            <com.color.notification.view.CustomLinearLayout
+                android:id="@+id/screenshot_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/quick_settings_volume">
+                <com.color.notification.view.CustomImageView
+                    android:id="@+id/screenshot"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/quick_settings_screenshot">
 
-        </ImageView>
+                </com.color.notification.view.CustomImageView>
 
-        <TextView
-            android:id="@+id/volumeSeekBar_text"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="4dp"
-            android:gravity="center"
-            android:text="50%"
+                <com.color.notification.view.CustomTextView
+                    android:id="@+id/screenshot_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/截图"
+                    android:textColor="@color/white"
+                    android:textSize="20px"
+                    tools:ignore="GridLayout">
+
+                </com.color.notification.view.CustomTextView>
+
+            </com.color.notification.view.CustomLinearLayout>
+
+            <com.color.notification.view.CustomLinearLayout
+                android:id="@+id/eye_protection_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.color.notification.view.CustomImageView
+                    android:id="@+id/eye_protection"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/quick_settings_eye_protection">
+
+                </com.color.notification.view.CustomImageView>
+
+                <com.color.notification.view.CustomTextView
+                    android:id="@+id/eye_protection_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/护眼"
+                    android:textColor="@color/white"
+                    android:textSize="20px"
+                    tools:ignore="GridLayout">
+
+                </com.color.notification.view.CustomTextView>
+
+            </com.color.notification.view.CustomLinearLayout>
+
+            <com.color.notification.view.CustomLinearLayout
+                android:id="@+id/camera_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.color.notification.view.CustomImageView
+                    android:id="@+id/camera"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/quick_settings_camera_0">
+
+                </com.color.notification.view.CustomImageView>
+
+                <com.color.notification.view.CustomTextView
+                    android:id="@+id/camera_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/摄像头"
+                    android:textColor="@color/white"
+                    android:textSize="20px"
+                    tools:ignore="GridLayout">
+
+                </com.color.notification.view.CustomTextView>
+
+            </com.color.notification.view.CustomLinearLayout>
+
+            <com.color.notification.view.CustomLinearLayout
+                android:id="@+id/screenrecord_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.color.notification.view.CustomImageView
+                    android:id="@+id/screenrecord"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/quick_settings_screen_record">
+
+                </com.color.notification.view.CustomImageView>
+
+                <com.color.notification.view.CustomTextView
+                    android:id="@+id/screenrecord_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/录屏"
+                    android:textColor="@color/white"
+                    android:textSize="20px"
+                    tools:ignore="GridLayout">
+
+                </com.color.notification.view.CustomTextView>
+
+            </com.color.notification.view.CustomLinearLayout>
+
+            <!-- Add your views (buttons, images, etc.) here -->
+
+        </com.color.notification.view.CustomGridLayout>
+
+
+        <com.color.notification.view.CustomTextView
+            android:id="@+id/brightnessTitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/亮度"
             android:textColor="@color/white"
-            android:textSize="20px" />
+            android:textSize="20px">
+
+        </com.color.notification.view.CustomTextView>
+
+        <com.color.notification.view.CustomFrameLayout
+            android:id="@+id/brightness_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:orientation="horizontal">
+
+            <com.color.notification.view.CustomSeekBar
+                android:id="@+id/brightnessSeekBar"
+                android:layout_width="190dp"
+                android:layout_height="20dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:progressDrawable="@drawable/custom_brightness_seekbar"
+                android:thumb="@null" />
+
+            <com.color.notification.view.CustomImageView
+                android:id="@+id/brightness_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/quick_settings_brightness">
+
+            </com.color.notification.view.CustomImageView>
+
+            <com.color.notification.view.CustomTextView
+                android:id="@+id/brightnessSeekBar_text"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="4dp"
+                android:gravity="center"
+                android:text="100%"
+                android:textColor="@color/white"
+                android:textSize="20px">
+
+            </com.color.notification.view.CustomTextView>
+
+        </com.color.notification.view.CustomFrameLayout>
 
 
-    </FrameLayout>
+        <com.color.notification.view.CustomTextView
+            android:id="@+id/volumeTitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/音量"
+            android:textColor="@color/white"
+            android:textSize="20px">
+
+        </com.color.notification.view.CustomTextView>
+
+        <com.color.notification.view.CustomFrameLayout
+            android:id="@+id/volume_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="8dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:orientation="horizontal">
+
+            <com.color.notification.view.CustomSeekBar
+                android:id="@+id/volumeSeekBar"
+                android:layout_width="190dp"
+                android:layout_height="20dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
+                android:max="15"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:progress="7"
+                android:progressDrawable="@drawable/custom_volume_seekbar"
+                android:thumb="@null" />
+
+            <!--        android:thumb="@null"-->
+
+            <com.color.notification.view.CustomImageView
+                android:id="@+id/volume_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="left|center"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/quick_settings_volume">
+
+            </com.color.notification.view.CustomImageView>
+
+            <com.color.notification.view.CustomTextView
+                android:id="@+id/volumeSeekBar_text"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center"
+                android:layout_marginRight="4dp"
+                android:gravity="center"
+                android:text="50%"
+                android:textColor="@color/white"
+                android:textSize="20px" />
 
 
-</LinearLayout>
+        </com.color.notification.view.CustomFrameLayout>
+
+
+    </com.color.notification.view.CustomLinearLayout>
+</com.color.notification.view.CustomFrameLayout>

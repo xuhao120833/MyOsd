@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.InstanceUtils;
+import com.color.systemui.utils.StaticVariableUtils;
 
 public class NaviBarFrameLayout extends FrameLayout implements Instance {
 
@@ -69,6 +70,13 @@ public class NaviBarFrameLayout extends FrameLayout implements Instance {
         sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
         sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
 
+//        StaticVariableUtils.widthPixels = sizeWidth;
+//        StaticVariableUtils.heightPixels = sizeHeight;
+//
+//        if(STATIC_INSTANCE_UTILS.myNotificationService !=null) {
+//            STATIC_INSTANCE_UTILS.myNotificationService.Adaptable_resolution();
+//        }
+
 //        Log.d("sizef mode  widthMeasureSpec", String.valueOf(widthMeasureSpec));
 //        Log.d("sizef mode  heightMeasureSpec", String.valueOf(heightMeasureSpec));
 //        Log.d("sizefWidth  StatusBarFrameLayout", String.valueOf(sizeWidth));
@@ -90,7 +98,6 @@ public class NaviBarFrameLayout extends FrameLayout implements Instance {
 
 
         setMeasuredDimension(sizeWidth * 108 / 1920, sizeHeight * 568 / 1080); //告诉父view自己要多大空间
-
 
     }
 

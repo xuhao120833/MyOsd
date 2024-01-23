@@ -2,6 +2,11 @@ package com.color.systemui.utils;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.color.notification.models.Notification_Item;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class StaticVariableUtils {
 
     //1、状态栏
@@ -84,5 +89,30 @@ public class StaticVariableUtils {
     //由于上述这个恶心的特性，我需要一个标志位在调用nBindViewHolder时判断之前是否已经调用过onCreateViewHolder，如果没有那么一些初始化的工作就需要在
     //onBindViewHolder中重新去做。
     public static boolean onCreate_To_onBind =false;//false 调用nBindViewHolder没有调用过onCreateViewHolder
+
+    //消息中心分辨率适配初始值
+    public static final int original_width = 1920;
+
+    public static final int original_height = 1080;
+
+    public static int widthPixels = 1920;
+
+    public static int heightPixels = 1080;
+
+    public static final int original_dpi = 320;
+
+    public static int density = 2;
+
+    //判断消息中心是从左侧还是从右侧打开，init初始值，left左侧，right右侧
+    public static String left_or_right = "init";
+
+    //避免自定义View循环执行
+    public static boolean shouldUpdateLayout = false;
+
+    public static List<Notification_Item> list = new ArrayList<>();
+
+    //判断是否正在进行蓝牙传输，添加进度条到通知栏
+    public static String bluetooth_delivery = "off";//on表示正在传输,off表示否
+
 
 }

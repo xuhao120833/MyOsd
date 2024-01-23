@@ -1,4 +1,4 @@
-package com.color.notification.view.quick_settings;
+package com.color.notification.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,27 +9,29 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 
 import com.color.systemui.interfaces.Instance;
+import com.color.systemui.utils.StaticVariableUtils;
 
-public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompatSeekBar implements Instance {
+public class CustomSeekBar extends androidx.appcompat.widget.AppCompatSeekBar implements Instance {
 
     private Paint maskPaint;
     private boolean isSelected = false;
 
     public float brightness_maximum = 255;
 
-    public CustomSeekBar_Brightness(Context context) {
+    public CustomSeekBar(Context context) {
         super(context);
         init();
     }
 
-    public CustomSeekBar_Brightness(Context context, AttributeSet attrs) {
+    public CustomSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CustomSeekBar_Brightness(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -58,6 +60,26 @@ public class CustomSeekBar_Brightness extends androidx.appcompat.widget.AppCompa
 
         isSelected = gainFocus;
         //invalidate(); // 重新绘制SeekBar
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+//        if(getId() == getResources().getIdentifier("notification_quick_settings", "id", getContext().getPackageName())) {
+//            Log.d("CustomRecyclerView"," 执行1 ");
+//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+//            layoutParams.setMargins(0,20* StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
+//            setLayoutParams(layoutParams);
+//        }
+//
+//        if(getId() == getResources().getIdentifier("notification_center", "id", getContext().getPackageName())) {
+//            Log.d("CustomRecyclerView"," 执行2 ");
+//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+//            layoutParams.setMargins(0,10*StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
+//            setLayoutParams(layoutParams);
+//        }
+
     }
 
     @Override

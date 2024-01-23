@@ -124,18 +124,25 @@ public class Source implements Instance {
                     STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
 
                 } else {
-                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
-                        OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
-                    } else {
-                        OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
-                    }
-                    select_source = "Android";
-                    Log.d("select的值 ", select_source);
+//                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.ops_useful) {
+//                        OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops_useful));
+//                    } else {
+//                        OPS.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.ops));
+//                    }
+//                    select_source = "Android";
+//                    Log.d("select的值 ", select_source);
+//                    broadcast_to_webserver.setAction("com.color.systemui");
+//                    broadcast_to_webserver.putExtra("data", "0");
+//                    broadcast_to_webserver.setPackage("com.color.webserver");
+//                    mycontext.sendBroadcast(broadcast_to_webserver);
+//                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
+
+                    select_source = "OPS";
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "0");
+                    broadcast_to_webserver.putExtra("data", "3");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
-                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
+
                     Source.setVisibility(View.GONE);
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
@@ -170,6 +177,10 @@ public class Source implements Instance {
 
                 } else {
                     select_source = "Android";
+                    broadcast_to_webserver.setAction("com.color.systemui");
+                    broadcast_to_webserver.putExtra("data", "0");
+                    broadcast_to_webserver.setPackage("com.color.webserver");
+                    mycontext.sendBroadcast(broadcast_to_webserver);
                     Source.setVisibility(View.GONE);
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
@@ -203,17 +214,22 @@ public class Source implements Instance {
                     }
                     STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
                 } else {
-                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi1_useful) {
-                        HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
-                    } else {
-                        HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
-                    }
-                    select_source = "Android";
+//                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi1_useful) {
+//                        HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1_useful));
+//                    } else {
+//                        HDMI1.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi1));
+//                    }
+//                    select_source = "Android";
+//                    broadcast_to_webserver.setAction("com.color.systemui");
+//                    broadcast_to_webserver.putExtra("data", "0");
+//                    broadcast_to_webserver.setPackage("com.color.webserver");
+//                    mycontext.sendBroadcast(broadcast_to_webserver);
+//                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
+                    select_source = "HDMI1";
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "0");
+                    broadcast_to_webserver.putExtra("data", "1");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
-                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
                     Source.setVisibility(View.GONE);
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
@@ -252,17 +268,22 @@ public class Source implements Instance {
                     STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
 
                 } else {
-                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi2_useful) {
-                        HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
-                    } else {
-                        HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
-                    }
-                    select_source = "Android";
+//                    if (STATIC_INSTANCE_UTILS.sourceChangeToUsefulReceiver.hdmi2_useful) {
+//                        HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2_useful));
+//                    } else {
+//                        HDMI2.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.hdmi2));
+//                    }
+//                    select_source = "Android";
+//                    broadcast_to_webserver.setAction("com.color.systemui");
+//                    broadcast_to_webserver.putExtra("data", "0");
+//                    broadcast_to_webserver.setPackage("com.color.webserver");
+//                    mycontext.sendBroadcast(broadcast_to_webserver);
+//                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
+                    select_source = "HDMI2";
                     broadcast_to_webserver.setAction("com.color.systemui");
-                    broadcast_to_webserver.putExtra("data", "0");
+                    broadcast_to_webserver.putExtra("data", "2");
                     broadcast_to_webserver.setPackage("com.color.webserver");
                     mycontext.sendBroadcast(broadcast_to_webserver);
-                    Android.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.android_select_useful));
                     Source.setVisibility(View.GONE);
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空

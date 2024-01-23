@@ -1,20 +1,32 @@
 package com.color.notification.models.service;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.DisplayManagerGlobal;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,22 +34,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.internal.globalactions.Action;
+import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
 import com.color.notification.broadcast.BrightnessListener;
 import com.color.notification.broadcast.VolumeChangeReceiver;
+import com.color.notification.models.BlurWindowHelper;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.models.Notification_Quick_Settings_Adapter;
 import com.color.notification.utils.BrightnessChangeCompute;
+import com.color.notification.utils.CustomDensityUtil;
+import com.color.notification.view.CustomSeekBar;
 import com.color.osd.R;
 import com.color.osd.models.AddViewToScreen;
+import com.color.osd.ui.DialogMenu;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.StaticVariableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MyNotificationService extends NotificationListenerService implements Instance {
 
@@ -77,6 +95,15 @@ public class MyNotificationService extends NotificationListenerService implement
 
     private BrightnessListener brightnessListener = new BrightnessListener();
 
+    private WindowManager mywindowmanager;
+
+    private Display defaultDisplay;
+
+    private Point size;
+
+    private String lastCountry;
+
+
     public LinearLayoutManager notification_center_manager;
     public LinearLayoutManager quick_settings_manager;
 
@@ -96,6 +123,14 @@ public class MyNotificationService extends NotificationListenerService implement
 
     public PendingIntent contextIntent;
 
+    public float sNoncompatDensity = 0;
+
+    public float sNoncompatScaledDensity = 0;
+
+    public String lanya_android_text;
+
+    public boolean lanya_first_accept = true;
+
     public MyNotificationService() {
 
     }
@@ -103,6 +138,16 @@ public class MyNotificationService extends NotificationListenerService implement
     @Override
     public void onCreate() {
         mycontext = getApplicationContext();
+
+        //开机分辨率检测,初始化widthPixels、heightPixels的值，因为自定义View适配分辨率需要
+        Display defaultDisplay;
+        WindowManager mywindowmanager;
+        mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
+        defaultDisplay = mywindowmanager.getDefaultDisplay();
+        StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
+        StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+        defaultDisplay = null;
+        mywindowmanager = null;
 
         //1、初始化工具类
         //包管理
@@ -132,6 +177,7 @@ public class MyNotificationService extends NotificationListenerService implement
             //消息中心
             notification_center_adapter.setContext(mycontext, list);
             setInstance(notification_center_adapter);
+            StaticVariableUtils.list = list;
 
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException(e);
@@ -145,17 +191,7 @@ public class MyNotificationService extends NotificationListenerService implement
         recyclerView.setLayoutManager(notification_center_manager);
         recyclerView.setAdapter(notification_center_adapter);
         Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
-//        notification_center_adapter.setOnItemClickListener(new Notification_Center_Adapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//
-//            }
-//
-//            @Override
-//            public void onItemLongClick(View view, int position) {
-//
-//            }
-//        });
+
         recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
         recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
 
@@ -176,6 +212,73 @@ public class MyNotificationService extends NotificationListenerService implement
         registerReceiver(volumeChangeReceiver, intentFilter);
 
         STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
+
+        //6、记录语言国籍
+        lastCountry = getResources().getConfiguration().locale.toLanguageTag();
+
+
+        //7、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
+        //今日头条方案，只使用于Activity
+//        CustomDensityUtil.setCustomDensity(MyNotificationService.this, getApplication());
+//        //下面的逻辑用来计算density当分辨率变化的时候
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
+//        defaultDisplay = mywindowmanager.getDefaultDisplay();
+//        size = new Point();
+//        defaultDisplay.getSize(size);
+//        StaticVariableUtils.widthPixels = size.x;
+//        StaticVariableUtils.heightPixels = size.y;
+//        defaultDisplay = mywindowmanager.getDefaultDisplay();
+//        mywindowmanager.getDefaultDisplay().getMetrics(metrics);
+//        DisplayManager displayManager = (DisplayManager) mycontext.getSystemService(Context.DISPLAY_SERVICE);
+//        if (displayManager != null) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                displayManager.registerDisplayListener(new DisplayManager.DisplayListener() {
+//                    @Override
+//                    public void onDisplayAdded(int displayId) {
+//                        // Do something when a display is added
+//                    }
+//
+//                    @Override
+//                    public void onDisplayRemoved(int displayId) {
+//                        // Do something when a display is removed
+//                    }
+//
+//                    @Override
+//                    public void onDisplayChanged(int displayId) {
+//
+//                        defaultDisplay.getSize(size);
+//                        StaticVariableUtils.widthPixels = size.x;
+//                        StaticVariableUtils.heightPixels = size.y;
+//
+//                        if(StaticVariableUtils.widthPixels == size.x && StaticVariableUtils.heightPixels == size.y ) {
+//                            onDisplayChanged(displayId);
+//                        } else {
+//                            Log.d(" XuDisplayManager"," 分辨率发生变化"+String.valueOf(size.x)+" "+String.valueOf(size.y));
+//                        }
+//                        StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
+//                        StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+//
+//                         //Do something when the display properties change, e.g., resolution
+//                        DisplayMetrics metrics = new DisplayMetrics();
+//                        displayManager.getDisplay(displayId).getMetrics(metrics);
+//
+//                        StaticVariableUtils.widthPixels = metrics.widthPixels;
+//                        StaticVariableUtils.heightPixels = metrics.heightPixels;
+//
+//                        StaticVariableUtils.shouldUpdateLayout = true;
+//
+//                        Log.d(" XuDisplayManager"," 分辨率发生变化"+String.valueOf(size.x)+" "+String.valueOf(size.y));
+//
+//                        //在这里设置各种和LayoutParams有关的边距
+//                        Adaptable_resolution();
+//
+//                    }
+//                }, null);
+//            }
+//        }
+
+
     }
 
     @Override
@@ -196,14 +299,14 @@ public class MyNotificationService extends NotificationListenerService implement
         try {
             synchronized (mycontext) {
                 Log.d("notification_xu_su ", "2、 showMsg");
-                showMsg(sbn);
+                addMsg(sbn);
             }
         } catch (PackageManager.NameNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void showMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {
+    private void addMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {
 
         notification = sbn.getNotification();
         Log.d("showMsg", "打印通知 " + String.valueOf(notification));
@@ -214,32 +317,97 @@ public class MyNotificationService extends NotificationListenerService implement
         appIcon = getAppIcon();
         // 获取通知内容
         notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
-        notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
-
+        //notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
         contextIntent = notification.contentIntent;
 
-        // 从contentIntent中获取链接
-        // PendingIntent contentIntent = notification.contentIntent;
-//        if (contentIntent != null) {
-//            try {
-//                contentIntent.send();
-//                Log.d("showMsg"," notification.contentIntent" +String.valueOf(contentIntent));
-//                // 如果有链接，这里可以进行进一步的处理
-//            } catch (PendingIntent.CanceledException e) {
-//                Log.e(TAG, "Error sending contentIntent: " + e.getMessage());
-//            }
-//        }
+        //蓝牙的单独拿出来处理，并从这里直接返回，后续逻辑不再执行
+        if("蓝牙".equals(appName) && notification.extras!=null) {
+            try {
+                Log.d("lanya"," 消息" +String.valueOf(notification.extras));
 
+                //传输进度100%的判断
+//                if(notification.extras.containsKey("android.text") && lanya_first_accept) {
+//                    lanya_android_text = notification.extras.getString("android.text");
+//                    lanya_first_accept = false;
+//
+//                }
+
+                if(notification.extras.containsKey("android.progress")) {
+                    Log.d("lanya", " 蓝牙传输百分比" + String.valueOf(notification.extras.getInt("android.progress", 0)));
+                    int android_progress = notification.extras.getInt("android.progress", 0);
+                    if(android_progress == 0) {
+                        //首次收到蓝牙传输通知，往RecyclerView中添加蓝牙传输进度Item
+                        StaticVariableUtils.bluetooth_delivery = "on";
+
+                        //添加蓝牙进度条到
+                        notificationItem = new Notification_Item();
+                        notificationItem.time = "现在";
+                        notificationItem.appName = appName;
+                        notificationItem.Icon = appIcon;
+                        notificationItem.lanya_progress = android_progress;
+                        notificationItem.multiple_Intent.add(contextIntent);
+
+                        Log.d("notification_xu_su ", " list.size()大小 " + String.valueOf(list.size()));
+                        StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+
+                        list.add(notificationItem);
+                        notification_center_adapter.notifyItemInserted(list.size() - 1);
+
+                    } else {
+                        //后面就是动态的改变传输的进度
+                        int i = -1;
+                        i = traverse_list("蓝牙");
+                        TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
+                        lanya_progress.setText(android_progress+"%");
+
+                        CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
+                        lanya_seekbar.setProgress(android_progress);
+                    }
+                }
+
+//                Log.d("lanya"," android.appInfo " +String.valueOf(notification.extras.getString("android.text")));
+                //传输进度100%的判断
+//                if(notification.extras.containsKey("android.text") && lanya_android_text != notification.extras.getString("android.text")) {
+//                    int i = -1;
+//                    i = traverse_list("蓝牙");
+//                    TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
+//                    lanya_progress.setText(100+"%");
+//
+//                    CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
+//                    lanya_seekbar.setProgress(100);
+//
+//                    lanya_first_accept = true;
+//                }
+
+                return;
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //过滤掉不需要显示的通知
+        if (!filterAppName(appName)) {
+            return;
+        }
+
+        //过滤掉内容为空的通知
+        if (!filterContext(notificationText)) {
+            return;
+        }
 
         if (notification != null) {//-1表示有重复通知
 
             //遍历list，同一个APP发出的消息就不再重复添加到list中
-            int i =-1;//-1表示没有找到同名APP
+            int i = -1;//-1表示没有找到同名APP，-2表示找到了同名APP，但是内容相同就过滤掉了，同样不做处理
             i = traverse_list(appName);
-            Log.d(TAG, " App名字 :"+appName);
-            Log.d(TAG, " App包名 :"+packageName);
+            if(i == -2) {
+                return;
+            }
+
+            Log.d(TAG, " App名字 :" + appName);
+            Log.d(TAG, " App包名 :" + packageName);
 //            Log.d(TAG,String.valueOf(i));
-            Log.d("notification_xu_su ", "3、 同名APP下标值 "+ String.valueOf(i));
+            Log.d("notification_xu_su ", "3、 同名APP下标值 " + String.valueOf(i));
 //            // 获取通知内容
 //            notificationText = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT);
 //            notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
@@ -248,24 +416,44 @@ public class MyNotificationService extends NotificationListenerService implement
             if (i != -1) {
                 //同一个APP的不重复消息，做折叠操作，重复消息不做处理
                 //notifyItemChanged(i);
+
                 try {
+
 //                    Log.d(TAG, " mynotification_center :"+String.valueOf(list.get(i).mynotification_center));
                     TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
                     ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
-//                    list.get(i).number++;
-                    content.setText((list.get(i).number+1) + "个通知");
-                    Log.d(TAG, appName+"有"+String.valueOf(list.get(i).number)+ "个通知");
-                    Log.d(TAG, " text值"+String.valueOf(content.getContext()));
-                    list.get(i).content = String.valueOf(content.getContext());
 
-                    imageView.setVisibility(View.VISIBLE);
-                    list.get(i).isMultiple_Messages = true;
+                    content.setText((list.get(i).number + 1) + "个通知");
+                    Log.d(TAG, appName + "有" + String.valueOf(list.get(i).number) + "个通知");
+                    Log.d(TAG, " text值" + String.valueOf(content.getContext()));
+//                    list.get(i).content = String.valueOf(content.getContext());
+
+                    if (!list.get(i).isMultiple_Messages) {
+                        imageView.setVisibility(View.VISIBLE);
+                        list.get(i).isMultiple_Messages = true;
+                    }
+
+                    if (list.get(i).isExpand) {
+                        Notification_Item notification_item = new Notification_Item();
+                        notification_item.appName = list.get(i).appName;
+                        notification_item.Icon = list.get(i).Icon;
+                        notification_item.subpostion = list.get(i).number;
+                        notification_item.content = notificationText;
+                        notification_item.pendingIntent = list.get(i).multiple_Intent.get(list.get(i).number);
+                        notification_item.parent_ViewHolder = list.get(i - 1).parent_ViewHolder;
+                        notification_item.parent_notification_item = list.get(i);
+                        StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+                        list.add(i, notification_item);
+                        StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+                        notification_center_adapter.notifyItemInserted(i);
+
+                    }
                     Log.d("notification_xu_su ", "3、 i != -1 ");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                for(Notification_Item notification_item : list) {
+                for (Notification_Item notification_item : list) {
                     Log.d("MoreXu ", String.valueOf(notification_item.multiple_content));
 
                 }
@@ -282,6 +470,7 @@ public class MyNotificationService extends NotificationListenerService implement
                 notificationItem.multiple_Intent.add(contextIntent);
 
                 Log.d("notification_xu_su ", " list.size()大小 " + String.valueOf(list.size()));
+                StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
 
                 list.add(notificationItem);
                 notification_center_adapter.notifyItemInserted(list.size() - 1);
@@ -336,23 +525,36 @@ public class MyNotificationService extends NotificationListenerService implement
 
         int subscript = -1;
 
-        if(list.size() == 0) {
+        int i;
 
-            Log.d(TAG,"第一次收到通知，直接返回");
+        if (list.size() == 0) {
+
+            Log.d(TAG, "第一次收到通知，直接返回");
             return subscript;
         }
 
-        for (int i = 0; i < list.size(); i++) {
+        for (i = 0; i < list.size(); i++) {
             Notification_Item notificationItem = list.get(i);
             if (notificationItem.appName.equals(appName)) {
                 subscript = i;  // 找到相同应用程序名称，更新下标值
-                list.get(i).number++;
-                list.get(i).multiple_content.add(notificationText);
-                list.get(i).multiple_Intent.add(contextIntent);
-                Log.d(TAG,"traverse_list 找到同名APP");
-                break;  // 找到后可以提前结束循环
+//                list.get(i).number++;
+//                list.get(i).multiple_content.add(notificationText);
+//                list.get(i).multiple_Intent.add(contextIntent);
+//                Log.d(TAG,"traverse_list 找到同名APP");
+//                break;  // 找到后可以提前结束循环
             }
         }
+
+        //过滤掉内容重复的通知
+        if (subscript != -1 && !traverse_text(notificationText, subscript)) {
+
+            list.get(subscript).number++;
+            list.get(subscript).multiple_content.add(notificationText);
+            list.get(subscript).multiple_Intent.add(contextIntent);
+        } else if(traverse_text(notificationText, subscript)) {
+            return -2;
+        }
+
 
         //返回下标值
         return subscript;
@@ -360,11 +562,126 @@ public class MyNotificationService extends NotificationListenerService implement
 
     private boolean traverse_text(String text, int i) {
 
-        if (list.get(i).content.equals(text)) {
-            return true;//有重复的消息
+        try {
+            if (list.get(i).content.equals(text)) {
+                Log.d("traverse_text", " 重复通知返回");
+                return true;//有重复的消息
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         //返回下标值
         return false;
     }
+
+//    public void Adaptable_resolution() {
+//
+//        //整个快捷中心的位置
+//        STATIC_INSTANCE_UTILS.myNotification.lp.x =20 * StaticVariableUtils.widthPixels / StaticVariableUtils.original_width;
+//        STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification,STATIC_INSTANCE_UTILS.myNotification.lp);
+//
+//
+//    }
+
+    /**
+     * 今日头条适配方案
+     *
+     * @param context
+     * @param application
+     */
+    public void setCustomDensity(Context context, final Application application) {
+        //通过资源文件getResources类获取DisplayMetrics
+        DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+        if (sNoncompatDensity == 0) {
+            //保存之前density值
+            sNoncompatDensity = appDisplayMetrics.density;
+            //保存之前scaledDensity值，scaledDensity为字体的缩放因子，正常情况下和density相等，但是调节系统字体大小后会改变这个值
+            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
+            //监听设备系统字体切换
+            application.registerComponentCallbacks(new ComponentCallbacks() {
+
+                public void onConfigurationChanged(Configuration newConfig) {
+                    if (newConfig != null && newConfig.fontScale > 0) {
+                        //调节系统字体大小后改变的值
+                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                public void onLowMemory() {
+
+                }
+            });
+        }
+
+        //获取以设计图总宽度360dp下的density值
+        float targetDensity = appDisplayMetrics.widthPixels / 360;
+        //通过计算之前scaledDensity和density的比获得scaledDensity值
+        float targetScaleDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
+        //获取以设计图总宽度360dp下的dpi值
+        int targetDensityDpi = (int) (160 * targetDensity);
+        //设置系统density值
+        appDisplayMetrics.density = targetDensity;
+        //设置系统scaledDensity值
+        appDisplayMetrics.scaledDensity = targetScaleDensity;
+        //设置系统densityDpi值
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+
+        //获取当前activity的DisplayMetrics
+        final DisplayMetrics activityDisplayMetrics = context.getResources().getDisplayMetrics();
+        //设置当前activity的density值
+        activityDisplayMetrics.density = targetDensity;
+        //设置当前activity的scaledDensity值
+        activityDisplayMetrics.scaledDensity = targetScaleDensity;
+        //设置当前activity的densityDpi值
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
+    }
+
+    private boolean filterAppName(String appName) {
+
+        if ("VLC".equals(appName) || "Android 系统".equals(appName) || "蓝牙".equals(appName)) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private boolean filterContext(String context) {
+
+        if (context == null || "".equals(context)) {
+            Log.d("filterContext", "内容为空，直接过滤");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Log.d("消息中心22 ", " 语言变化发生的回调");
+
+        //1、语言变化
+        //Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
+        if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
+            //Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
+
+            if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility()==View.VISIBLE) {
+
+//                notification_center_adapter.notifyDataSetChanged();
+                STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                onCreate();
+                STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+            } else {
+//                notification_center_adapter.notifyDataSetChanged();
+                onCreate();
+            }
+
+        }
+    }
+
 
 }

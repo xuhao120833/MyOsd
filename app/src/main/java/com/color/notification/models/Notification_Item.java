@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.color.notification.models.Notification_Center_Adapter.Center_ViewHolder;
+import com.color.osd.R;
 
 public class Notification_Item {
 
@@ -48,5 +49,14 @@ public class Notification_Item {
 
     //自己在父通知multiple_content中的展开位置，从0开始计数，数字为0表示在第一个位置
     public int subpostion;
+
+//    public View notification_center_item ;
+//
+//    public View  notification_center_item_content;
+//
+//    public View icon;
+
+    //蓝牙进度条progress，初始值为-1
+    public int lanya_progress = -1;
 
 }

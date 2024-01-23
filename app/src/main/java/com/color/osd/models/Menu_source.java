@@ -4,6 +4,7 @@ import static com.color.osd.models.service.MenuService.menuOn;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -92,6 +93,7 @@ public class Menu_source implements DispatchKeyEventInterface, Instance {
             return false;
 
         if (isHomeKeyEvent(event) || isBackKeyEvent(event)) {
+            Log.d("22BUG","Menu_source onKeyEvent 返回true");
             return true;
         }
 

@@ -2,4 +2,12 @@
     <string name="app_name">osd</string>
 
     <string name="soure_change">信號源切換</string>
+    <string name="工具" translatable="false">工具</string>
+    <string name="亮度" translatable="false">亮度</string>
+    <string name="音量" translatable="false">音量</string>
+
+    <string name="截图" translatable="false">截圖</string>
+    <string name="护眼" translatable="false">護眼</string>
+    <string name="摄像头" translatable="false">攝像頭</string>
+    <string name="录屏" translatable="false">錄屏</string>
 </resources>
