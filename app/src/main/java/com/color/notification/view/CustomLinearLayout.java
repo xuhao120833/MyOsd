@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -140,36 +141,6 @@ public class CustomLinearLayout extends LinearLayout {
             }
         }
 
-        if (getId() == getResources().getIdentifier("notification_center_title", "id", getContext().getPackageName())) {
-            int count = getChildCount();
-            for (int i = 0; i < count; i++) {
-                View child = getChildAt(i);
-                if (child.getId() == getResources().getIdentifier("center_text", "id", getContext().getPackageName())) {
-                    //notification_center_title
-                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
-                    child.setLayoutParams(layoutParams);
-
-                    layoutParams = null;
-                    Log.d("CustomLinearLayout", "center_text");
-
-                }
-
-                if (child.getId() == getResources().getIdentifier("quit", "id", getContext().getPackageName())) {
-                    //notification_center
-                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width=22*StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = 22*StaticVariableUtils.heightPixels / 1080;
-                    layoutParams.setMargins(324*StaticVariableUtils.widthPixels / 1920 , 6 * StaticVariableUtils.heightPixels / 1080, 0, 0);
-                    child.setLayoutParams(layoutParams);
-                    child.measure(MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.widthPixels / 1920, MeasureSpec.EXACTLY),
-                            MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
-                    layoutParams = null;
-                    Log.d("CustomLinearLayout", "quit");
-
-                }
-            }
-        }
 
         //2、notification_center.xml
         if (getId() == getResources().getIdentifier("notification_center_item", "id", getContext().getPackageName())) {
@@ -210,7 +181,7 @@ public class CustomLinearLayout extends LinearLayout {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 278*StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
@@ -281,7 +252,7 @@ public class CustomLinearLayout extends LinearLayout {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = 92 * StaticVariableUtils.heightPixels / 1080;
+//                    layoutParams.height = 92 * StaticVariableUtils.heightPixels / 1080;
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
                     Log.d("CustomLinearLayout", "gridlayout");
@@ -445,15 +416,203 @@ public class CustomLinearLayout extends LinearLayout {
         }
 
 
+        //以下为蓝牙部分
+        if (getId() == getResources().getIdentifier("linearlanya", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("notification_center_item_lanya2", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.setMargins(24*StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24*StaticVariableUtils.widthPixels / 1920, 6* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "notification_center_item_lanya2");
 
+                }
+
+                if (child.getId() == getResources().getIdentifier("notification_center_item_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.setMargins(24*StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24*StaticVariableUtils.widthPixels / 1920, 6* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "notification_center_item_lanya");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("notification_center_item_lanya2", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("Icon_lanya2", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 60*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.height = 60*StaticVariableUtils.heightPixels / 1080;
+                    layoutParams.setMargins(16*StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080, 12*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "Icon_lanya2");
+
+                }
+
+                if (child.getId() == getResources().getIdentifier("notification_center_item_content_lanya2", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.setMargins(0, 20 * StaticVariableUtils.heightPixels / 1080, 20*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "notification_center_item_content_lanya2");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("notification_center_item_content_lanya2", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("transmission", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "transmission");
+
+                }
+
+                if (child.getId() == getResources().getIdentifier("filename", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "filename");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("notification_center_item_lanya", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("Icon_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 60*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.height = 60*StaticVariableUtils.heightPixels / 1080;
+                    layoutParams.setMargins(16*StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080, 12*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "Icon_lanya");
+
+                }
+                if (child.getId() == getResources().getIdentifier("notification_center_item_content_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.setMargins(0, 20 * StaticVariableUtils.heightPixels / 1080, 20*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "notification_center_item_content_lanya");
+
+                }
+            }
+        }
+
+//        if (getId() == getResources().getIdentifier("notification_center_item_content_lanya", "id", getContext().getPackageName())) {
+//            int count = getChildCount();
+//            //4个
+//            for (int i = 0; i < count; i++) {
+//                View child = getChildAt(i);
+//                if (child.getId() == getResources().getIdentifier("linear_lanya", "id", getContext().getPackageName())) {
+//                    //quick_settings_frame
+//                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.width = 60*StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.height = 60*StaticVariableUtils.heightPixels / 1080;
+//                    layoutParams.setMargins(16*StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080, 12*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+//                    child.setLayoutParams(layoutParams);
+//                    layoutParams = null;
+//                    Log.d("CustomLinearLayout", "linear_lanya");
+//
+//                }
+//                if (child.getId() == getResources().getIdentifier("notification_center_item_content_lanya", "id", getContext().getPackageName())) {
+//                    //quick_settings_frame
+//                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.setMargins(0, 20 * StaticVariableUtils.heightPixels / 1080, 20*StaticVariableUtils.widthPixels / 1920, 20* StaticVariableUtils.heightPixels / 1080);
+//                    child.setLayoutParams(layoutParams);
+//                    layoutParams = null;
+//                    Log.d("CustomLinearLayout", "notification_center_item_content_lanya");
+//
+//                }
+//            }
+//        }
+
+        if (getId() == getResources().getIdentifier("linear_lanya", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("appName_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "appName_lanya");
+
+                }
+                if (child.getId() == getResources().getIdentifier("time_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "time_lanya");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("linear_lanya2", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            //4个
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("seekbar_lanya", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 260*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.height = 10*StaticVariableUtils.heightPixels / 1080;
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "seekbar_lanya");
+
+                }
+                if (child.getId() == getResources().getIdentifier("seekbar_lanya_text", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "seekbar_lanya_text");
+
+                }
+            }
+        }
 
 
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-
-
-
 
     }
 

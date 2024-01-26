@@ -237,76 +237,100 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             // 在主线程上更新 UI
                             switch (minutes) {
                                 case 1:
-                                    time.setText("1分钟前");
+                                    time.setText(1+mycontext.getString(R.string.一分钟前));
+//                                    time.setText("1分钟前");
                                     break;
                                 case 2:
-                                    time.setText("2分钟前");
+                                    time.setText(2+mycontext.getString(R.string.分钟前));
+//                                    time.setText("2分钟前");
                                     break;
                                 case 3:
-                                    time.setText("3分钟前");
+                                    time.setText(3+mycontext.getString(R.string.分钟前));
+//                                    time.setText("3分钟前");
                                     break;
                                 case 4:
-                                    time.setText("4分钟前");
+                                    time.setText(4+mycontext.getString(R.string.分钟前));
+//                                    time.setText("4分钟前");
                                     break;
                                 case 5:
-                                    time.setText("5分钟前");
+                                    time.setText(5+mycontext.getString(R.string.分钟前));
+//                                    time.setText("5分钟前");
                                     break;
                                 case 10:
-                                    time.setText("10分钟前");
+                                    time.setText(10+mycontext.getString(R.string.分钟前));
+//                                    time.setText("10分钟前");
                                     break;
                                 case 15:
-                                    time.setText("15分钟前");
+                                    time.setText(15+mycontext.getString(R.string.分钟前));
+//                                    time.setText("15分钟前");
                                     break;
                                 case 20:
-                                    time.setText("20分钟前");
+                                    time.setText(20+mycontext.getString(R.string.分钟前));
+//                                    time.setText("20分钟前");
                                     break;
                                 case 25:
-                                    time.setText("25分钟前");
+                                    time.setText(25+mycontext.getString(R.string.分钟前));
+//                                    time.setText("25分钟前");
                                     break;
                                 case 30:
-                                    time.setText("30分钟前");
+                                    time.setText(30+mycontext.getString(R.string.分钟前));
+//                                    time.setText("30分钟前");
                                     break;
                                 case 35:
-                                    time.setText("35分钟前");
+                                    time.setText(35+mycontext.getString(R.string.分钟前));
+//                                    time.setText("35分钟前");
                                     break;
                                 case 40:
-                                    time.setText("40分钟前");
+                                    time.setText(40+mycontext.getString(R.string.分钟前));
+//                                    time.setText("40分钟前");
                                     break;
                                 case 45:
-                                    time.setText("45分钟前");
+                                    time.setText(45+mycontext.getString(R.string.分钟前));
+//                                    time.setText("45分钟前");
                                     break;
                                 case 50:
-                                    time.setText("50分钟前");
+                                    time.setText(50+mycontext.getString(R.string.分钟前));
+//                                    time.setText("50分钟前");
                                     break;
                                 case 55:
-                                    time.setText("55分钟前");
+                                    time.setText(55+mycontext.getString(R.string.分钟前));
+//                                    time.setText("55分钟前");
                                     break;
                                 case 60:
-                                    time.setText("1小时前");
+                                    time.setText(1+mycontext.getString(R.string.一小时前));
+//                                    time.setText("1小时前");
                                     break;
                                 case 90:
-                                    time.setText("1.5小时前");
+                                    time.setText(1.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("1.5小时前");
                                     break;
                                 case 120:
-                                    time.setText("2小时前");
+                                    time.setText(2+mycontext.getString(R.string.小时前));
+//                                    time.setText("2小时前");
                                     break;
                                 case 150:
-                                    time.setText("2.5小时前");
+                                    time.setText(2.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("2.5小时前");
                                     break;
                                 case 180:
-                                    time.setText("3小时前");
+                                    time.setText(3+mycontext.getString(R.string.小时前));
+//                                    time.setText("3小时前");
                                     break;
                                 case 210:
-                                    time.setText("3.5小时前");
+                                    time.setText(3.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("3.5小时前");
                                     break;
                                 case 240:
-                                    time.setText("4小时前");
+                                    time.setText(4+mycontext.getString(R.string.小时前));
+//                                    time.setText("4小时前");
                                     break;
                                 case 270:
-                                    time.setText("4.5小时前");
+                                    time.setText(4.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("4.5小时前");
                                     break;
                                 case 300:
-                                    time.setText("5小时前");
+                                    time.setText(5+mycontext.getString(R.string.小时前));
+//                                    time.setText("5小时前");
                                     break;
                                 // 添加其他时间间隔的文本设置...
                             }
@@ -327,11 +351,13 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         private Handler handler = new Handler(Looper.getMainLooper());
 
-        TextView appName = null, time = null, lanya_seekbar_text;
+        TextView appName = null, time = null, lanya_seekbar_text, transmission, filename ;
 
         CustomSeekBar lanya_seekbar = null;
 
         ImageView Icon = null;
+
+        ImageView Icon2 = null;
 
         PendingIntent pendingIntent = null;
 
@@ -352,6 +378,12 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             lanya_seekbar_text = (TextView) view.findViewById(R.id.seekbar_lanya_text);
 
             Icon = (ImageView) view.findViewById(R.id.Icon_lanya);
+
+            Icon2 = (ImageView) view.findViewById(R.id.Icon_lanya2);
+
+            transmission = view.findViewById(R.id.transmission);
+
+            filename = view.findViewById(R.id.filename);
 
             if (mynotification_center == null) {
                 mynotification_center = view;
@@ -397,76 +429,100 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             // 在主线程上更新 UI
                             switch (minutes) {
                                 case 1:
-                                    time.setText("1分钟前");
+                                    time.setText(1+mycontext.getString(R.string.一分钟前));
+//                                    time.setText("1分钟前");
                                     break;
                                 case 2:
-                                    time.setText("2分钟前");
+                                    time.setText(2+mycontext.getString(R.string.分钟前));
+//                                    time.setText("2分钟前");
                                     break;
                                 case 3:
-                                    time.setText("3分钟前");
+                                    time.setText(3+mycontext.getString(R.string.分钟前));
+//                                    time.setText("3分钟前");
                                     break;
                                 case 4:
-                                    time.setText("4分钟前");
+                                    time.setText(4+mycontext.getString(R.string.分钟前));
+//                                    time.setText("4分钟前");
                                     break;
                                 case 5:
-                                    time.setText("5分钟前");
+                                    time.setText(5+mycontext.getString(R.string.分钟前));
+//                                    time.setText("5分钟前");
                                     break;
                                 case 10:
-                                    time.setText("10分钟前");
+                                    time.setText(10+mycontext.getString(R.string.分钟前));
+//                                    time.setText("10分钟前");
                                     break;
                                 case 15:
-                                    time.setText("15分钟前");
+                                    time.setText(15+mycontext.getString(R.string.分钟前));
+//                                    time.setText("15分钟前");
                                     break;
                                 case 20:
-                                    time.setText("20分钟前");
+                                    time.setText(20+mycontext.getString(R.string.分钟前));
+//                                    time.setText("20分钟前");
                                     break;
                                 case 25:
-                                    time.setText("25分钟前");
+                                    time.setText(25+mycontext.getString(R.string.分钟前));
+//                                    time.setText("25分钟前");
                                     break;
                                 case 30:
-                                    time.setText("30分钟前");
+                                    time.setText(30+mycontext.getString(R.string.分钟前));
+//                                    time.setText("30分钟前");
                                     break;
                                 case 35:
-                                    time.setText("35分钟前");
+                                    time.setText(35+mycontext.getString(R.string.分钟前));
+//                                    time.setText("35分钟前");
                                     break;
                                 case 40:
-                                    time.setText("40分钟前");
+                                    time.setText(40+mycontext.getString(R.string.分钟前));
+//                                    time.setText("40分钟前");
                                     break;
                                 case 45:
-                                    time.setText("45分钟前");
+                                    time.setText(45+mycontext.getString(R.string.分钟前));
+//                                    time.setText("45分钟前");
                                     break;
                                 case 50:
-                                    time.setText("50分钟前");
+                                    time.setText(50+mycontext.getString(R.string.分钟前));
+//                                    time.setText("50分钟前");
                                     break;
                                 case 55:
-                                    time.setText("55分钟前");
+                                    time.setText(55+mycontext.getString(R.string.分钟前));
+//                                    time.setText("55分钟前");
                                     break;
                                 case 60:
-                                    time.setText("1小时前");
+                                    time.setText(1+mycontext.getString(R.string.一小时前));
+//                                    time.setText("1小时前");
                                     break;
                                 case 90:
-                                    time.setText("1.5小时前");
+                                    time.setText(1.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("1.5小时前");
                                     break;
                                 case 120:
-                                    time.setText("2小时前");
+                                    time.setText(2+mycontext.getString(R.string.小时前));
+//                                    time.setText("2小时前");
                                     break;
                                 case 150:
-                                    time.setText("2.5小时前");
+                                    time.setText(2.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("2.5小时前");
                                     break;
                                 case 180:
-                                    time.setText("3小时前");
+                                    time.setText(3+mycontext.getString(R.string.小时前));
+//                                    time.setText("3小时前");
                                     break;
                                 case 210:
-                                    time.setText("3.5小时前");
+                                    time.setText(3.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("3.5小时前");
                                     break;
                                 case 240:
-                                    time.setText("4小时前");
+                                    time.setText(4+mycontext.getString(R.string.小时前));
+//                                    time.setText("4小时前");
                                     break;
                                 case 270:
-                                    time.setText("4.5小时前");
+                                    time.setText(4.5+mycontext.getString(R.string.小时前));
+//                                    time.setText("4.5小时前");
                                     break;
                                 case 300:
-                                    time.setText("5小时前");
+                                    time.setText(5+mycontext.getString(R.string.小时前));
+//                                    time.setText("5小时前");
                                     break;
                                 // 添加其他时间间隔的文本设置...
                             }
@@ -554,12 +610,14 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     private void bindSeekbarHolder(Center_Title_ViewHolder holder, int position) {
         if (list.size() != 0) {
-            holder.appName.setText(list.get(position).appName + "正在传输文件");
+            holder.appName.setText(list.get(position).appName + " "+mycontext.getString(R.string.正在传输文件));
             holder.time.setText(list.get(position).time);
             holder.Icon.setImageDrawable(list.get(position).Icon);
             holder.lanya_seekbar.setProgress(list.get(position).lanya_progress);
             holder.pendingIntent = list.get(position).pendingIntent;
             holder.notification_item = list.get(position);
+
+            holder.Icon2.setImageDrawable(list.get(position).Icon);
 
             holder.mynotification_center.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -569,10 +627,18 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
                         if(list.get(mypostion).pendingIntent != null){
                             list.get(mypostion).pendingIntent.send();
+                            list.get(mypostion).mynotification_center.clearFocus();
+                            list.remove(mypostion);
+                            notifyItemRemoved(mypostion);
+
+                            //归位所有需要归位的值
+                            StaticVariableUtils.lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_number = -1;
+                            StaticVariableUtils.android_lanya_progress = -1;
+                            StaticVariableUtils.lanya_first_transmit = false;
+                            StaticVariableUtils.notification_has_lanya = false;
+
                         }
-                        list.get(mypostion).mynotification_center.clearFocus();
-                        list.remove(mypostion);
-                        notifyItemRemoved(mypostion);
 
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -1,14 +1,33 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">osd</string>
 
-    <string name="soure_change">source switching</string>
+    <string name="soure_change">Switch Sources</string>
 
     <string name="工具" translatable="false">Tools</string>
     <string name="亮度" translatable="false">Brightness</string>
     <string name="音量" translatable="false">Volume</string>
 
-    <string name="截图" translatable="false">cut</string>
-    <string name="护眼" translatable="false">eye</string>
-    <string name="摄像头" translatable="false">camera</string>
-    <string name="录屏" translatable="false">record</string>
+<!--    <string name="截图" translatable="false">Screenshot</string>-->
+<!--    <string name="护眼" translatable="false">Eye Care</string>-->
+<!--    <string name="摄像头" translatable="false">Camera</string>-->
+<!--    <string name="录屏" translatable="false">Screenrecord</string>-->
+
+    <string name="截图" translatable="false">Cut</string>
+    <string name="护眼" translatable="false">Eye</string>
+    <string name="摄像头" translatable="false">Camera</string>
+    <string name="录屏" translatable="false">Record</string>
+
+    <string name="消息中心" translatable="false">Message Center</string>
+    <string name="一分钟前" translatable="false" >minute ago</string>
+    <string name="一小时前" translatable="false" >hour ago</string>
+    <string name="分钟前" translatable="false" >minutes ago</string>
+    <string name="小时前" translatable="false" >hours ago</string>
+
+
+    <string name="现在" translatable="false" >now</string>
+    <string name="正在传输文件" translatable="false" >Transferring files</string>
+    <string name="传输进度" translatable="false" >Transfer progress</string>
+
+    <string name="录屏3s后开始" translatable="false" >Start after 3s of screen recording.</string>
+    <string name="录屏已结束打开文件管理Movies目录查看" translatable="false" >The screen recording has ended, open the file management Movies directory to view.</string>
 </resources>

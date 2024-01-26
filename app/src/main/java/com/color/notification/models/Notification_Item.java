@@ -3,6 +3,7 @@ package com.color.notification.models;
 import android.app.PendingIntent;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,10 @@ public class Notification_Item {
 //
 //    public View icon;
 
+    //以下为蓝牙单独使用
     //蓝牙进度条progress，初始值为-1
     public int lanya_progress = -1;
+
+    public TextView transmission = null, filename = null;
 
 }

@@ -199,6 +199,36 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
             }
         }
 
+        if (getId() == getResources().getIdentifier("notification_center_title", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("center_text", "id", getContext().getPackageName())) {
+                    //notification_center_title
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "center_text");
+
+                }
+
+                if (child.getId() == getResources().getIdentifier("quit", "id", getContext().getPackageName())) {
+                    //notification_center
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width=22*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.height = 22*StaticVariableUtils.heightPixels / 1080;
+                    child.setLayoutParams(layoutParams);
+                    child.measure(MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.widthPixels / 1920, MeasureSpec.EXACTLY),
+                            MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "quit");
+
+                }
+            }
+        }
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     }

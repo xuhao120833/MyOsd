@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">osd</string>
 
     <string name="soure_change">信号源切换</string>
@@ -11,4 +11,18 @@
     <string name="护眼" translatable="false">护眼</string>
     <string name="摄像头" translatable="false">摄像头</string>
     <string name="录屏" translatable="false">录屏</string>
+
+    <string name="消息中心" translatable="false">消息中心</string>
+    <string name="一分钟前" translatable="false" >分钟前</string>
+    <string name="一小时前" translatable="false" >小时前</string>
+    <string name="分钟前" translatable="false" >分钟前</string>
+    <string name="小时前" translatable="false" >小时前</string>
+
+    <string name="现在" translatable="false" >现在</string>
+    <string name="正在传输文件" translatable="false" >正在传输文件</string>
+    <string name="传输进度" translatable="false" >传输进度</string>
+
+    <string name="录屏3s后开始" translatable="false" >录屏3s后开始。</string>
+    <string name="录屏已结束打开文件管理Movies目录查看" translatable="false" >录屏已结束，打开文件管理Movies目录查看。</string>
+
 </resources>

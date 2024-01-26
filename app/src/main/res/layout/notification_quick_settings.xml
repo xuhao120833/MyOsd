@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.color.notification.view.CustomFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:focusable="false"
     android:focusableInTouchMode="false">
 
-    <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.color.notification.view.CustomLinearLayout
         android:id="@+id/quick_settings"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
@@ -32,15 +32,15 @@
         </com.color.notification.view.CustomTextView>
 
 
-        <com.color.notification.view.CustomGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.color.notification.view.CustomGridLayout
             android:id="@+id/gridlayout"
             android:layout_width="214dp"
-            android:layout_height="46dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:columnCount="4"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:rowCount="2">
+            android:rowCount="1">
 
             <com.color.notification.view.CustomLinearLayout
                 android:id="@+id/screenshot_linear"
@@ -169,6 +169,7 @@
                     android:id="@+id/screenrecord_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="@string/录屏"
                     android:textColor="@color/white"
                     android:textSize="20px"

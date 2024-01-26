@@ -75,13 +75,13 @@ public class CustomGridLayout extends GridLayout {
 
                 }
 
-                if (child.getId() == getResources().getIdentifier("camera_linear", "id", getContext().getPackageName())) {
+                if (child.getId() == getResources().getIdentifier("screenrecord_linear", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.setMargins(48* StaticVariableUtils.widthPixels / 1920 , 0,0,0);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
-                    Log.d("CustomGridLayout", "camera_linear");
+                    Log.d("CustomGridLayout", "screenrecord_linear");
 
                 }
 

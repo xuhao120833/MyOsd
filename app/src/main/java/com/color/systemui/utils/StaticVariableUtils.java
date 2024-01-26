@@ -111,16 +111,31 @@ public class StaticVariableUtils {
 
     public static List<Notification_Item> list = new ArrayList<>();
 
+    //判断是否是主动触发MyNotificationService的onCreate方法
+    public static boolean trigger_onCreate = false;
+
+    //以下变量为蓝牙通知使用
     //判断是否正在进行蓝牙传输，添加进度条到通知栏
     public static String bluetooth_delivery = "off";//on表示正在传输,off表示否
 
-    //蓝牙传输进度progress==0时，保证只往通知中心添加一条，有可能出现不止一次progress==0的情况
-    public static boolean lanya_first_get_progress_0 = true;
 
     //整个系统蓝牙第一次启动开始传输的标志位
     //常规情况，蓝牙传输期间，包含android.text的广播和不包含的是交替发送给MyNotificationService，蓝牙是否传输完成是靠通知子项android.text 中提取的数字是否发生变化来判断，
     //因为接收到的广播并没有包含写明传输完成进度100%的内容。
     //但是有一种情况例外，整个系统首次使用蓝牙传输文件时，只有在最后才会有包含android.text的通知，上述的判断失效，所已针对这种特殊情况，只能创建变量特殊判断对待。
     public static boolean lanya_first_transmit = false;
+
+    //判断通知中心是否已经添加了蓝牙通知
+    public static boolean notification_has_lanya = false;
+
+    //保证第一次出现android.text 过滤数字，且只过滤一次，后续用作判断传输完成的标志
+    public static boolean lanya_first_accept_android_text = true;
+
+    //android.text 中的数字，用于判断是否传输完成，或者传输是否失败
+    public static int lanya_number = -1;
+
+    //蓝牙传输进度
+    public static int android_lanya_progress = -1;
+
 
 }

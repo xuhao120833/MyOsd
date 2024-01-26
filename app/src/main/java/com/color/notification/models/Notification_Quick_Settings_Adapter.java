@@ -252,7 +252,7 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
                     SystemProperties.set("sys.camera.orientation", "0");
                     StaticVariableUtils.camera_rotate_degrees = "0";
                     camera.setImageResource(R.drawable.quick_settings_camera_0);
-                    camera_text.setText("摄像头");
+                    camera_text.setText(mycontext.getString(R.string.摄像头));
                 }
             }
         });
@@ -338,7 +338,7 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
     private void startRecording() {
         recording = true;
         // 启动定时器，每秒更改背景
-        Toast.makeText(mycontext,"录屏开始",Toast.LENGTH_SHORT).show();
+        Toast.makeText(mycontext,mycontext.getString(R.string.录屏3s后开始),Toast.LENGTH_SHORT).show();
         handler.postDelayed(backgroundChangeRunnable, 1000);
     }
 
@@ -352,7 +352,7 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         //关闭录屏服务
         stop();
 
-        Toast.makeText(mycontext,"录屏已结束，打开文件管理Movies目录查看",Toast.LENGTH_LONG).show();
+        Toast.makeText(mycontext,mycontext.getString(R.string.录屏已结束打开文件管理Movies目录查看),Toast.LENGTH_LONG).show();
         // 移除回调以停止更改背景
         handler.removeCallbacks(backgroundChangeRunnable);
     }

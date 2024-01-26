@@ -1,22 +1,17 @@
 package com.color.notification.models.service;
 
-import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
-import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.DisplayManagerGlobal;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
@@ -25,7 +20,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,23 +27,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.internal.globalactions.Action;
-import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
 import com.color.notification.broadcast.BrightnessListener;
 import com.color.notification.broadcast.VolumeChangeReceiver;
-import com.color.notification.models.BlurWindowHelper;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.models.Notification_Quick_Settings_Adapter;
 import com.color.notification.utils.BrightnessChangeCompute;
-import com.color.notification.utils.CustomDensityUtil;
 import com.color.notification.view.CustomSeekBar;
 import com.color.osd.R;
 import com.color.osd.models.AddViewToScreen;
-import com.color.osd.ui.DialogMenu;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.StaticVariableUtils;
 
@@ -127,13 +116,6 @@ public class MyNotificationService extends NotificationListenerService implement
 
     public float sNoncompatScaledDensity = 0;
 
-    //保证第一次出现android.text 过滤数字，且只过滤一次，后续用作判断传输完成的标志
-    public boolean lanya_first_accept_android_text = true;
-
-    public int lanya_number = -1;
-
-    //蓝牙传输进度
-    int android_lanya_progress = -1;
 
     public MyNotificationService() {
 
@@ -141,88 +123,89 @@ public class MyNotificationService extends NotificationListenerService implement
 
     @Override
     public void onCreate() {
-        mycontext = getApplicationContext();
+        if (!StaticVariableUtils.trigger_onCreate) {
+            mycontext = getApplicationContext();
 
-        //开机分辨率检测,初始化widthPixels、heightPixels的值，因为自定义View适配分辨率需要
-        Display defaultDisplay;
-        WindowManager mywindowmanager;
-        mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
-        defaultDisplay = mywindowmanager.getDefaultDisplay();
-        StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
-        StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
-        defaultDisplay = null;
-        mywindowmanager = null;
+            //开机分辨率检测,初始化widthPixels、heightPixels的值，因为自定义View适配分辨率需要
+            Display defaultDisplay;
+            WindowManager mywindowmanager;
+            mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
+            defaultDisplay = mywindowmanager.getDefaultDisplay();
+            StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
+            StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+            defaultDisplay = null;
+            mywindowmanager = null;
 
-        //1、初始化工具类
-        //包管理
-        packageManager = mycontext.getPackageManager();
-        if (STATIC_INSTANCE_UTILS.mavts == null) {
-            avts.setContext(mycontext);
-            setInstance(avts);
-        }
-        Log.d("mavts", "消息中心初始化avts工具类");
-        //亮度设置工具类
-        brightnessChangeCompute.setContext(mycontext);
-        setInstance(brightnessChangeCompute);
+            //1、初始化工具类
+            //包管理
+            packageManager = mycontext.getPackageManager();
+            if (STATIC_INSTANCE_UTILS.mavts == null) {
+                avts.setContext(mycontext);
+                setInstance(avts);
+            }
+            Log.d("mavts", "消息中心初始化avts工具类");
+            //亮度设置工具类
+            brightnessChangeCompute.setContext(mycontext);
+            setInstance(brightnessChangeCompute);
 
-        //2、添加View到桌面，包括两个部分：快捷设置和消息中心
-        mynotification.setContext(mycontext);
-        setInstance(mynotification);
-        recyclerView = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_center);
-        StaticVariableUtils.recyclerView = recyclerView;
-        recyclerView_quick_settings = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_quick_settings);
+            //2、添加View到桌面，包括两个部分：快捷设置和消息中心
+            mynotification.setContext(mycontext);
+            setInstance(mynotification);
+            recyclerView = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_center);
+            StaticVariableUtils.recyclerView = recyclerView;
+            recyclerView_quick_settings = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_quick_settings);
 
-        //3、初始化RecycleViewAdapter，并添加管理器
-        try {
-            //快捷设置
-            notification_quick_settings_adapter.setContext(mycontext);
-            setInstance(notification_quick_settings_adapter);
+            //3、初始化RecycleViewAdapter，并添加管理器
+            try {
+                //快捷设置
+                notification_quick_settings_adapter.setContext(mycontext);
+                setInstance(notification_quick_settings_adapter);
 
-            //消息中心
-            notification_center_adapter.setContext(mycontext, list);
-            setInstance(notification_center_adapter);
-            StaticVariableUtils.list = list;
+                //消息中心
+                notification_center_adapter.setContext(mycontext, list);
+                setInstance(notification_center_adapter);
+                StaticVariableUtils.list = list;
 
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        notification_center_manager = new LinearLayoutManager(mycontext);
-        quick_settings_manager = new LinearLayoutManager(mycontext);
-        notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
-        quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
-        notification_center_manager.setStackFromEnd(true);
-        notification_center_manager.setReverseLayout(true);
-        recyclerView.setLayoutManager(notification_center_manager);
-        recyclerView.setAdapter(notification_center_adapter);
-        Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
+            } catch (PackageManager.NameNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            notification_center_manager = new LinearLayoutManager(mycontext);
+            quick_settings_manager = new LinearLayoutManager(mycontext);
+            notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
+            quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
+            notification_center_manager.setStackFromEnd(true);
+            notification_center_manager.setReverseLayout(true);
+            recyclerView.setLayoutManager(notification_center_manager);
+            recyclerView.setAdapter(notification_center_adapter);
+            Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
 
-        recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
-        recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
+            recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
+            recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
 
-        //4、各种ContentObserver
-        //护眼模式
-        eyeProtectionObserver.setContext(mycontext);
-        mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(StaticVariableUtils.EYE_PROTECT_MODE), true, eyeProtectionObserver);
+            //4、各种ContentObserver
+            //护眼模式
+            eyeProtectionObserver.setContext(mycontext);
+            mycontext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(StaticVariableUtils.EYE_PROTECT_MODE), true, eyeProtectionObserver);
 //        //亮度变化
-        brightnessListener.setContext(mycontext);
-        DisplayManagerGlobal.getInstance().registerDisplayListener(brightnessListener, null, DisplayManager.EVENT_FLAG_DISPLAY_BRIGHTNESS);
+            brightnessListener.setContext(mycontext);
+            DisplayManagerGlobal.getInstance().registerDisplayListener(brightnessListener, null, DisplayManager.EVENT_FLAG_DISPLAY_BRIGHTNESS);
 //        brightnessChangeObserver.setContext(mycontext);
 //        mycontext.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, brightnessChangeObserver);
 
-        //5、各种Broadcast
-        //音量变化
-        volumeChangeReceiver.setContext(mycontext);
-        IntentFilter intentFilter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
-        registerReceiver(volumeChangeReceiver, intentFilter);
+            //5、各种Broadcast
+            //音量变化
+            volumeChangeReceiver.setContext(mycontext);
+            IntentFilter intentFilter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+            registerReceiver(volumeChangeReceiver, intentFilter);
 
-        STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
+            STATIC_INSTANCE_UTILS.myNotification.notification.clearFocus();
 
-        //6、记录语言国籍
-        lastCountry = getResources().getConfiguration().locale.toLanguageTag();
+            //6、记录语言国籍，在改变语言时使用。
+            lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
 
-        //7、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
-        //今日头条方案，只使用于Activity
+            //7、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
+            //今日头条方案，只使用于Activity
 //        CustomDensityUtil.setCustomDensity(MyNotificationService.this, getApplication());
 //        //下面的逻辑用来计算density当分辨率变化的时候
 //        DisplayMetrics metrics = new DisplayMetrics();
@@ -281,6 +264,31 @@ public class MyNotificationService extends NotificationListenerService implement
 //                }, null);
 //            }
 //        }
+        } else if(StaticVariableUtils.trigger_onCreate) {
+
+            mynotification.setContext(mycontext);
+            setInstance(mynotification);
+            recyclerView = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_center);
+            StaticVariableUtils.recyclerView = recyclerView;
+            recyclerView_quick_settings = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_quick_settings);
+
+            notification_center_manager = new LinearLayoutManager(mycontext);
+            quick_settings_manager = new LinearLayoutManager(mycontext);
+            notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
+            quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
+            notification_center_manager.setStackFromEnd(true);
+            notification_center_manager.setReverseLayout(true);
+            recyclerView.setLayoutManager(notification_center_manager);
+            recyclerView.setAdapter(notification_center_adapter);
+            Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
+
+            recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
+            recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
+
+            lastCountry = getResources().getConfiguration().locale.toLanguageTag();
+
+            StaticVariableUtils.trigger_onCreate =false;
+        }
 
 
     }
@@ -324,37 +332,46 @@ public class MyNotificationService extends NotificationListenerService implement
         //notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
         contextIntent = notification.contentIntent;
 
+        Log.d("showMsg", "appName " + appName);
+
         //蓝牙的单独拿出来处理，并从这里直接返回，后续逻辑不再执行
-        if ("蓝牙".equals(appName) && notification.extras != null) {
+        if (("蓝牙".equals(appName) || "藍牙".equals(appName) || "Bluetooth".equals(appName)) && notification.extras != null) {
             try {
 
                 Log.d("lanya", " 消息" + String.valueOf(notification.extras));
 
                 //传输进度100%的判断
-                if (notification.extras.containsKey("android.text") && lanya_first_accept_android_text) {
+                if (notification.extras.containsKey("android.text") && StaticVariableUtils.lanya_first_accept_android_text) {
                     String lanya_android_text = notification.extras.getString("android.text");
 
                     //提取出text中的数字，提取第一个就行
-                    lanya_number = extractNumberFromAndroidText(lanya_android_text);
+                    StaticVariableUtils.lanya_number = extractNumberFromAndroidText(lanya_android_text);
 
-                    Log.d("lanya", " lanya_android_text " + String.valueOf(lanya_number));
-                    lanya_first_accept_android_text = false;
+                    Log.d("lanya", " lanya_android_text " + String.valueOf(StaticVariableUtils.lanya_number));
+                    StaticVariableUtils.lanya_first_accept_android_text = false;
 
                 }
 
                 if (notification.extras.containsKey("android.progress")) {
                     Log.d("lanya", " 蓝牙传输百分比" + String.valueOf(notification.extras.getInt("android.progress", 0)));
-                    android_lanya_progress = notification.extras.getInt("android.progress", 0);
-                    if (android_lanya_progress == 0 && StaticVariableUtils.lanya_first_get_progress_0) {
+                    StaticVariableUtils.android_lanya_progress = notification.extras.getInt("android.progress", 0);
+                    if (StaticVariableUtils.android_lanya_progress == 0 && !StaticVariableUtils.notification_has_lanya) {
+                        int i = -1;
+                        i = traverse_list(appName);
+
+                        if (i >= 0) {
+                            return;
+                        }
+
                         //首次收到蓝牙传输通知，往RecyclerView中添加蓝牙传输进度Item
                         StaticVariableUtils.bluetooth_delivery = "on";
 
                         //添加蓝牙进度条到
                         notificationItem = new Notification_Item();
-                        notificationItem.time = "现在";
+                        notificationItem.time = mycontext.getString(R.string.现在);
                         notificationItem.appName = appName;
                         notificationItem.Icon = appIcon;
-                        notificationItem.lanya_progress = android_lanya_progress;
+                        notificationItem.lanya_progress = StaticVariableUtils.android_lanya_progress;
                         notificationItem.pendingIntent = contextIntent;
 
                         Log.d("lanya", " 添加蓝牙进度通知");
@@ -364,35 +381,62 @@ public class MyNotificationService extends NotificationListenerService implement
                         list.add(notificationItem);
                         notification_center_adapter.notifyItemInserted(list.size() - 1);
 
-                        StaticVariableUtils.lanya_first_get_progress_0 = false;
+                        StaticVariableUtils.notification_has_lanya = true;
 
                     } else {
                         //后面就是动态的改变传输的进度
                         int i = -1;
-                        i = traverse_list("蓝牙");
+                        i = traverse_list(appName);
+                        list.get(i).pendingIntent = null;
+
+                        TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
+                        lanya_appName.setText(appName + " " + mycontext.getString(R.string.传输进度));
+
                         TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
-                        lanya_progress.setText(android_lanya_progress + "%");
+                        lanya_progress.setText(StaticVariableUtils.android_lanya_progress + "%");
 
                         CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
-                        lanya_seekbar.setProgress(android_lanya_progress);
+                        lanya_seekbar.setProgress(StaticVariableUtils.android_lanya_progress);
+                    }
+                }
+
+                if (notification.extras.containsKey("android.text") && StaticVariableUtils.notification_has_lanya) {
+                    String lanya_android_text = notification.extras.getString("android.text");
+                    int i = -1;
+                    i = traverse_list(appName);
+                    TextView transmission = list.get(i).mynotification_center.findViewById(R.id.transmission);
+                    transmission.setVisibility(View.VISIBLE);
+                    transmission.setText(lanya_android_text);
+                }
+
+                if (notification.extras.containsKey("android.title") && StaticVariableUtils.notification_has_lanya) {
+                    String lanya_android_title = notification.extras.getString("android.title");
+                    if (lanya_android_title.contains("正在接收") || lanya_android_title.contains("Receiving")) {
+                        int i = -1;
+                        i = traverse_list(appName);
+                        TextView filename = list.get(i).mynotification_center.findViewById(R.id.filename);
+                        filename.setText(lanya_android_title);
                     }
                 }
 
                 //传输进度100%的判断
+
+                //蓝牙非首次传输
                 if (!StaticVariableUtils.lanya_first_transmit) {
                     if (notification.extras.containsKey("android.text")) {
                         String lanya_android_text = notification.extras.getString("android.text");
-
 
                         //提取出text中的数字
                         int mynumber = extractNumberFromAndroidText(lanya_android_text);
                         Log.d("lanya", " 蓝牙传输number" + mynumber);
 
-                        if (mynumber != lanya_number && lanya_number != -1) {
+                        boolean equal = compareLastDigits(mynumber, StaticVariableUtils.lanya_number);
+
+                        if (mynumber != StaticVariableUtils.lanya_number && StaticVariableUtils.lanya_number != -1 && equal) {
                             int i = -1;
-                            i = traverse_list("蓝牙");
+                            i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText("蓝牙传输已完成，点击查看");
+                            lanya_appName.setText(appName + "传输完成，点击查看");
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -401,25 +445,34 @@ public class MyNotificationService extends NotificationListenerService implement
                             lanya_seekbar.setProgress(100);
 
 
-                            lanya_first_accept_android_text = true;
-                            StaticVariableUtils.lanya_first_get_progress_0 = true;
-                            lanya_number = -1;
-                            android_lanya_progress = -1;
+                            StaticVariableUtils.lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_number = -1;
+                            StaticVariableUtils.android_lanya_progress = -1;
+
+                        } else if (mynumber != StaticVariableUtils.lanya_number && StaticVariableUtils.lanya_number != -1 && !equal) {
+                            int i = -1;
+                            i = traverse_list(appName);
+                            TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
+                            lanya_appName.setText(appName + "传输失败");
+
+                            StaticVariableUtils.lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_number = -1;
+                            StaticVariableUtils.android_lanya_progress = -1;
 
                         }
 
                     }
-                } else if(StaticVariableUtils.lanya_first_transmit) {
+                } else if (StaticVariableUtils.lanya_first_transmit) { //蓝牙首次传输
 
                     if (notification.extras.containsKey("android.text")) {
                         String lanya_android_text = notification.extras.getString("android.text");
                         //提取出text中的数字
                         int mynumber = extractNumberFromAndroidText(lanya_android_text);
-                        if (mynumber == lanya_number && lanya_number != -1) {
+                        if (mynumber == StaticVariableUtils.lanya_number && StaticVariableUtils.lanya_number != -1) {
                             int i = -1;
-                            i = traverse_list("蓝牙");
+                            i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText("蓝牙传输已完成，点击查看");
+                            lanya_appName.setText(appName + "传输完成，点击查看");
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -428,30 +481,30 @@ public class MyNotificationService extends NotificationListenerService implement
                             lanya_seekbar.setProgress(100);
 
                             //归位所有需要归位的值
-                            lanya_first_accept_android_text = true;
-                            StaticVariableUtils.lanya_first_get_progress_0 = true;
-                            lanya_number = -1;
-                            android_lanya_progress = -1;
+                            StaticVariableUtils.lanya_first_accept_android_text = true;
+                            StaticVariableUtils.lanya_number = -1;
+                            StaticVariableUtils.android_lanya_progress = -1;
                             StaticVariableUtils.lanya_first_transmit = false;
+
                         }
                     }
                 }
 
+                int i = -1;
+                i = traverse_list(appName);
+                list.get(i).pendingIntent = contextIntent;
+
                 //首次启用蓝牙传输，走特殊逻辑
-                if (android_lanya_progress > 90 && lanya_number == -1) {
+                if (StaticVariableUtils.android_lanya_progress > 80 && StaticVariableUtils.lanya_number == -1) {
                     StaticVariableUtils.lanya_first_transmit = true;
                 }
 
-                int i = -1;
-                i = traverse_list("蓝牙");
-                list.get(i).pendingIntent = contextIntent;
-
-
+                Log.d("lanya", " return");
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }//蓝牙控制结束
 
         //过滤掉不需要显示的通知
         if (!filterAppName(appName)) {
@@ -529,7 +582,7 @@ public class MyNotificationService extends NotificationListenerService implement
                 //通知是新的，走一般路线。
                 notificationItem = new Notification_Item();
 //            notificationItem.time = String.valueOf(number++);
-                notificationItem.time = "现在";
+                notificationItem.time = mycontext.getString(R.string.现在);
                 notificationItem.appName = appName;
                 notificationItem.Icon = appIcon;
                 notificationItem.content = notificationText;
@@ -641,7 +694,7 @@ public class MyNotificationService extends NotificationListenerService implement
             for (int n = 0; n < list.get(i).multiple_content.size(); n++) {
                 String content = list.get(i).multiple_content.get(n);
 
-                if(text.equals(content)) {
+                if (text.equals(content)) {
                     return true;
                 }
             }
@@ -719,7 +772,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
     private boolean filterAppName(String appName) {
 
-        if ("VLC".equals(appName) || "Android 系统".equals(appName) || "蓝牙".equals(appName)) {
+        if ("VLC".equals(appName) || "osd".equals(appName) || "系统界面".equals(appName) || "Android 系统".equals(appName) || "蓝牙".equals(appName) || "藍牙".equals(appName) || "Bluetooth".equals(appName) || "Android System".equals(appName) || "Android 系統".equals(appName)) {
             return false;
         }
 
@@ -742,8 +795,6 @@ public class MyNotificationService extends NotificationListenerService implement
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Log.d("消息中心22 ", " 语言变化发生的回调");
-
         //1、语言变化
         //Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
         if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
@@ -753,10 +804,25 @@ public class MyNotificationService extends NotificationListenerService implement
 
 //                notification_center_adapter.notifyDataSetChanged();
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                StaticVariableUtils.trigger_onCreate = true;
+                if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
+                    StaticVariableUtils.recyclerView.removeAllViews();
+                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+                }
                 onCreate();
+
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
             } else {
 //                notification_center_adapter.notifyDataSetChanged();
+                StaticVariableUtils.trigger_onCreate = true;
+                if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
+                    StaticVariableUtils.recyclerView.removeAllViews();
+                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+                }
                 onCreate();
             }
 
@@ -772,6 +838,16 @@ public class MyNotificationService extends NotificationListenerService implement
         int number = Integer.parseInt(numberStr);
 
         return number;
+    }
+
+    //比较两个数的个位数是否相等
+    private boolean compareLastDigits(int num1, int num2) {
+        // 获取两个数的个位数字
+        int lastDigitNum1 = num1 % 10;
+        int lastDigitNum2 = num2 % 10;
+
+        // 比较个位数字是否相等
+        return lastDigitNum1 == lastDigitNum2;
     }
 
 

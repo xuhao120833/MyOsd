@@ -57,7 +57,7 @@
             android:background="@drawable/shapetop_notification"
             android:orientation="vertical">
 
-            <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.color.notification.view.CustomFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/notification_center_title"
                 android:layout_width="214dp"
@@ -71,7 +71,8 @@
                     android:id="@+id/center_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="消息中心"
+                    android:text="@string/消息中心"
+                    android:layout_gravity="left|center"
                     android:textColor="@color/white"
                     android:textSize="20px">
 
@@ -81,8 +82,7 @@
                     android:id="@+id/quit"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginLeft="162dp"
+                    android:layout_gravity="right|center"
                     android:clickable="true"
                     android:focusable="true"
                     android:focusableInTouchMode="false"
@@ -91,7 +91,7 @@
                 </com.color.notification.view.CustomImageView>
 
 
-            </com.color.notification.view.CustomLinearLayout>
+            </com.color.notification.view.CustomFrameLayout>
 
             <com.color.notification.view.CustomRecyclerView
                 android:id="@+id/notification_center"

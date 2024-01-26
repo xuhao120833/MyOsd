@@ -8,7 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="false">
 
-    <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.color.notification.view.CustomLinearLayout
         android:id="@+id/notification_center_item"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
@@ -26,14 +26,15 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center">
 
         </com.color.notification.view.CustomImageView>
 
         <com.color.notification.view.CustomLinearLayout
             android:id="@+id/notification_center_item_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
@@ -70,13 +71,13 @@
             <com.color.notification.view.CustomLinearLayout
                 android:id="@+id/linear3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.color.notification.view.CustomTextView
                     android:id="@+id/content"
                     android:layout_width="139dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="20px">
 
