@@ -41,13 +41,14 @@ public class VolumeFromFWReceiver extends BroadcastReceiver {
             }
 
             if (MenuService.settingVolumeChange){
-                // 说明settings应用在调整音量，osd这里就不要掺和了
-                return;
+                // 说明settings应用在调整音量，osd这里就不要掺和了 正式版
+                Log.d(TAG, "onReceive: here");
+                volumeChangeListener.onVolumeChange(intent.getIntExtra("keyAction", 0),
+                        intent.getIntExtra("keyCode", 0), true);
+            }else{
+                volumeChangeListener.onVolumeChange(intent.getIntExtra("keyAction", 0),
+                        intent.getIntExtra("keyCode", 0), false);
             }
-
-            volumeChangeListener.onVolumeChange(intent.getIntExtra("keyAction", 0),
-                    intent.getIntExtra("keyCode", 0));
-
 
         }
     }

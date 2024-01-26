@@ -36,7 +36,7 @@ public abstract class AbstractAutoClose {
             }catch (Exception e){
                 //Log.d(TAG, "autoClose: auto clear view error: " + e.getMessage());
             }
-            MenuService.settingVolumeChange = false;
+//            MenuService.settingVolumeChange = false;
             MenuService.menuState = MenuState.NULL;
         }, delayMillis);
     }

@@ -123,7 +123,7 @@ public class Volume_View extends AbstractAutoClose implements MenuBrightnessAndV
         cancelAutoClose();
         FunctionBind.mavts.clearView(cltBrightnessAndVolumeView == null ? source : cltBrightnessAndVolumeView);
         MenuService.menuState = MenuState.NULL;   // 恢复状态
-        MenuService.settingVolumeChange = false;
+//        MenuService.settingVolumeChange = false;
     }
 
     // 设置音量

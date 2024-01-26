@@ -47,6 +47,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.media.AudioManager;
+import com.color.osd.ContentObserver.BrightnessObeserver;
+import com.color.osd.broadcast.VolumeChangeReceiver;
+import com.color.osd.broadcast.VolumeFromFWReceiver;
+import com.color.osd.models.interfaces.BrightnessChangeListener;
 
 
 public class MenuService extends AccessibilityService implements VolumeChangeListener, BrightnessChangeListener, Instance {
@@ -627,15 +632,42 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
         public KeyEvent currKeyEvent;
         public boolean isDown;
 
+        public boolean settingChange;
+
+        private AudioManager audioManager;
+
+        private int loop = 0;
+
+
         @Override
         public void run() {
             // 为啥要加个while循环，因为如果一直按着按键小板亮度调整按键（触发长按事件），所以每隔300秒要处理一次按键
             while (isDown) {
                 mainHandler.post(() -> {
-                    Log.d(TAG, "brightnessDebug: brightness change in mainHandler");
-                    for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
-                        KeyEventDispatcher.onKeyEvent(currKeyEvent, menuState);
+                    Log.d(TAG, "run: " + settingChange);
+                    if (settingChange){
+                        if (loop == 0) return;   // 第一次不执行，避免与settings应用的按键冲突，造成音量一瞬间减了两格
+                        Log.d(TAG, "run: only settings");
+                        // 注意！！！！此处这个判断条件是后来加的：settings应用的音量调整面板中，没有长按事件，因此把长按的功能集成到这里
+                        // 那么settings应用调整音量，就不显示OSD的音量条了。
+                        // 直接把AudioManager的值调整后，settings应用音量相关的UI就会跟着变了
+                        if (audioManager == null) {
+                            audioManager = (AudioManager) mycontext.getSystemService(Context.AUDIO_SERVICE);
+                        }
+                        int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                        if (currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN){
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, --volume, AudioManager.FLAG_PLAY_SOUND);
+                        }else if(currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP){
+                            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, ++volume, AudioManager.FLAG_PLAY_SOUND);
+                        }
+                    }else{
+                        Log.d(TAG, "run: not settings");
+                        // 把事件分发下去，让OSD中的声音UI加载出来，并调整相关的音量
+                        for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
+                            KeyEventDispatcher.onKeyEvent(currKeyEvent, menuState);
+                        }
                     }
+
                 });
                 try {
                     // 睡300ms  不然while循环频率太快了，造成cpu卡顿
@@ -643,19 +675,21 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
+                loop++;
             }
         }
     }
 
 
     @Override
-    public void onVolumeChange(int keyAction, int keyCode) {
+    public void onVolumeChange(int keyAction, int keyCode, boolean settingChange) {
         if (keyAction == KeyEvent.ACTION_DOWN) {
             // 按下
             KeyEvent keyEvent = new KeyEvent(keyAction, keyCode);    // 自己构造一个keyEvent事件
             volumeLongClickRunnable.isDown = true;
             volumeLongClickRunnable.currKeyEvent = keyEvent;
+            volumeLongClickRunnable.settingChange = settingChange;
+            volumeLongClickRunnable.loop = 0;
             executors.submit(volumeLongClickRunnable);      // 开个子线程去循环处理按下事件（模拟长按）
         } else if (keyAction == KeyEvent.ACTION_UP) {
             // 抬起
