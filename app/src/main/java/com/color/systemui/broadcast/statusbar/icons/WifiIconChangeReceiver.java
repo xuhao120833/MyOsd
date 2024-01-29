@@ -13,6 +13,7 @@ import com.color.systemui.utils.StaticVariableUtils;
 import android.os.Parcelable;
 import java.lang.*;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.view.View;
 import android.net.NetworkCapabilities;
 
@@ -65,8 +66,10 @@ public class WifiIconChangeReceiver extends BroadcastReceiver implements Instanc
                 case WifiManager.WIFI_STATE_DISABLING:
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
-                    //Log.d("MyWifi 收到wifi打开广播","WIFI_STATE_ENABLED");
-                    STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
+                    Log.d("MyWifi 收到wifi打开广播"," statusbar_wifiserach ");
+                    if(!StaticVariableUtils.isWifiConnected) {
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
+                    }
                     if("com.android.launcher3".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
                             "com.color.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
                             "com.android.tv.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ){
@@ -88,9 +91,13 @@ public class WifiIconChangeReceiver extends BroadcastReceiver implements Instanc
                 networkInfo = (NetworkInfo) parcelable;
                 state = networkInfo.getState();
                 wifiConnected = state == NetworkInfo.State.CONNECTED;
+                StaticVariableUtils.isWifiConnected = true;
             }
             if (state == NetworkInfo.State.DISCONNECTED) {
+                Log.d("MyWifi 收到wifi打开广播"," statusbar_wifiserach2 ");
                 STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
+                wifiConnected =false;
+                StaticVariableUtils.isWifiConnected = false;
             }
 
         }

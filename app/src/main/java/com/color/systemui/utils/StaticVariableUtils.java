@@ -14,6 +14,8 @@ public class StaticVariableUtils {
 
     public static boolean WifiOpen = true;//Wifi是否打开
 
+    public static boolean isWifiConnected = false;//wifi是否已连接
+
     public static boolean EthernetConnected = false;//以太网是否连接
 
     public static boolean HotspotOpen = false;
@@ -136,6 +138,8 @@ public class StaticVariableUtils {
 
     //蓝牙传输进度
     public static int android_lanya_progress = -1;
+
+
 
 
 }

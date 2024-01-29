@@ -58,27 +58,58 @@ public class StatusBarBootCheck implements Instance {
 
     private void WifiCheck() {
         Log.d("StatusBarBootCheck"," WifiCheck ");
+
         if (wifiManager != null && wifiManager.isWifiEnabled()) {
             //Log.d("WifiCheck", " wifiManager.isWifiEnabled() == true");
             //wifi开关已打开
             STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.VISIBLE);
             StaticVariableUtils.WifiOpen = true;
 
-            //wifi是否连接上了
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            Log.d("StatusBarBootCheck"," wifi检测 ");
-            if (wifiInfo != null && wifiInfo.getNetworkId() != -1) {
+            if(isConnectedToWifi()) {
+                Log.d("StatusBarBootCheck"," wifi已经连接 ");
 
-                STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
-                // WiFi 已连接
-                int signalStrength = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), 5); // 5 是信号级别的最大数量
+                StaticVariableUtils.isWifiConnected = true;
 
-                Log.d("StatusBarBootCheck"," wifi强度 " + signalStrength);
-                // 现在你可以使用 'signalStrength' 变量来确定 WiFi 信号强度
-                // 例如，你可以根据信号强度更新 UI 元素
-//                updateUIBasedOnSignalStrength(signalStrength);
+                int i = getWifiSignalStrength();
 
+                switch (i) {
+                    case 0:
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi0));
+                        break;
+                    case 1:
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi1));
+                        break;
+                    case 2:
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi2));
+                        break;
+                    case 3:
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi3));
+                        break;
+                    case 4:
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4));
+                        break;
+                }
+                Log.d("StatusBarBootCheck"," wifi强度 " + i);
+
+            }else if(!isConnectedToWifi()) {
+                StaticVariableUtils.isWifiConnected = false;
             }
+
+//            //wifi是否连接上了
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            Log.d("StatusBarBootCheck"," wifi检测 ");
+//            if (wifiInfo != null && wifiInfo.getNetworkId() != -1) {
+//
+//                STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
+//                // WiFi 已连接
+//                int signalStrength = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), 5); // 5 是信号级别的最大数量
+//
+//                Log.d("StatusBarBootCheck"," wifi强度 " + signalStrength);
+//                // 现在你可以使用 'signalStrength' 变量来确定 WiFi 信号强度
+//                // 例如，你可以根据信号强度更新 UI 元素
+////                updateUIBasedOnSignalStrength(signalStrength);
+//
+//            }
 
         }
 
@@ -122,6 +153,27 @@ public class StatusBarBootCheck implements Instance {
 //        STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(signalStrength >= 3 ? View.VISIBLE : View.GONE);
 //    }
 
+    // 检测是否连接到WiFi网络
+    private boolean isConnectedToWifi() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mycontext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
+        return networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI && networkInfo.isConnected();
+    }
+
+    // 获取WiFi信号强度
+    private int getWifiSignalStrength() {
+        WifiManager wifiManager = (WifiManager) mycontext.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+
+        // 获取WiFi信号强度
+        int signalStrength = 0;
+        if (wifiInfo != null) {
+            // 注意：获取到的信号强度是一个负值，数值越小表示信号越强
+            signalStrength = WifiManager.calculateSignalLevel(wifiInfo.getRssi(), 5);
+        }
+
+        return signalStrength;
+    }
 
 }

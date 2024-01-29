@@ -8,6 +8,8 @@ import android.view.View;
 import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.InstanceUtils;
+import com.color.systemui.utils.StaticVariableUtils;
+
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -39,8 +41,11 @@ public class HoverballLinearLayout extends LinearLayout implements Instance {
         modeWidth = MeasureSpec.getMode(widthMeasureSpec);
         modeHeight = MeasureSpec.getMode(heightMeasureSpec);
         //sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-        sizeWidth = sizeHeight * 1920/1080;
+//        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+//        sizeWidth = sizeHeight * 1920/1080;
+
+        sizeHeight = StaticVariableUtils.heightPixels;
+        sizeWidth = StaticVariableUtils.widthPixels;
 
         hoverball2 = STATIC_INSTANCE_UTILS.hoverball.leftlayout.findViewById(R.id.hoverball_left);
         hoverball2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 50 / 1920, MeasureSpec.EXACTLY),

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.InstanceUtils;
+import com.color.systemui.utils.StaticVariableUtils;
 
 import android.view.View;
 import android.view.Display;
@@ -54,8 +55,11 @@ public class SourceLinearLayout extends LinearLayout implements Instance {
         modeWidth = MeasureSpec.getMode(widthMeasureSpec);
         modeHeight = MeasureSpec.getMode(heightMeasureSpec);
         //sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-        sizeWidth = sizeHeight * 1920 / 1080;
+//        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+//        sizeWidth = sizeHeight * 1920 / 1080;
+
+        sizeHeight = StaticVariableUtils.heightPixels;
+        sizeWidth = StaticVariableUtils.widthPixels;
 
 //        Log.d("sizefWidth SourceLinearLayout", String.valueOf(sizeWidth));
 //        Log.d("sizefHeight SourceLinearLayout", String.valueOf(sizeHeight));

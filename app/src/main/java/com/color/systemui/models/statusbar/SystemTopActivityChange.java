@@ -2,6 +2,7 @@ package com.color.systemui.models.statusbar;
 
 import android.app.IProcessObserver;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -98,7 +99,7 @@ public class SystemTopActivityChange implements Instance {
                     runningAppProcessInfo = processesList.get(i);
                     if (runningAppProcessInfo.pid == pid) {
                         processName = runningAppProcessInfo.processName;
-                        //Log.d("xuLL", "onForegroundActivitiesChanged " + processName + " ");
+                        Log.d("SystemActivityChange", "onForegroundActivitiesChanged " + processName + " " + String.valueOf(foregroundActivities));
                         break;
                     }
                 } catch (Exception e) {
@@ -106,8 +107,8 @@ public class SystemTopActivityChange implements Instance {
                 }
             }
 
-            //Log.d("SystemActivityChange : 前台活动的包名: ", processName);
-            if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false) ) {
+            Log.d("SystemActivityChange : 前台活动的包名: ", processName);
+            if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName)&& !"com.android.toofifi".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false) ) {
                 STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {
@@ -127,8 +128,8 @@ public class SystemTopActivityChange implements Instance {
                         STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
                     }
                 });
-                //Log.d("xuLL", "不在launcher 选择隐藏");
-            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible ) {
+                Log.d("SystemActivityChange", "不在launcher 选择隐藏");
+            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible || ("com.color.player".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible) || ("com.color.filemanager".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible)) {
                 STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
                     @Override
                     public void run() {
@@ -147,7 +148,7 @@ public class SystemTopActivityChange implements Instance {
                         }
                     }
                 });
-                //Log.d("xuLL", "在launcher 显示导航栏");
+                Log.d("SystemActivityChange", "在launcher 显示导航栏");
             }
             // Log.d("xuLL:", " ");
             // Log.d("xuLL:", " ");

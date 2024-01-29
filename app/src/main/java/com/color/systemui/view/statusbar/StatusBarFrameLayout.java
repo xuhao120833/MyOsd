@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.InstanceUtils;
+import com.color.systemui.utils.StaticVariableUtils;
 
 public class StatusBarFrameLayout extends FrameLayout implements Instance {
 
@@ -58,8 +59,11 @@ public class StatusBarFrameLayout extends FrameLayout implements Instance {
         //sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
 
         //父view可以给多大空间
-        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率高
-        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
+//        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率高
+//        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
+
+        sizeHeight = StaticVariableUtils.heightPixels;
+        sizeWidth = StaticVariableUtils.widthPixels;
 
 
 //        if (getChildCount() > 0) {

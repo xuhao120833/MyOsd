@@ -103,8 +103,8 @@ public class MyNotification implements Instance {
 //                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
 
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+//                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
 //        setBlurBehindRadius(100);
 

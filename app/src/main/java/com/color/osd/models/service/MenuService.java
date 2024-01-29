@@ -15,6 +15,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -350,10 +351,39 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             lastWidthDp = screenWidthDp;
             lastHeightDp = screenHeightDp;
 
-            StaticVariableUtils.widthPixels = screenWidthDp * 2;
-            StaticVariableUtils.heightPixels = screenWidthDp * 2 * 1080 / 1920;
-            Log.d("onConfigurationChanged", "分辨率发生变化 宽" + StaticVariableUtils.widthPixels + "  高" + StaticVariableUtils.heightPixels);
-            Adaptable_resolution();
+//            StaticVariableUtils.widthPixels = screenWidthDp * 2;
+//            StaticVariableUtils.heightPixels = screenWidthDp * 2 * 1080 / 1920;
+//            Log.d("onConfigurationChanged", "分辨率发生变化 宽" + StaticVariableUtils.widthPixels + "  高" + StaticVariableUtils.heightPixels);
+//            Adaptable_resolution();
+//
+//            if(StaticVariableUtils.widthPixels > StaticVariableUtils.heightPixels) {
+//
+//                StaticVariableUtils.widthPixels = StaticVariableUtils.heightPixels * 1920/1080;
+//
+//            }
+//            if(StaticVariableUtils.widthPixels < StaticVariableUtils.heightPixels) {
+//
+//                StaticVariableUtils.heightPixels = StaticVariableUtils.widthPixels * 1080/1920;
+//
+//            }
+
+            Display defaultDisplay;
+            WindowManager mywindowmanager;
+            mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
+            defaultDisplay = mywindowmanager.getDefaultDisplay();
+
+            if(defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
+
+                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920/1080;
+                StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+
+            }
+            if(defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
+
+                StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
+                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080/1920;
+
+            }
 
             Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
 

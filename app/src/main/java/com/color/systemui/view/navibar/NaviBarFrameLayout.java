@@ -67,8 +67,11 @@ public class NaviBarFrameLayout extends FrameLayout implements Instance {
         //sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
 
         //父view可以给多大空间
-        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
-        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
+//        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
+//        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
+
+        sizeHeight = StaticVariableUtils.heightPixels;
+        sizeWidth = StaticVariableUtils.widthPixels;
 
 //        StaticVariableUtils.widthPixels = sizeWidth;
 //        StaticVariableUtils.heightPixels = sizeHeight;

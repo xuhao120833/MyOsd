@@ -131,8 +131,20 @@ public class MyNotificationService extends NotificationListenerService implement
             WindowManager mywindowmanager;
             mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
             defaultDisplay = mywindowmanager.getDefaultDisplay();
-            StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
-            StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+
+            if(defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
+
+                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920/1080;
+                StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
+
+            }
+            if(defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
+
+                StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
+                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080/1920;
+
+            }
+
             defaultDisplay = null;
             mywindowmanager = null;
 
