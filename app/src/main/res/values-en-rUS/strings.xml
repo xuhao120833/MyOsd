@@ -13,7 +13,7 @@
 <!--    <string name="录屏" translatable="false">Screenrecord</string>-->
 
     <string name="截图" translatable="false">Cut</string>
-    <string name="护眼" translatable="false">Eye</string>
+    <string name="护眼" translatable="false">Eye Care</string>
     <string name="摄像头" translatable="false">Camera</string>
     <string name="录屏" translatable="false">Record</string>
 
@@ -27,7 +27,12 @@
     <string name="现在" translatable="false" >now</string>
     <string name="正在传输文件" translatable="false" >Transferring files</string>
     <string name="传输进度" translatable="false" >Transfer progress</string>
+    <string name="传输完成点击查看" translatable="false" >Transfer completed</string>
+    <string name="传输失败" translatable="false" >Transfer failed</string>
 
     <string name="录屏3s后开始" translatable="false" >Start after 3s of screen recording.</string>
     <string name="录屏已结束打开文件管理Movies目录查看" translatable="false" >The screen recording has ended, open the file management Movies directory to view.</string>
+
+    <string name="个通知" translatable="false" >notifications</string>
+
 </resources>

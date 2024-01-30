@@ -731,7 +731,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         if (holder.notification_item.parent_notification_item.number >= 0) {
             holder.notification_item.parent_notification_item.multiple_content.remove(holder.notification_item.parent_notification_item.number);
             holder.notification_item.parent_notification_item.multiple_Intent.remove(holder.notification_item.parent_notification_item.number);
-            holder.notification_item.parent_ViewHolder.content.setText(holder.notification_item.parent_notification_item.number + 1 + "个通知");
+            holder.notification_item.parent_ViewHolder.content.setText(holder.notification_item.parent_notification_item.number + 1 + mycontext.getString(R.string.个通知));
 
         } else if (holder.notification_item.parent_notification_item.number < 0) {
 

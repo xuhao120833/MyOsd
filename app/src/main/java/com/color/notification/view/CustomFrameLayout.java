@@ -70,8 +70,8 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 if (child.getId() == getResources().getIdentifier("notification_center_item", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     Log.d("CustomFrameLayout", "notification_center_item 宽" + 428 * StaticVariableUtils.widthPixels / 1920);
                     layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
@@ -90,8 +90,9 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 if (child.getId() == getResources().getIdentifier("quick_settings", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "quick_settings");
@@ -109,7 +110,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 if (child.getId() == getResources().getIdentifier("brightnessSeekBar", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
                     if (2000 < StaticVariableUtils.widthPixels && StaticVariableUtils.widthPixels < 3000) {
                         layoutParams.height = (40 * StaticVariableUtils.heightPixels / 1080 + 20);
                     } else if (StaticVariableUtils.widthPixels > 3000) {
@@ -158,7 +159,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 if (child.getId() == getResources().getIdentifier("volumeSeekBar", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
                     if (2000 < StaticVariableUtils.widthPixels && StaticVariableUtils.widthPixels < 3000) {
                         layoutParams.height = (40 * StaticVariableUtils.heightPixels / 1080 + 20);
                     } else if (StaticVariableUtils.widthPixels > 3000) {
@@ -224,6 +225,37 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                             MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
                     layoutParams = null;
                     Log.d("CustomLinearLayout", "quit");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("frame3", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("content", "id", getContext().getPackageName())) {
+                    //notification_center_title
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.width = 278*StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "content");
+
+                }
+
+                if (child.getId() == getResources().getIdentifier("Up_Or_Down", "id", getContext().getPackageName())) {
+                    //notification_center
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = 40*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.height = 40*StaticVariableUtils.heightPixels / 1080;
+                    child.setLayoutParams(layoutParams);
+                    child.measure(MeasureSpec.makeMeasureSpec(40*StaticVariableUtils.widthPixels / 1920, MeasureSpec.EXACTLY),
+                            MeasureSpec.makeMeasureSpec(40*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
+                    layoutParams = null;
+                    Log.d("CustomLinearLayout", "Up_Or_Down");
 
                 }
             }

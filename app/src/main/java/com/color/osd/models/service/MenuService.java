@@ -384,6 +384,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080/1920;
 
             }
+            Adaptable_resolution();
 
             Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
 
