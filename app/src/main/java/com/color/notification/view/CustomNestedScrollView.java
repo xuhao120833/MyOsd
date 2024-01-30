@@ -44,20 +44,12 @@ public class CustomNestedScrollView extends NestedScrollView implements Instance
     //只测量大小
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-//        WindowManager.LayoutParams lp = (WindowManager.LayoutParams)getLayoutParams();
-//
-//        lp.x = 20*StaticVariableUtils.widthPixels/1920;
-//
-//        setLayoutParams(lp);
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //分辨率变化时，整个快捷中心的各种边距设置在MenuService 的方法Adaptable_resolution中完成
 
-
         //父view可以给多大空间
-//        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
-//        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
+        sizeHeight = MeasureSpec.getSize(heightMeasureSpec);//分辨率的高度
+        sizeWidth = sizeHeight * 1920 / 1080;//分辨率宽
 //        Log.d("CustomNestedScrollView", " onMeasure ");
 //        Log.d("CustomNestedScrollView", " 分辨率 " + String.valueOf(sizeWidth) + String.valueOf(sizeHeight));
 //        Log.d("CustomNestedScrollView", " 宽度 " + String.valueOf(getWidth()));

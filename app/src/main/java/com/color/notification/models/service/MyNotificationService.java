@@ -300,11 +300,6 @@ public class MyNotificationService extends NotificationListenerService implement
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
             StaticVariableUtils.trigger_onCreate =false;
-
-            //整个快捷中心的位置
-            STATIC_INSTANCE_UTILS.myNotification.lp.x = 20 * StaticVariableUtils.widthPixels / 1920;
-            STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
-
         }
 
 
@@ -338,9 +333,9 @@ public class MyNotificationService extends NotificationListenerService implement
     private void addMsg(StatusBarNotification sbn) throws PackageManager.NameNotFoundException {
 
         notification = sbn.getNotification();
-        Log.d("addMsg", "打印通知 " + String.valueOf(notification));
+        Log.d("showMsg", "打印通知 " + String.valueOf(notification));
         bundle = sbn.getNotification().extras;
-        Log.d("addMsg", "打印extras " + String.valueOf(bundle));
+        Log.d("showMsg", "打印extras " + String.valueOf(bundle));
         packageName = sbn.getPackageName();
         appName = getAppName();
         appIcon = getAppIcon();
@@ -349,9 +344,7 @@ public class MyNotificationService extends NotificationListenerService implement
         //notificationTitle = (String) notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE);
         contextIntent = notification.contentIntent;
 
-        Log.d("addMsg", "appName " + appName);
-
-        Log.d("addMsg", "contentIntent " + String.valueOf(contextIntent));
+        Log.d("showMsg", "appName " + appName);
 
         //蓝牙的单独拿出来处理，并从这里直接返回，后续逻辑不再执行
         if (("蓝牙".equals(appName) || "藍牙".equals(appName) || "Bluetooth".equals(appName)) && notification.extras != null) {
@@ -455,7 +448,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(mycontext.getString(R.string.传输完成点击查看));
+                            lanya_appName.setText(appName + "传输完成，点击查看");
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -472,7 +465,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(mycontext.getString(R.string.传输失败));
+                            lanya_appName.setText(appName + "传输失败");
 
                             StaticVariableUtils.lanya_first_accept_android_text = true;
                             StaticVariableUtils.lanya_number = -1;
@@ -491,7 +484,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(mycontext.getString(R.string.传输完成点击查看));
+                            lanya_appName.setText(appName + "传输完成，点击查看");
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -563,7 +556,7 @@ public class MyNotificationService extends NotificationListenerService implement
                     TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
                     ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
 
-                    content.setText((list.get(i).number + 1) + mycontext.getString(R.string.个通知));
+                    content.setText((list.get(i).number + 1) + "个通知");
                     Log.d(TAG, appName + "有" + String.valueOf(list.get(i).number) + "个通知");
                     Log.d(TAG, " text值" + String.valueOf(content.getContext()));
 //                    list.get(i).content = String.valueOf(content.getContext());
@@ -817,7 +810,7 @@ public class MyNotificationService extends NotificationListenerService implement
         //1、语言变化
         //Log.d("onConfigurationChanged", "语言_国家" + newConfig.locale.toLanguageTag());
         if (!newConfig.locale.toLanguageTag().equals(lastCountry)) {
-            Log.d("onConfigurationChanged 消息中心", "语言变化" + newConfig.locale.toLanguageTag());
+            //Log.d("onConfigurationChanged", "语言变化" + newConfig.locale.toLanguageTag());
 
             if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
 

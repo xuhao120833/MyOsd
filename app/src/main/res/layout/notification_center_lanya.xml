@@ -3,7 +3,7 @@
 <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearlanya"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
@@ -13,7 +13,7 @@
 
     <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notification_center_item_lanya2"
-        android:layout_width="match_parent"
+        android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="3dp"
@@ -71,7 +71,7 @@
 
     <com.color.notification.view.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notification_center_item_lanya"
-        android:layout_width="match_parent"
+        android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="3dp"

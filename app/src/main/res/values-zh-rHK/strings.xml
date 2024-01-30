@@ -20,12 +20,7 @@
     <string name="现在" translatable="false" >現在</string>
     <string name="正在传输文件" translatable="false" >正在傳輸文件</string>
     <string name="传输进度" translatable="false" >傳輸進度</string>
-    <string name="传输完成点击查看" translatable="false" >傳輸完成</string>
-    <string name="传输失败" translatable="false" >傳輸失敗</string>
 
     <string name="录屏3s后开始" translatable="false" >錄屏3秒后開始。</string>
     <string name="录屏已结束打开文件管理Movies目录查看" translatable="false" >錄屏已結束，打開文件管理Movies目錄查看。</string>
-
-    <string name="个通知" translatable="false" tools:ignore="ExtraTranslation">個通知</string>
-
 </resources>
