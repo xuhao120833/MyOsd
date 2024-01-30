@@ -284,7 +284,6 @@ public class NavigationBar implements Instance {
                 if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
                     STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.LEFT;
 
-//                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
                     STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
 
                     StaticVariableUtils.left_or_right = "left";//快捷中心在右侧打开
