@@ -89,6 +89,8 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("notification_center_linear", "id", getContext().getPackageName())) {
                     //notification_center_linear
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.setMargins(0, 0, 0, 20 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
@@ -119,7 +121,7 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("notification_center_title", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428*  StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 //                    layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 28 * StaticVariableUtils.heightPixels / 1080, 24* StaticVariableUtils.widthPixels / 1920, 20 * StaticVariableUtils.heightPixels / 1080);
                     layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 28 * StaticVariableUtils.heightPixels / 1080, 24* StaticVariableUtils.widthPixels / 1920, 0);
@@ -132,6 +134,8 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("notification_center", "id", getContext().getPackageName())) {
                     //notification_center
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.setMargins(0 , 10 * StaticVariableUtils.heightPixels / 1080, 0, 20 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
@@ -173,37 +177,6 @@ public class CustomLinearLayout extends LinearLayout {
             }
         }
 
-        if (getId() == getResources().getIdentifier("linear3", "id", getContext().getPackageName())) {
-            int count = getChildCount();
-            for (int i = 0; i < count; i++) {
-                View child = getChildAt(i);
-                if (child.getId() == getResources().getIdentifier("content", "id", getContext().getPackageName())) {
-                    //notification_center_title
-                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 278*StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
-                    child.setLayoutParams(layoutParams);
-                    layoutParams = null;
-                    Log.d("CustomLinearLayout", "content");
-
-                }
-
-                if (child.getId() == getResources().getIdentifier("Up_Or_Down", "id", getContext().getPackageName())) {
-                    //notification_center
-                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 40*StaticVariableUtils.widthPixels / 1920;
-                    layoutParams.height = 40*StaticVariableUtils.heightPixels / 1080;
-                    child.setLayoutParams(layoutParams);
-                    child.measure(MeasureSpec.makeMeasureSpec(40*StaticVariableUtils.widthPixels / 1920, MeasureSpec.EXACTLY),
-                            MeasureSpec.makeMeasureSpec(40*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
-                    layoutParams = null;
-                    Log.d("CustomLinearLayout", "Up_Or_Down");
-
-                }
-            }
-        }
-
         if (getId() == getResources().getIdentifier("linear4", "id", getContext().getPackageName())) {
             int count = getChildCount();
             for (int i = 0; i < count; i++) {
@@ -234,6 +207,7 @@ public class CustomLinearLayout extends LinearLayout {
 
         //3、notification_quick_settings.xml
         if (getId() == getResources().getIdentifier("quick_settings", "id", getContext().getPackageName())) {
+            Log.d("CustomLinearLayout", "执行到quick_settings");
             int count = getChildCount();
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
@@ -244,18 +218,20 @@ public class CustomLinearLayout extends LinearLayout {
                     ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
-                    Log.d("CustomLinearLayout", "tools");
+                    Log.d("CustomLinearLayout", "执行到tools");
 
                 }
 
                 if (child.getId() == getResources().getIdentifier("gridlayout", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
 //                    layoutParams.height = 92 * StaticVariableUtils.heightPixels / 1080;
+                    layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
-                    Log.d("CustomLinearLayout", "gridlayout");
+                    Log.d("CustomLinearLayout", "执行到gridlayout");
 
                 }
 
@@ -273,7 +249,9 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("brightness_frame", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 0,0,0);
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 0,24* StaticVariableUtils.widthPixels / 1920,0);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
                     Log.d("CustomLinearLayout", "brightness_frame");
@@ -294,7 +272,9 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("volume_frame", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 0,0,16 * StaticVariableUtils.heightPixels / 1080);
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.setMargins(24* StaticVariableUtils.widthPixels / 1920 , 0,24* StaticVariableUtils.widthPixels / 1920,24 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
                     Log.d("CustomLinearLayout", "volume_frame");
@@ -425,7 +405,9 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("notification_center_item_lanya2", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.setMargins(24*StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24*StaticVariableUtils.widthPixels / 1920, 6* StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
@@ -436,7 +418,9 @@ public class CustomLinearLayout extends LinearLayout {
                 if (child.getId() == getResources().getIdentifier("notification_center_item_lanya", "id", getContext().getPackageName())) {
                     //quick_settings_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+//                    layoutParams.width = 428*StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.setMargins(24*StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24*StaticVariableUtils.widthPixels / 1920, 6* StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;

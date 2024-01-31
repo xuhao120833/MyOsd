@@ -19,6 +19,7 @@ import android.service.notification.StatusBarNotification;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
@@ -215,8 +217,11 @@ public class MyNotificationService extends NotificationListenerService implement
             //6、记录语言国籍，在改变语言时使用。
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
+            //7、解决快捷中心闪动问题
+//            recyclerView.getItemAnimator().setChangeDuration(0);
+//            recyclerView.setHasFixedSize(true);
 
-            //7、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
+            //8、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
             //今日头条方案，只使用于Activity
 //        CustomDensityUtil.setCustomDensity(MyNotificationService.this, getApplication());
 //        //下面的逻辑用来计算density当分辨率变化的时候
@@ -300,6 +305,16 @@ public class MyNotificationService extends NotificationListenerService implement
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
             StaticVariableUtils.trigger_onCreate =false;
+
+            //切换语言之后，恢复快捷中心的位置，及按照分辨率适配边距(左侧或者右侧)
+            if("left".equals(StaticVariableUtils.left_or_right)) {
+                STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.LEFT;
+            } else if("right".equals(StaticVariableUtils.left_or_right)) {
+                STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.RIGHT;
+            }
+            STATIC_INSTANCE_UTILS.myNotification.lp.x = 20 * StaticVariableUtils.widthPixels / 1920;
+            STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
+
         }
 
 
@@ -448,7 +463,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + "传输完成，点击查看");
+                            lanya_appName.setText(appName + mycontext.getString(R.string.传输完成点击查看));
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -465,7 +480,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + "传输失败");
+                            lanya_appName.setText(appName + mycontext.getString(R.string.传输失败));
 
                             StaticVariableUtils.lanya_first_accept_android_text = true;
                             StaticVariableUtils.lanya_number = -1;
@@ -484,7 +499,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + "传输完成，点击查看");
+                            lanya_appName.setText(appName + mycontext.getString(R.string.传输完成点击查看));
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -556,7 +571,7 @@ public class MyNotificationService extends NotificationListenerService implement
                     TextView content = (TextView) list.get(i).mynotification_center.findViewById(R.id.content);
                     ImageView imageView = (ImageView) list.get(i).mynotification_center.findViewById(R.id.Up_Or_Down);
 
-                    content.setText((list.get(i).number + 1) + "个通知");
+                    content.setText((list.get(i).number + 1) + mycontext.getString(R.string.个通知));
                     Log.d(TAG, appName + "有" + String.valueOf(list.get(i).number) + "个通知");
                     Log.d(TAG, " text值" + String.valueOf(content.getContext()));
 //                    list.get(i).content = String.valueOf(content.getContext());
@@ -826,6 +841,7 @@ public class MyNotificationService extends NotificationListenerService implement
                 onCreate();
 
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+
             } else {
 //                notification_center_adapter.notifyDataSetChanged();
                 StaticVariableUtils.trigger_onCreate = true;

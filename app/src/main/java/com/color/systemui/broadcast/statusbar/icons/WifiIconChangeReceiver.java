@@ -141,7 +141,7 @@ public class WifiIconChangeReceiver extends BroadcastReceiver implements Instanc
                     if (wifiConnected && isWificanusful()) {
                         STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi3));
                     } else {
-                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi4_nonet));
+                        STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifi3_nonet));
                     }
                     break;
                 case 4:

@@ -9,7 +9,7 @@
 
     <com.color.notification.view.CustomLinearLayout
         android:id="@+id/quick_settings"
-        android:layout_width="214dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="3dp"
@@ -34,7 +34,7 @@
 
         <com.color.notification.view.CustomGridLayout
             android:id="@+id/gridlayout"
-            android:layout_width="214dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:columnCount="4"
@@ -148,7 +148,8 @@
                 android:id="@+id/screenrecord_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="12dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="center"
@@ -199,16 +200,17 @@
 
         <com.color.notification.view.CustomFrameLayout
             android:id="@+id/brightness_frame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:orientation="horizontal">
 
             <com.color.notification.view.CustomSeekBar
                 android:id="@+id/brightnessSeekBar"
-                android:layout_width="190dp"
+                android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:background="@android:color/transparent"
                 android:clickable="true"
@@ -260,17 +262,18 @@
 
         <com.color.notification.view.CustomFrameLayout
             android:id="@+id/volume_frame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:orientation="horizontal">
 
             <com.color.notification.view.CustomSeekBar
                 android:id="@+id/volumeSeekBar"
-                android:layout_width="190dp"
+                android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:background="@android:color/transparent"
                 android:clickable="true"

@@ -78,7 +78,7 @@ public class CustomGridLayout extends GridLayout {
                 if (child.getId() == getResources().getIdentifier("screenrecord_linear", "id", getContext().getPackageName())) {
                     //notification_center_title
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                    layoutParams.setMargins(48* StaticVariableUtils.widthPixels / 1920 , 0,0,0);
+                    layoutParams.setMargins(46* StaticVariableUtils.widthPixels / 1920 , 0,24* StaticVariableUtils.widthPixels / 1920,0);
                     child.setLayoutParams(layoutParams);
                     layoutParams = null;
                     Log.d("CustomGridLayout", "screenrecord_linear");

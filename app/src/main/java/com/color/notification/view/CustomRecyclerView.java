@@ -39,22 +39,53 @@ public class CustomRecyclerView extends RecyclerView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-//        if(getId() == getResources().getIdentifier("notification_quick_settings", "id", getContext().getPackageName())) {
-//            Log.d("CustomRecyclerView"," 执行1 ");
-//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
-//            layoutParams.setMargins(0,20*StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
-//            setLayoutParams(layoutParams);
-//        }
+        ViewGroup.MarginLayoutParams layoutParams;
+        if(getId() == getResources().getIdentifier("notification_quick_settings", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("frame2", "id", getContext().getPackageName())) {
+                    Log.d("CustomRecyclerView"," frame2 ");
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    child.setLayoutParams(layoutParams);
+                    layoutParams = null;
+                }
+            }
+
+            Log.d("CustomRecyclerView"," notification_quick_settings ");
+
+        }
 //
 //        if(getId() == getResources().getIdentifier("notification_center", "id", getContext().getPackageName())) {
-//            Log.d("CustomRecyclerView"," 执行2 ");
-//            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
-//            layoutParams.setMargins(0,10*StaticVariableUtils.heightPixels/1080,0,20*StaticVariableUtils.heightPixels/1080);
-//            setLayoutParams(layoutParams);
+//            int count = getChildCount();
+//            for (int i = 0; i < count; i++) {
+//                View child = getChildAt(i);
+//                if (child.getId() == getResources().getIdentifier("frame1", "id", getContext().getPackageName())) {
+//                    Log.d("CustomRecyclerView"," frame1 ");
+//                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    child.setLayoutParams(layoutParams);
+//                    layoutParams = null;
+//                }
+//
+//                if (child.getId() == getResources().getIdentifier("linearlanya", "id", getContext().getPackageName())) {
+//                    Log.d("CustomRecyclerView"," linearlanya ");
+//                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                    child.setLayoutParams(layoutParams);
+//                    layoutParams = null;
+//                }
+//
+//            }
+//            Log.d("CustomRecyclerView"," notification_center ");
 //        }
 
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override

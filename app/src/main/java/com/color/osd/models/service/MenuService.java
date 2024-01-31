@@ -48,7 +48,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import android.media.AudioManager;
+
 import com.color.osd.ContentObserver.BrightnessObeserver;
 import com.color.osd.broadcast.VolumeChangeReceiver;
 import com.color.osd.broadcast.VolumeFromFWReceiver;
@@ -372,18 +374,21 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
             defaultDisplay = mywindowmanager.getDefaultDisplay();
 
-            if(defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
+            if (defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
 
-                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920/1080;
+                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920 / 1080;
                 StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
 
             }
-            if(defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
+            if (defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
 
                 StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
-                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080/1920;
+                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080 / 1920;
 
             }
+
+            Adaptable_resolution();
+
 
             Log.d("onConfigurationChanged", "judge(screenHeightDp)" + judge(screenHeightDp));
 
@@ -517,7 +522,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                 if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -563,7 +568,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
     private boolean whichOne(KeyEvent event) {
         for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {
             if (KeyEventDispatcher.onKeyEvent(event, menuState)) {
-                Log.d("22BUG","MenuService whichOne 返回true");
+                Log.d("22BUG", "MenuService whichOne 返回true");
                 return true;
             }
         }
@@ -675,7 +680,7 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
             while (isDown) {
                 mainHandler.post(() -> {
                     Log.d(TAG, "run: " + settingChange);
-                    if (settingChange){
+                    if (settingChange) {
                         if (loop == 0) return;   // 第一次不执行，避免与settings应用的按键冲突，造成音量一瞬间减了两格
                         Log.d(TAG, "run: only settings");
                         // 注意！！！！此处这个判断条件是后来加的：settings应用的音量调整面板中，没有长按事件，因此把长按的功能集成到这里
@@ -685,12 +690,12 @@ public class MenuService extends AccessibilityService implements VolumeChangeLis
                             audioManager = (AudioManager) mycontext.getSystemService(Context.AUDIO_SERVICE);
                         }
                         int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-                        if (currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN){
+                        if (currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
                             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, --volume, AudioManager.FLAG_PLAY_SOUND);
-                        }else if(currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP){
+                        } else if (currKeyEvent.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
                             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, ++volume, AudioManager.FLAG_PLAY_SOUND);
                         }
-                    }else{
+                    } else {
                         Log.d(TAG, "run: not settings");
                         // 把事件分发下去，让OSD中的声音UI加载出来，并调整相关的音量
                         for (DispatchKeyEventInterface KeyEventDispatcher : listenerList) {

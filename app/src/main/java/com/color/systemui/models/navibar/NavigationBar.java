@@ -75,7 +75,7 @@ public class NavigationBar implements Instance {
             rightwhiteboard_intent = packageManager.getLaunchIntentForPackage(PACKAGE_WHITEBOARD);
             rightwhiteboard_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -281,16 +281,18 @@ public class NavigationBar implements Instance {
         leftnotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {
+
+                if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.GONE) {//悬浮窗在没有addView之前，状态也为GONE
+
                     STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.LEFT;
 
+                    //updateViewLayout这一步异常就走catch
                     STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
 
                     StaticVariableUtils.left_or_right = "left";//快捷中心在右侧打开
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
-
+                    
                     STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.setVisibility(View.GONE);
-
 
                 } else if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
                     STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
