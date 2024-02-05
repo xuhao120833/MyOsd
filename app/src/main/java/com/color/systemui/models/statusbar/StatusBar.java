@@ -4,6 +4,7 @@ import android.content.Context;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.LayoutInflater;
 import com.color.osd.R;
@@ -28,7 +29,7 @@ public class StatusBar implements Instance {
 
     public WindowManager.LayoutParams lp;
 
-    public View statusbar;
+    public ViewGroup statusbar;
 
     public ImageView udisk , wifi , ethernet , mobile , hotspot;
 
@@ -73,7 +74,7 @@ public class StatusBar implements Instance {
     private void initView() {
 
         inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        statusbar = inflater.inflate(R.layout.statusbar, null);
+        statusbar = (ViewGroup) inflater.inflate(R.layout.statusbar, null);
         udisk = (ImageView) statusbar.findViewById(R.id.Udisk);
         wifi = (ImageView) statusbar.findViewById(R.id.Wifi);
         ethernet = (ImageView) statusbar.findViewById(R.id.Ethernet);

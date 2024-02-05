@@ -11,6 +11,8 @@
     <string name="摄像头" translatable="false">攝像頭</string>
     <string name="录屏" translatable="false">錄屏</string>
 
+    <string name="蓝牙" translatable="false">藍牙</string>
+
     <string name="消息中心" translatable="false">消息中心</string>
     <string name="一分钟前" translatable="false" >分鐘前</string>
     <string name="一小时前" translatable="false" >小時前</string>

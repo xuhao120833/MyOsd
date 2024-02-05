@@ -18,12 +18,14 @@
             android:id="@+id/text"
             android:layout_width="260dp"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:textColor="#FFFFFF" />
 
         <com.color.systemui.view.navibar.navibar_source.SourceImageView
             android:id="@+id/X"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="false"

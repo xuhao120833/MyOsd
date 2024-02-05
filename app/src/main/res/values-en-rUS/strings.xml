@@ -17,6 +17,8 @@
     <string name="摄像头" translatable="false">Camera</string>
     <string name="录屏" translatable="false">Record</string>
 
+    <string name="蓝牙" translatable="false">Bluetooth</string>
+
     <string name="消息中心" translatable="false">Message Center</string>
     <string name="一分钟前" translatable="false" >minute ago</string>
     <string name="一小时前" translatable="false" >hour ago</string>

@@ -25,9 +25,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.color.notification.Contentobserver.BrightnessChangeObserver;
 import com.color.notification.Contentobserver.EyeProtectionObserver;
@@ -96,6 +98,10 @@ public class MyNotificationService extends NotificationListenerService implement
 
 
     public LinearLayoutManager notification_center_manager;
+
+    //消息中心备用得manager
+    public StaggeredGridLayoutManager verticalManager;
+
     public LinearLayoutManager quick_settings_manager;
 
     public android.app.Notification notification;
@@ -134,16 +140,16 @@ public class MyNotificationService extends NotificationListenerService implement
             mywindowmanager = (WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE);
             defaultDisplay = mywindowmanager.getDefaultDisplay();
 
-            if(defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
+            if (defaultDisplay.getWidth() > defaultDisplay.getHeight()) {
 
-                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920/1080;
+                StaticVariableUtils.widthPixels = defaultDisplay.getHeight() * 1920 / 1080;
                 StaticVariableUtils.heightPixels = defaultDisplay.getHeight();
 
             }
-            if(defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
+            if (defaultDisplay.getWidth() < defaultDisplay.getHeight()) {
 
                 StaticVariableUtils.widthPixels = defaultDisplay.getWidth();
-                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080/1920;
+                StaticVariableUtils.heightPixels = defaultDisplay.getWidth() * 1080 / 1920;
 
             }
 
@@ -185,16 +191,20 @@ public class MyNotificationService extends NotificationListenerService implement
             }
             notification_center_manager = new LinearLayoutManager(mycontext);
             quick_settings_manager = new LinearLayoutManager(mycontext);
+            verticalManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
             quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
             notification_center_manager.setStackFromEnd(true);
             notification_center_manager.setReverseLayout(true);
-            recyclerView.setLayoutManager(notification_center_manager);
+            verticalManager.setReverseLayout(true);
+            //这里使用verticalManager替代notification_center_manager 解决添加蓝牙通知到消息中心时的抖动问题
+            recyclerView.setLayoutManager(verticalManager);
             recyclerView.setAdapter(notification_center_adapter);
             Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
-
             recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
             recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
+            //这里设置为false的意思是，不能拖动NestedScrollingView中的RecyclerView
+            recyclerView_quick_settings.setNestedScrollingEnabled(false);
 
             //4、各种ContentObserver
             //护眼模式
@@ -281,7 +291,14 @@ public class MyNotificationService extends NotificationListenerService implement
 //                }, null);
 //            }
 //        }
-        } else if(StaticVariableUtils.trigger_onCreate) {
+        } else if (StaticVariableUtils.trigger_onCreate) {
+
+            mycontext = getApplicationContext();
+
+            for (Notification_Item item : list) {
+                // 在这里处理每个元素item
+                item.Item_trigger_onCreate = true;
+            }
 
             mynotification.setContext(mycontext);
             setInstance(mynotification);
@@ -289,31 +306,51 @@ public class MyNotificationService extends NotificationListenerService implement
             StaticVariableUtils.recyclerView = recyclerView;
             recyclerView_quick_settings = STATIC_INSTANCE_UTILS.myNotification.notification.findViewById(R.id.notification_quick_settings);
 
+            try {
+                //快捷设置
+                notification_quick_settings_adapter = new Notification_Quick_Settings_Adapter<>();
+                notification_quick_settings_adapter.setContext(mycontext);
+                setInstance(notification_quick_settings_adapter);
+
+                //消息中心
+                notification_center_adapter = new Notification_Center_Adapter();
+                notification_center_adapter.setContext(mycontext, list);
+                setInstance(notification_center_adapter);
+                StaticVariableUtils.list = list;
+
+            } catch (PackageManager.NameNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
             notification_center_manager = new LinearLayoutManager(mycontext);
             quick_settings_manager = new LinearLayoutManager(mycontext);
+            verticalManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
             quick_settings_manager.setOrientation(LinearLayoutManager.VERTICAL);
             notification_center_manager.setStackFromEnd(true);
             notification_center_manager.setReverseLayout(true);
-            recyclerView.setLayoutManager(notification_center_manager);
+            verticalManager.setReverseLayout(true);
+            recyclerView.setLayoutManager(verticalManager);
             recyclerView.setAdapter(notification_center_adapter);
-            Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
 
             recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
             recyclerView_quick_settings.setAdapter(notification_quick_settings_adapter);
 
+//            StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
+//            notification_center_adapter.notifyDataSetChanged();
+
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
-            StaticVariableUtils.trigger_onCreate =false;
-
             //切换语言之后，恢复快捷中心的位置，及按照分辨率适配边距(左侧或者右侧)
-            if("left".equals(StaticVariableUtils.left_or_right)) {
+            if ("left".equals(StaticVariableUtils.left_or_right)) {
                 STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.LEFT;
-            } else if("right".equals(StaticVariableUtils.left_or_right)) {
+            } else if ("right".equals(StaticVariableUtils.left_or_right)) {
                 STATIC_INSTANCE_UTILS.myNotification.lp.gravity = Gravity.RIGHT;
             }
             STATIC_INSTANCE_UTILS.myNotification.lp.x = 20 * StaticVariableUtils.widthPixels / 1920;
             STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
+
+            StaticVariableUtils.trigger_onCreate = false;
 
         }
 
@@ -381,6 +418,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
                 if (notification.extras.containsKey("android.progress")) {
                     Log.d("lanya", " 蓝牙传输百分比" + String.valueOf(notification.extras.getInt("android.progress", 0)));
+                    Log.d("lanya", " StaticVariableUtils.notification_has_lanya " + String.valueOf(StaticVariableUtils.notification_has_lanya));
                     StaticVariableUtils.android_lanya_progress = notification.extras.getInt("android.progress", 0);
                     if (StaticVariableUtils.android_lanya_progress == 0 && !StaticVariableUtils.notification_has_lanya) {
                         int i = -1;
@@ -406,18 +444,24 @@ public class MyNotificationService extends NotificationListenerService implement
                         StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
 
                         list.add(notificationItem);
+                        StaticVariableUtils.notification_item_lanya = notificationItem;
+                        Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
                         notification_center_adapter.notifyItemInserted(list.size() - 1);
 
                         StaticVariableUtils.notification_has_lanya = true;
 
-                    } else {
+                    }
+                    Log.d("lanya"," 断点 ");
+                    if(StaticVariableUtils.notification_has_lanya){
                         //后面就是动态的改变传输的进度
                         int i = -1;
                         i = traverse_list(appName);
                         list.get(i).pendingIntent = null;
 
+                        Log.d("lanya"," 设置蓝牙传输进度 "+i);
+
                         TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                        lanya_appName.setText(appName + " " + mycontext.getString(R.string.传输进度));
+                        lanya_appName.setText(mycontext.getString(R.string.传输进度));
 
                         TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                         lanya_progress.setText(StaticVariableUtils.android_lanya_progress + "%");
@@ -425,6 +469,7 @@ public class MyNotificationService extends NotificationListenerService implement
                         CustomSeekBar lanya_seekbar = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya);
                         lanya_seekbar.setProgress(StaticVariableUtils.android_lanya_progress);
                     }
+
                 }
 
                 if (notification.extras.containsKey("android.text") && StaticVariableUtils.notification_has_lanya) {
@@ -463,7 +508,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + mycontext.getString(R.string.传输完成点击查看));
+                            lanya_appName.setText(mycontext.getString(R.string.传输完成点击查看));
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -480,7 +525,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + mycontext.getString(R.string.传输失败));
+                            lanya_appName.setText(mycontext.getString(R.string.传输失败));
 
                             StaticVariableUtils.lanya_first_accept_android_text = true;
                             StaticVariableUtils.lanya_number = -1;
@@ -499,7 +544,7 @@ public class MyNotificationService extends NotificationListenerService implement
                             int i = -1;
                             i = traverse_list(appName);
                             TextView lanya_appName = list.get(i).mynotification_center.findViewById(R.id.appName_lanya);
-                            lanya_appName.setText(appName + mycontext.getString(R.string.传输完成点击查看));
+                            lanya_appName.setText(mycontext.getString(R.string.传输完成点击查看));
 
                             TextView lanya_progress = list.get(i).mynotification_center.findViewById(R.id.seekbar_lanya_text);
                             lanya_progress.setText(100 + "%");
@@ -621,13 +666,9 @@ public class MyNotificationService extends NotificationListenerService implement
                 StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
 
                 list.add(notificationItem);
-                notification_center_adapter.notifyItemInserted(list.size() - 1);
-                //注意，notifyItemInserted有个比较恶心的特性：插入的位置在list末尾会按照 onCreateViewHolder ——> onBindViewHolder 的顺序调用
-                //插入的位置如果在list中间，则会直接调用onBindViewHolder
                 Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
+                notification_center_adapter.notifyItemInserted(list.size() - 1);
             }
-//            Log.d(TAG,"list.size() - 1 的值 "+String.valueOf(list.size() - 1));
-//            Log.d(TAG,"     ");
 
 //            notificationItem = new Notification_Item();
 ////            notificationItem.time = String.valueOf(number++);
@@ -832,12 +873,7 @@ public class MyNotificationService extends NotificationListenerService implement
 //                notification_center_adapter.notifyDataSetChanged();
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
                 StaticVariableUtils.trigger_onCreate = true;
-                if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
-                    StaticVariableUtils.recyclerView.removeAllViews();
-                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
-                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
-                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
-                }
+
                 onCreate();
 
                 STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
@@ -845,12 +881,7 @@ public class MyNotificationService extends NotificationListenerService implement
             } else {
 //                notification_center_adapter.notifyDataSetChanged();
                 StaticVariableUtils.trigger_onCreate = true;
-                if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
-                    StaticVariableUtils.recyclerView.removeAllViews();
-                    StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
-                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
-                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
-                }
+
                 onCreate();
             }
 

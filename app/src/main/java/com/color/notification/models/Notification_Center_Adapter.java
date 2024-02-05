@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @创建者 kevinxu
@@ -68,6 +70,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     public String TAG = "Notification_Center_Adapter";
 
+    private static final int VIEW_TYPE_TYPE = 1;
+
+    private static final int VIEW_TYPE_TYPE_BlueTooth = 2;
+
     public Notification_Center_Adapter() {
 
     }
@@ -82,40 +88,26 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     @NonNull
     @Override
     public T onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("Notification_Center_Adapter", " 执行onCreateViewHolder");
 
-//        myparent = parent;
-        Log.d("MyNotificationService", " 走到onCreateViewHolder");
+        Log.d("Notification_Center_Adapter ", " viewType值 " + String.valueOf(viewType));
 
-        Log.d("notification_xu_su ", "4、 onCreateViewHolder " + String.valueOf(viewType));
-//        if (number == 0) {
-//            number++;
-//            notification_center_title = LayoutInflater.from(mycontext).inflate(R.layout.notification_center_title, parent, false);
-//            setCenterTitleClick();
-//            center_title_viewHolder = new Center_Title_ViewHolder(notification_center_title);
-//            return (T) center_title_viewHolder;
-//        } else if (number > 0) {
-//            number++;
-        if (list.size() != 0 && StaticVariableUtils.bluetooth_delivery.equals("off")) {
-//            inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            leftNavibar = inflater.inflate(R.layout.navibar_left, null);
-//            notification_center = inflater.inflate(R.layout.notification_center, null);
+        myparent = parent;
+        if (list.size() != 0 && StaticVariableUtils.bluetooth_delivery.equals("off") && viewType == 1) {
             notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center, parent, false);
-//            initView(notification_center);
             center_viewHolder = new Center_ViewHolder(notification_center);
+
             StaticVariableUtils.onCreate_To_onBind = true;
             return (T) center_viewHolder;
-        } else if (list.size() != 0 && StaticVariableUtils.bluetooth_delivery.equals("on")) {
+        } else if ((list.size() != 0 && StaticVariableUtils.bluetooth_delivery.equals("on")) || viewType == 2) {
+            Log.d("Notification_Center_Adapter", " 创建蓝牙通知");
             notification_center = LayoutInflater.from(mycontext).inflate(R.layout.notification_center_lanya, parent, false);
-//            initView(notification_center);
             center_title_viewHolder = new Center_Title_ViewHolder(notification_center);
             StaticVariableUtils.onCreate_To_onBind = true;
             return (T) center_title_viewHolder;
 
         }
         return null;
-//        }
-
-//        return null;
     }
 
     @Override
@@ -123,34 +115,67 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         return position;
     }
 
+    /**
+     *
+     * @param position Item位置
+     * @return 返回viewType
+     * TODO:这里返回的viewType，在onCreateViewHolder中接收，用于在通知中心有蓝牙通知时切换语言，判断改创建哪一个Holder
+     */
+    @Override
+    public int getItemViewType(int position) {
+        // 根据位置信息返回不同的 viewType
+
+        if(list.indexOf(StaticVariableUtils.notification_item_lanya) != -1 && list.indexOf(StaticVariableUtils.notification_item_lanya) == position) {
+            return VIEW_TYPE_TYPE_BlueTooth;
+        }else {
+            return VIEW_TYPE_TYPE;
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull T holder, @SuppressLint("RecyclerView") int position) {
 
-        if (holder.getClass() == Center_ViewHolder.class) {
+        try {
+            Log.d("Notification_Center_Adapter ", " 蓝牙position的值为 " + String.valueOf(list.indexOf(StaticVariableUtils.notification_item_lanya)));
+            Log.d("Notification_Center_Adapter ", "5、 onBindViewHolder ，对应position值为 " + String.valueOf(position));
 
-            Log.d("notification_xu_su ", "5、 onBindViewHolder ，对应position值为 " + String.valueOf(position));
+            if (holder.getClass() == Center_ViewHolder.class) {
 
-            if (list.get(position).mynotification_center == null) {
-                Log.d("notification_xu_su ", "5、 绑定点击事件");
-//                initListView(position);
-                bindItemViewHolder((Center_ViewHolder) holder, position);
-                list.get(position).mynotification_center = notification_center;
+                Log.d("Notification_Center_Adapter ", "普通通知绑定点击事件 " + String.valueOf(position));
 
-            }
+                if (list.get(position).mynotification_center == null || list.get(position).Item_trigger_onCreate) {
+
+                    bindItemViewHolder((Center_ViewHolder) holder, position);
+                    list.get(position).mynotification_center = notification_center;
+
+                    list.get(position).Item_trigger_onCreate = false;
+
+                }
 //            bindItemViewHolder((Center_ViewHolder) holder, position);
 //            list.get(position).mynotification_center = notification_center;
-        } else if (holder.getClass() == Center_Title_ViewHolder.class) {
-            if (list.get(position).mynotification_center == null) {
+            } else if (holder.getClass() == Center_Title_ViewHolder.class) {
 
-                bindSeekbarHolder((Center_Title_ViewHolder) holder, position);
-                list.get(position).mynotification_center = notification_center;
+                Log.d("Notification_Center_Adapter ", "蓝牙通知绑定点击事件 " + String.valueOf(position));
 
+                if (list.get(position).mynotification_center == null || list.get(position).Item_trigger_onCreate) {
+
+                    Log.d("Notification_Center_Adapter ", " 改变语言，蓝牙的位置 " + String.valueOf(position));
+
+                    bindSeekbarHolder((Center_Title_ViewHolder) holder, position);
+                    list.get(position).mynotification_center = notification_center;
+
+                    list.get(position).Item_trigger_onCreate = false;
+
+                }
             }
-        }
 
-        StaticVariableUtils.onCreate_To_onBind = false;
-        if (StaticVariableUtils.bluetooth_delivery.equals("on")) {
-            StaticVariableUtils.bluetooth_delivery = "off";
+            StaticVariableUtils.onCreate_To_onBind = false;
+            if (StaticVariableUtils.bluetooth_delivery.equals("on")) {
+                StaticVariableUtils.bluetooth_delivery = "off";
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -184,8 +209,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         Notification_Item notification_item = null;
 
+        public int onCreat_minutes = 0, onCreat_hours = 0;
 
         public View mynotification_center = null;
+
 
         public Center_ViewHolder(View view) {
             super(view);
@@ -228,6 +255,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             startTimer(240);
             startTimer(270);
             startTimer(300);
+
         }
 
         private void startTimer(final int minutes) {
@@ -242,99 +270,273 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             // 在主线程上更新 UI
                             switch (minutes) {
                                 case 1:
-                                    time.setText(1+mycontext.getString(R.string.一分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(1 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 59) {
+                                            time.setText(onCreat_minutes + 1 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
+
 //                                    time.setText("1分钟前");
                                     break;
                                 case 2:
-                                    time.setText(2+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(2 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 58) {
+                                            time.setText(onCreat_minutes + 2 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("2分钟前");
                                     break;
                                 case 3:
-                                    time.setText(3+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(3 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 57) {
+                                            time.setText(onCreat_minutes + 3 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("3分钟前");
                                     break;
                                 case 4:
-                                    time.setText(4+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(4 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 56) {
+                                            time.setText(onCreat_minutes + 4 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("4分钟前");
                                     break;
                                 case 5:
-                                    time.setText(5+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(5 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 55) {
+                                            time.setText(onCreat_minutes + 5 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("5分钟前");
                                     break;
                                 case 10:
-                                    time.setText(10+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(10 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 50) {
+                                            time.setText(onCreat_minutes + 10 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("10分钟前");
                                     break;
                                 case 15:
-                                    time.setText(15+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(15 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 45) {
+                                            time.setText(onCreat_minutes + 15 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("15分钟前");
                                     break;
                                 case 20:
-                                    time.setText(20+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(20 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 40) {
+                                            time.setText(onCreat_minutes + 20 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("20分钟前");
                                     break;
                                 case 25:
-                                    time.setText(25+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(25 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 35) {
+                                            time.setText(onCreat_minutes + 25 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("25分钟前");
                                     break;
                                 case 30:
-                                    time.setText(30+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(30 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 30) {
+                                            time.setText(onCreat_minutes + 30 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("30分钟前");
                                     break;
                                 case 35:
-                                    time.setText(35+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(35 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 25) {
+                                            time.setText(onCreat_minutes + 35 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("35分钟前");
                                     break;
                                 case 40:
-                                    time.setText(40+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(40 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 20) {
+                                            time.setText(onCreat_minutes + 40 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("40分钟前");
                                     break;
                                 case 45:
-                                    time.setText(45+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(45 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 15) {
+                                            time.setText(onCreat_minutes + 45 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("45分钟前");
                                     break;
                                 case 50:
-                                    time.setText(50+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(50 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 10) {
+                                            time.setText(onCreat_minutes + 50 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("50分钟前");
                                     break;
                                 case 55:
-                                    time.setText(55+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(55 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 5) {
+                                            time.setText(onCreat_minutes + 55 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("55分钟前");
                                     break;
                                 case 60:
-                                    time.setText(1+mycontext.getString(R.string.一小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(1 + mycontext.getString(R.string.一小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 1 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(1 + mycontext.getString(R.string.一小时前));
 //                                    time.setText("1小时前");
                                     break;
                                 case 90:
-                                    time.setText(1.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(1.5 + mycontext.getString(R.string.一小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 1.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(1.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("1.5小时前");
                                     break;
                                 case 120:
-                                    time.setText(2+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(2 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 2 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(2 + mycontext.getString(R.string.小时前));
 //                                    time.setText("2小时前");
                                     break;
                                 case 150:
-                                    time.setText(2.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(2.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 2.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(2.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("2.5小时前");
                                     break;
                                 case 180:
-                                    time.setText(3+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(3 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 3 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(3 + mycontext.getString(R.string.小时前));
 //                                    time.setText("3小时前");
                                     break;
                                 case 210:
-                                    time.setText(3.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(3.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 3.5 + mycontext.getString(R.string.小时前));
+                                    }
+//                                    time.setText(3.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("3.5小时前");
                                     break;
                                 case 240:
-                                    time.setText(4+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(4 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 4 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(4 + mycontext.getString(R.string.小时前));
 //                                    time.setText("4小时前");
                                     break;
                                 case 270:
-                                    time.setText(4.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(4.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 4.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(4.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("4.5小时前");
                                     break;
                                 case 300:
-                                    time.setText(5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("5小时前");
                                     break;
                                 // 添加其他时间间隔的文本设置...
@@ -349,6 +551,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         }
 
+
     }
 
 
@@ -356,7 +559,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         private Handler handler = new Handler(Looper.getMainLooper());
 
-        TextView appName = null, time = null, lanya_seekbar_text, transmission, filename ;
+        TextView appName = null, time = null, lanya_seekbar_text, transmission, filename;
 
         CustomSeekBar lanya_seekbar = null;
 
@@ -368,6 +571,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         Notification_Item notification_item = null;
 
+        int onCreat_minutes = 0, onCreat_hours = 0;
 
         public View mynotification_center = null;
 
@@ -434,99 +638,273 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             // 在主线程上更新 UI
                             switch (minutes) {
                                 case 1:
-                                    time.setText(1+mycontext.getString(R.string.一分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(1 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 59) {
+                                            time.setText(onCreat_minutes + 1 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
+
 //                                    time.setText("1分钟前");
                                     break;
                                 case 2:
-                                    time.setText(2+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(2 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 58) {
+                                            time.setText(onCreat_minutes + 2 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("2分钟前");
                                     break;
                                 case 3:
-                                    time.setText(3+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(3 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 57) {
+                                            time.setText(onCreat_minutes + 3 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("3分钟前");
                                     break;
                                 case 4:
-                                    time.setText(4+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(4 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 56) {
+                                            time.setText(onCreat_minutes + 4 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("4分钟前");
                                     break;
                                 case 5:
-                                    time.setText(5+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(5 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 55) {
+                                            time.setText(onCreat_minutes + 5 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("5分钟前");
                                     break;
                                 case 10:
-                                    time.setText(10+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(10 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 50) {
+                                            time.setText(onCreat_minutes + 10 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("10分钟前");
                                     break;
                                 case 15:
-                                    time.setText(15+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(15 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 45) {
+                                            time.setText(onCreat_minutes + 15 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("15分钟前");
                                     break;
                                 case 20:
-                                    time.setText(20+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(20 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 40) {
+                                            time.setText(onCreat_minutes + 20 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("20分钟前");
                                     break;
                                 case 25:
-                                    time.setText(25+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(25 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 35) {
+                                            time.setText(onCreat_minutes + 25 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("25分钟前");
                                     break;
                                 case 30:
-                                    time.setText(30+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(30 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 30) {
+                                            time.setText(onCreat_minutes + 30 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("30分钟前");
                                     break;
                                 case 35:
-                                    time.setText(35+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(35 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 25) {
+                                            time.setText(onCreat_minutes + 35 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("35分钟前");
                                     break;
                                 case 40:
-                                    time.setText(40+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(40 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 20) {
+                                            time.setText(onCreat_minutes + 40 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("40分钟前");
                                     break;
                                 case 45:
-                                    time.setText(45+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(45 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 15) {
+                                            time.setText(onCreat_minutes + 45 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("45分钟前");
                                     break;
                                 case 50:
-                                    time.setText(50+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(50 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 10) {
+                                            time.setText(onCreat_minutes + 50 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("50分钟前");
                                     break;
                                 case 55:
-                                    time.setText(55+mycontext.getString(R.string.分钟前));
+                                    if (onCreat_minutes == 0) {
+                                        time.setText(55 + mycontext.getString(R.string.一分钟前));
+                                    } else {
+                                        if (getNumberFromString(time.getText().toString()) < 5) {
+                                            time.setText(onCreat_minutes + 55 + mycontext.getString(R.string.分钟前));
+                                        } else {
+                                            time.setText(1 + mycontext.getString(R.string.一小时前));
+                                        }
+                                    }
 //                                    time.setText("55分钟前");
                                     break;
                                 case 60:
-                                    time.setText(1+mycontext.getString(R.string.一小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(1 + mycontext.getString(R.string.一小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 1 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(1 + mycontext.getString(R.string.一小时前));
 //                                    time.setText("1小时前");
                                     break;
                                 case 90:
-                                    time.setText(1.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(1.5 + mycontext.getString(R.string.一小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 1.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(1.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("1.5小时前");
                                     break;
                                 case 120:
-                                    time.setText(2+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(2 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 2 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(2 + mycontext.getString(R.string.小时前));
 //                                    time.setText("2小时前");
                                     break;
                                 case 150:
-                                    time.setText(2.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(2.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 2.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(2.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("2.5小时前");
                                     break;
                                 case 180:
-                                    time.setText(3+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(3 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 3 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(3 + mycontext.getString(R.string.小时前));
 //                                    time.setText("3小时前");
                                     break;
                                 case 210:
-                                    time.setText(3.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(3.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 3.5 + mycontext.getString(R.string.小时前));
+                                    }
+//                                    time.setText(3.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("3.5小时前");
                                     break;
                                 case 240:
-                                    time.setText(4+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(4 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 4 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(4 + mycontext.getString(R.string.小时前));
 //                                    time.setText("4小时前");
                                     break;
                                 case 270:
-                                    time.setText(4.5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(4.5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 4.5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(4.5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("4.5小时前");
                                     break;
                                 case 300:
-                                    time.setText(5+mycontext.getString(R.string.小时前));
+                                    if (onCreat_hours == 0) {
+                                        time.setText(5 + mycontext.getString(R.string.小时前));
+                                    } else {
+                                        time.setText(onCreat_hours + 5 + mycontext.getString(R.string.小时前));
+                                    }
+
+//                                    time.setText(5 + mycontext.getString(R.string.小时前));
 //                                    time.setText("5小时前");
                                     break;
                                 // 添加其他时间间隔的文本设置...
@@ -538,7 +916,6 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
             timer = null;
 
-
         }
 
 
@@ -548,12 +925,65 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     private void bindItemViewHolder(Center_ViewHolder holder, int position) {
         if (list.size() != 0) {
             holder.appName.setText(list.get(position).appName);
-            holder.time.setText(list.get(position).time);
-            holder.content.setText(list.get(position).content);
+            if (list.get(position).Item_trigger_onCreate) {
+                TextView text = list.get(position).mynotification_center.findViewById(R.id.time);
+                String text_string = (String) text.getText();
+                Log.d("bindItemViewHolder ", text_string);
+                if (text_string.contains("分钟") || text_string.contains("分鐘") || text_string.contains("minute")) {
+                    Log.d("bindItemViewHolder", " text " + text.getText());
+                    // 使用正则表达式提取数字
+                    holder.onCreat_minutes = getNumberFromString(text_string);
+                    if (holder.onCreat_minutes == 1) {
+                        holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.一分钟前));
+                    } else {
+                        holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.分钟前));
+                    }
+
+                } else if (text_string.contains("小時") || text_string.contains("小时") || text_string.contains("hour")) {
+                    Log.d("bindItemViewHolder", " text " + text.getText());
+                    holder.onCreat_hours = getNumberFromString(text_string);
+                    if (holder.onCreat_hours == 1) {
+                        holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.一小时前));
+                    } else {
+                        holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.小时前));
+                    }
+
+                } else if (text_string.contains("现在") || text_string.contains("現在") || text_string.contains("now")) {
+                    Log.d("bindItemViewHolder", " text " + text.getText());
+                    holder.time.setText(mycontext.getString(R.string.现在));
+                }
+
+                if (list.get(position).isMultiple_Messages && !list.get(position).isExpand) {
+                    ImageView imageView = (ImageView) notification_center.findViewById(R.id.Up_Or_Down);
+                    imageView.setImageResource(R.drawable.notification_center_down);
+                    if (imageView.getVisibility() != View.VISIBLE) {
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                    holder.content.setText(list.get(position).number + 1 + mycontext.getString(R.string.个通知));
+                    Log.d("bindItemViewHolder", " number值 " + list.get(position).number);
+                } else if (list.get(position).isMultiple_Messages && list.get(position).isExpand) {
+                    ImageView imageView = (ImageView) notification_center.findViewById(R.id.Up_Or_Down);
+                    imageView.setImageResource(R.drawable.notification_center_up);
+                    if (imageView.getVisibility() != View.VISIBLE) {
+                        imageView.setVisibility(View.VISIBLE);
+                    }
+                    holder.content.setText(list.get(position).number + 1 + mycontext.getString(R.string.个通知));
+                } else if(!list.get(position).isMultiple_Messages) {
+                    holder.content.setText(list.get(position).content);
+                }
+
+
+            } else if (!list.get(position).Item_trigger_onCreate) {
+                holder.time.setText(list.get(position).time);
+                holder.content.setText(list.get(position).content);
+            }
+
+//            holder.content.setText(list.get(position).content);
             holder.Icon.setImageDrawable(list.get(position).Icon);
             holder.pendingIntent = list.get(position).pendingIntent;
             holder.notification_item = list.get(position);
 
+            Log.d("notification_xu_su ", " 绑定点击事件w");
             holder.mynotification_center.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -615,10 +1045,57 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     private void bindSeekbarHolder(Center_Title_ViewHolder holder, int position) {
         if (list.size() != 0) {
-            holder.appName.setText(list.get(position).appName + " "+mycontext.getString(R.string.正在传输文件));
-            holder.time.setText(list.get(position).time);
+            if (list.get(position).Item_trigger_onCreate) {
+
+                list.get(position).appName = mycontext.getString(R.string.蓝牙);
+
+                TextView transmission = list.get(position).mynotification_center.findViewById(R.id.transmission);
+                String text_transmission = (String) transmission.getText();
+                holder.transmission.setVisibility(View.VISIBLE);
+                holder.transmission.setText(text_transmission);
+
+                TextView filename = list.get(position).mynotification_center.findViewById(R.id.filename);
+                String text_filename = (String) filename.getText();
+                holder.filename.setText(text_filename);
+
+                TextView appName = list.get(position).mynotification_center.findViewById(R.id.appName_lanya);
+                String text_appName = (String) appName.getText();
+                holder.appName.setText(text_appName);
+
+                TextView time = list.get(position).mynotification_center.findViewById(R.id.time_lanya);
+                String text_time = (String) time.getText();
+
+                TextView lanya_progress = list.get(position).mynotification_center.findViewById(R.id.seekbar_lanya_text);
+                String text_progress = (String) lanya_progress.getText();
+                holder.lanya_seekbar_text.setText(text_progress);
+
+                CustomSeekBar lanya_seekbar = list.get(position).mynotification_center.findViewById(R.id.seekbar_lanya);
+                holder.lanya_seekbar.setProgress(lanya_seekbar.getProgress());
+
+                if (text_time.contains("分钟") || text_time.contains("分鐘") || text_time.contains("minute")) {
+                    holder.onCreat_minutes = getNumberFromString(text_time);
+                    if (holder.onCreat_minutes == 1) {
+                        holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.一分钟前));
+                    } else {
+                        holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.分钟前));
+                    }
+                } else if (text_time.contains("小時") || text_time.contains("小时") || text_time.contains("hour")) {
+                    holder.onCreat_hours = getNumberFromString(text_time);
+                    if (holder.onCreat_hours == 1) {
+                        holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.一小时前));
+                    } else {
+                        holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.小时前));
+                    }
+                } else if (text_time.contains("现在") || text_time.contains("現在") || text_time.contains("now")) {
+                    holder.time.setText(mycontext.getString(R.string.现在));
+                }
+
+            } else if (!list.get(position).Item_trigger_onCreate) {
+                holder.appName.setText(list.get(position).appName);
+                holder.time.setText(list.get(position).time);
+                holder.lanya_seekbar.setProgress(list.get(position).lanya_progress);
+            }
             holder.Icon.setImageDrawable(list.get(position).Icon);
-            holder.lanya_seekbar.setProgress(list.get(position).lanya_progress);
             holder.pendingIntent = list.get(position).pendingIntent;
             holder.notification_item = list.get(position);
 
@@ -630,7 +1107,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                     try {
                         int mypostion = list.indexOf(holder.notification_item);
 
-                        if(list.get(mypostion).pendingIntent != null){
+                        if (list.get(mypostion).pendingIntent != null) {
                             list.get(mypostion).pendingIntent.send();
                             list.get(mypostion).mynotification_center.clearFocus();
                             list.remove(mypostion);
@@ -745,6 +1222,22 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             notifyItemRemoved(mypostion);
             notifyItemChanged(0, list.size());
         }
+
+    }
+
+    private int getNumberFromString(String text_string) {
+        Pattern pattern = Pattern.compile("\\d+"); // 匹配一个或多个数字
+        Matcher matcher = pattern.matcher(text_string);
+        String extractedNumber = "";
+        // 查找匹配的数字
+        if (matcher.find()) {
+            extractedNumber = matcher.group();
+            Log.d("bindItemViewHolder", " 提取到的数字 " + extractedNumber);
+            return Integer.parseInt(extractedNumber);
+        } else {
+            return 0;
+        }
+
 
     }
 

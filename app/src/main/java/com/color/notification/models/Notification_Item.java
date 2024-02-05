@@ -63,4 +63,7 @@ public class Notification_Item {
 
     public TextView transmission = null, filename = null;
 
+    //保证切换语言触发MyNotificationService时，重新加载消息中心可以正常执行onBindViewHolder
+    public boolean Item_trigger_onCreate = false;
+
 }

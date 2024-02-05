@@ -103,8 +103,8 @@ public class MyNotification implements Instance {
 //                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
 
         lp.flags = WindowManager.LayoutParams.FLAG_LOCAL_FOCUS_MODE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-//                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 
 //        setBlurBehindRadius(100);
 
@@ -179,6 +179,16 @@ public class MyNotification implements Instance {
             @Override
             public void onClick(View v) {
 //                notification.setVisibility(View.GONE);
+                //有蓝牙通知的话得恢复状态
+                if(StaticVariableUtils.notification_has_lanya) {
+                    //归位所有需要归位的值
+                    StaticVariableUtils.lanya_first_accept_android_text = true;
+                    StaticVariableUtils.lanya_number = -1;
+                    StaticVariableUtils.android_lanya_progress = -1;
+                    StaticVariableUtils.lanya_first_transmit = false;
+                    StaticVariableUtils.notification_has_lanya = false;
+                }
+
                 if (StaticVariableUtils.recyclerView.getChildCount() > 0 ) {
                     StaticVariableUtils.recyclerView.removeAllViews();
                     StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存

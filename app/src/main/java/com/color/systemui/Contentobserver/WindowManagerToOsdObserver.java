@@ -8,6 +8,7 @@ import com.color.systemui.utils.StaticVariableUtils;
 import android.database.ContentObserver;
 import android.provider.Settings;
 import android.os.Handler;
+import android.util.Log;
 
 public class WindowManagerToOsdObserver extends ContentObserver implements Instance {
 
@@ -33,8 +34,9 @@ public class WindowManagerToOsdObserver extends ContentObserver implements Insta
         if (Settings.System.getInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 5) != 5) {
             globalClick = Settings.System.getInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 5);
         }
-        //Log.d("WindowManagerToOsdObserver TimeManagerRunning",String.valueOf(StaticVariableUtils.TimeManagerRunning));
-        //Log.d("WindowManagerToOsdObserver SettingsControlHoverballVisible",String.valueOf(StaticVariableUtils.SettingsControlHoverballVisible));
+        Log.d("WindowManagerToOsdObserver onChange",String.valueOf(globalClick));
+        Log.d("WindowManagerToOsdObserver onChange",String.valueOf(StaticVariableUtils.TimeManagerRunning));
+        Log.d("WindowManagerToOsdObserver onChange",String.valueOf(StaticVariableUtils.SettingsControlHoverballVisible));
 
         if (globalClick == 1 && !StaticVariableUtils.TimeManagerRunning && StaticVariableUtils.SettingsControlHoverballVisible) {
             //Log.d("WindowManagerToOsdObserver "," 显示组件");
@@ -49,6 +51,8 @@ public class WindowManagerToOsdObserver extends ContentObserver implements Insta
             Timed_end_WhichOneHide();
             STATIC_INSTANCE_UTILS.mtimeManager.Time_handler_removeCallbacks();
         }
+
+        Settings.System.putInt(mycontext.getContentResolver(), StaticVariableUtils.WINDOWMANAGER_TO_OSD, 5);
 
     }
 
