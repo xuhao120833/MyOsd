@@ -33,11 +33,16 @@ public class SettingsControlStatusBarObserver extends ContentObserver implements
                 OPEN_STATUS_BAR, 0);
         //Log.d("fswitch值为",String.valueOf(fswitch));
         if(fswitch == 0) {
-            STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+//            STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+            STATIC_INSTANCE_UTILS.manimationManager.statusBarHideAnimation();
             StaticVariableUtils.SettingsControlStatusBarVisible = false;
         }
         if(fswitch == 1) {
-            STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//            STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.statusBar.wifi_frame.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.statusBar.udisk_frame.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.statusBar.ethernet_frame.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.manimationManager.statusbarShowAnimation();
             StaticVariableUtils.SettingsControlStatusBarVisible = true;
         }
 

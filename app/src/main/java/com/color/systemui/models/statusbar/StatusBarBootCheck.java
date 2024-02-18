@@ -62,6 +62,8 @@ public class StatusBarBootCheck implements Instance {
         if (wifiManager != null && wifiManager.isWifiEnabled()) {
             //Log.d("WifiCheck", " wifiManager.isWifiEnabled() == true");
             //wifi开关已打开
+            STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.wifi_frame);
+            STATIC_INSTANCE_UTILS.statusBar.wifi.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_wifiserach));
             STATIC_INSTANCE_UTILS.statusBar.wifi.setVisibility(View.VISIBLE);
             StaticVariableUtils.WifiOpen = true;
 
@@ -120,11 +122,13 @@ public class StatusBarBootCheck implements Instance {
         }
     }
 
-    private void  UsbDeviceCheck() {
+    private void UsbDeviceCheck() {
 
         for (Map.Entry entry : deviceHashMap.entrySet()) {
-            //Log.d("StatusBarBootCheck", "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
+            Log.d("StatusBarBootCheck", "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
             if(entry != null) {
+                STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.udisk_frame);
+                STATIC_INSTANCE_UTILS.statusBar.udisk.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_udisk));
                 STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
                 StaticVariableUtils.haveUsbDevice = true;
             }
@@ -135,9 +139,10 @@ public class StatusBarBootCheck implements Instance {
     private void EthernetCheck() {
         networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null) {
-            //Log.d("UsbDeviceCheck 网络类型 " , String.valueOf(networkInfo.getType()));
+            Log.d("UsbDeviceCheck 网络类型 " , String.valueOf(networkInfo.getType()));
             if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET && networkInfo.isConnected()) {
-
+                STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.ethernet_frame);
+                STATIC_INSTANCE_UTILS.statusBar.ethernet.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_ethernet));
                 STATIC_INSTANCE_UTILS.statusBar.ethernet.setVisibility(View.VISIBLE);
                 StaticVariableUtils.EthernetConnected = true;
 

@@ -65,8 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginRight="12dp"
-                android:orientation="horizontal">
+                android:layout_marginRight="12dp">
 
                 <com.color.notification.view.CustomTextView
                     android:id="@+id/center_text"
@@ -91,6 +90,26 @@
 
                 </com.color.notification.view.CustomImageView>
 
+
+            </com.color.notification.view.CustomFrameLayout>
+
+            <com.color.notification.view.CustomFrameLayout
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="14dp">
+
+                <com.color.notification.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/暂无任何通知"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="20px"/>
 
             </com.color.notification.view.CustomFrameLayout>
 

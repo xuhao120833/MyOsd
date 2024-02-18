@@ -377,8 +377,8 @@ public class MyNotificationService extends NotificationListenerService implement
                 Log.d("notification_xu_su ", "2、 showMsg");
                 addMsg(sbn);
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -431,7 +431,7 @@ public class MyNotificationService extends NotificationListenerService implement
                         //首次收到蓝牙传输通知，往RecyclerView中添加蓝牙传输进度Item
                         StaticVariableUtils.bluetooth_delivery = "on";
 
-                        //添加蓝牙进度条到
+                        //添加蓝牙进度条到通知中心
                         notificationItem = new Notification_Item();
                         notificationItem.time = mycontext.getString(R.string.现在);
                         notificationItem.appName = appName;
@@ -446,6 +446,7 @@ public class MyNotificationService extends NotificationListenerService implement
                         list.add(notificationItem);
                         StaticVariableUtils.notification_item_lanya = notificationItem;
                         Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
+//                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
                         notification_center_adapter.notifyItemInserted(list.size() - 1);
 
                         StaticVariableUtils.notification_has_lanya = true;

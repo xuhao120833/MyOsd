@@ -1,5 +1,8 @@
 package com.color.systemui.utils;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.color.notification.models.Notification_Item;
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaticVariableUtils {
-
+//一、变量区
     //1、状态栏
     public static boolean haveUsbDevice = false;//是否插入Usb设备
 
@@ -141,5 +144,29 @@ public class StaticVariableUtils {
 
     //消息中心有蓝牙通知，用于获取蓝牙通知坐标
     public static Notification_Item notification_item_lanya = null;
+
+//二、方法区
+
+    /**
+     *
+     * @param parent
+     * @param child
+     * @return
+     * TODO:用于判断parent中是否包含child
+     */
+    public static boolean isViewGroupHasView (ViewGroup parent, View child) {
+
+        int childCount = parent.getChildCount();
+
+        // parent，判断是否包含
+        for (int i = 0; i < childCount; i++) {
+            View childView = parent.getChildAt(i);
+            if (childView == child) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }

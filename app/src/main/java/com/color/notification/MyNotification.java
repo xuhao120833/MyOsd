@@ -66,6 +66,8 @@ public class MyNotification implements Instance {
 
     public View up;
 
+    public View empty;
+
     public View down;
 
     public View center_text;
@@ -132,6 +134,9 @@ public class MyNotification implements Instance {
         //up
         up = notification.findViewById(R.id.up);
 
+        //暂无任何通知
+        empty = notification.findViewById(R.id.empty);
+
         //消息中心Title
         notification_center_title = notification.findViewById(R.id.notification_center_title);
         center_text = notification.findViewById(R.id.center_text);
@@ -166,7 +171,8 @@ public class MyNotification implements Instance {
                 // 处理窗口外的触摸事件
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE && notification.getVisibility()==View.VISIBLE) {
 
-                    notification.setVisibility(View.GONE);
+//                    notification.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.manimationManager.NotificationHideAnimation();
 
                     return true; // 返回 true 表示已处理触摸事件
                 }

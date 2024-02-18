@@ -30,4 +30,6 @@
 
     <string name="个通知" translatable="false" tools:ignore="ExtraTranslation">個通知</string>
 
+    <string name="暂无任何通知" translatable="false">暫無任何通知</string>
+
 </resources>

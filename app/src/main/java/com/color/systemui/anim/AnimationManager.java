@@ -1,5 +1,7 @@
 package com.color.systemui.anim;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -174,6 +176,86 @@ public class AnimationManager implements Instance {
                 })
                 .start();
 
+    }
+
+    public void statusbarShowAnimation() {
+        synchronized (mycontext) {
+            STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+            ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "scaleX", 0.5f, 1.0f);
+            ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "scaleY", 0.5f, 1.0f);
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "alpha", 0.0f, 1.0f);
+
+            AnimatorSet entranceAnimatorSet = new AnimatorSet();
+            entranceAnimatorSet.setDuration(500); // 设置动画持续时间为1秒
+            entranceAnimatorSet.playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator);
+
+            entranceAnimatorSet.start();
+//        entranceAnimatorSet.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                // 动画结束时执行的操作
+//                STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//            }
+//        });
+        }
+
+    }
+
+    public void statusBarHideAnimation() {
+        synchronized (mycontext) {
+            // 退场动画
+            ObjectAnimator scaleXAnimatorExit = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "scaleX", 1.0f, 0.5f);
+            ObjectAnimator scaleYAnimatorExit = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "scaleY", 1.0f, 0.5f);
+            ObjectAnimator alphaAnimatorExit = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.statusBar.statusbar, "alpha", 1.0f, 0.0f);
+
+            AnimatorSet exitAnimatorSet = new AnimatorSet();
+            exitAnimatorSet.setDuration(500); // 设置动画持续时间为1秒
+            exitAnimatorSet.playTogether(scaleXAnimatorExit, scaleYAnimatorExit, alphaAnimatorExit);
+
+            exitAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    // 动画结束时执行的操作
+                    STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+                }
+            });
+            // 应用动画到视图上
+            exitAnimatorSet.start(); //退场动画
+
+        }
+    }
+
+    public void NotificationShowAnimation() {
+        synchronized (mycontext) {
+            STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+            ObjectAnimator alphaAnimatorExit = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.myNotification.notification, "alpha", 0.0f, 1.0f);
+
+            AnimatorSet exitAnimatorSet = new AnimatorSet();
+            exitAnimatorSet.setDuration(300);
+            exitAnimatorSet.play(alphaAnimatorExit);
+
+            exitAnimatorSet.start();
+        }
+    }
+
+    public void NotificationHideAnimation() {
+        synchronized (mycontext) {
+            ObjectAnimator alphaAnimatorExit = ObjectAnimator.ofFloat(STATIC_INSTANCE_UTILS.myNotification.notification, "alpha", 1.0f, 0.0f);
+
+            AnimatorSet exitAnimatorSet = new AnimatorSet();
+            exitAnimatorSet.setDuration(300); // 设置动画持续时间为1秒
+            exitAnimatorSet.play(alphaAnimatorExit);
+
+            exitAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    // 动画结束时执行的操作
+                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                }
+            });
+
+            exitAnimatorSet.start();
+        }
     }
 
 }

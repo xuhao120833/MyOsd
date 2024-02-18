@@ -181,18 +181,21 @@ public class MySystemUI implements Instance {
     }
 
     private void startAddView() {
+        try {
+            //1、悬浮球
+            hoverball.start();
 
-        //1、悬浮球
-        hoverball.start();
+            //2、导航栏
+            navigationBar.start();
 
-        //2、导航栏
-        navigationBar.start();
+            //3、信源切换界面
+            source.start();
 
-        //3、信源切换界面
-        source.start();
-
-        //4、状态栏
-        statusBar.start();
+            //4、状态栏
+            statusBar.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initNotification() {

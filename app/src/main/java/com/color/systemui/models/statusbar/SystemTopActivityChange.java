@@ -109,7 +109,7 @@ public class SystemTopActivityChange implements Instance {
 
             Log.d("SystemActivityChange : 前台活动的包名: ", processName);
             if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName)&& !"com.android.toofifi".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false) ) {
-                STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
+                STATIC_INSTANCE_UTILS.statusBar.statusbar.post(new Runnable() {
                     @Override
                     public void run() {
 //                        if(StaticVariableUtils.haveUsbDevice) {
@@ -125,15 +125,16 @@ public class SystemTopActivityChange implements Instance {
 //                        if (StaticVariableUtils.HotspotOpen) {
 //                            InstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
 //                        }
-                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+                        STATIC_INSTANCE_UTILS.manimationManager.statusBarHideAnimation();
                     }
                 });
                 Log.d("SystemActivityChange", "不在launcher 选择隐藏");
             } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible || ("com.color.player".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible) || ("com.color.filemanager".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible)) {
-                STATIC_INSTANCE_UTILS.statusBar.udisk.post(new Runnable() {
+                STATIC_INSTANCE_UTILS.statusBar.statusbar.post(new Runnable() {
                     @Override
                     public void run() {
-                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
                         if(StaticVariableUtils.haveUsbDevice) {
                             STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
                         }
@@ -146,6 +147,7 @@ public class SystemTopActivityChange implements Instance {
                         if (StaticVariableUtils.HotspotOpen) {
                             STATIC_INSTANCE_UTILS.statusBar.hotspot.setVisibility(View.VISIBLE);
                         }
+                        STATIC_INSTANCE_UTILS.manimationManager.statusbarShowAnimation();
                     }
                 });
                 Log.d("SystemActivityChange", "在launcher 显示导航栏");

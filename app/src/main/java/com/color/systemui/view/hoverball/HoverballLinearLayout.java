@@ -48,16 +48,16 @@ public class HoverballLinearLayout extends LinearLayout implements Instance {
         sizeWidth = StaticVariableUtils.widthPixels;
 
         hoverball2 = STATIC_INSTANCE_UTILS.hoverball.leftlayout.findViewById(R.id.hoverball_left);
-        hoverball2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 50 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 100 / 1080, MeasureSpec.EXACTLY));
+        hoverball2.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 1920, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(sizeHeight * 80 / 1080, MeasureSpec.EXACTLY));
 
         hoverball3 = STATIC_INSTANCE_UTILS.hoverball.rightlayout.findViewById(R.id.hoverball_right);
         //android.widget.LinearLayout.LayoutParams lphover2=(android.widget.LinearLayout.LayoutParams)hoverball2.getLayoutParams();
-        hoverball3.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 50 / 1920, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(sizeHeight * 100 / 1080, MeasureSpec.EXACTLY));
+        hoverball3.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 1920, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(sizeHeight * 80 / 1080, MeasureSpec.EXACTLY));
 
 
-        setMeasuredDimension(sizeWidth * 50 / 1920, sizeHeight * 100 / 1080);
+        setMeasuredDimension(sizeWidth * 40 / 1920, sizeHeight * 80 / 1080);
     }
 
 

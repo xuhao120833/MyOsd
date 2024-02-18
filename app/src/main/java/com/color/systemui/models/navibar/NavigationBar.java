@@ -290,12 +290,14 @@ public class NavigationBar implements Instance {
                     STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
 
                     StaticVariableUtils.left_or_right = "left";//快捷中心在右侧打开
-                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
-                    
+//                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+                    STATIC_INSTANCE_UTILS.manimationManager.NotificationShowAnimation();
+
                     STATIC_INSTANCE_UTILS.navigationBar.leftNavibar.setVisibility(View.GONE);
 
                 } else if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
-                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+//                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.manimationManager.NotificationHideAnimation();
                 }
 
 //                //有操作，则重新计时
@@ -457,13 +459,15 @@ public class NavigationBar implements Instance {
                     STATIC_INSTANCE_UTILS.mavts.wm.updateViewLayout(STATIC_INSTANCE_UTILS.myNotification.notification, STATIC_INSTANCE_UTILS.myNotification.lp);
 
                     StaticVariableUtils.left_or_right = "right";//快捷中心在右侧打开
-                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+//                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.VISIBLE);
+                    STATIC_INSTANCE_UTILS.manimationManager.NotificationShowAnimation();
 
                     STATIC_INSTANCE_UTILS.navigationBar.rightNavibar.setVisibility(View.GONE);
 
 
                 } else if (STATIC_INSTANCE_UTILS.myNotification.notification.getVisibility() == View.VISIBLE) {
-                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+//                    STATIC_INSTANCE_UTILS.myNotification.notification.setVisibility(View.GONE);
+                    STATIC_INSTANCE_UTILS.manimationManager.NotificationHideAnimation();
                 }
 
 //                //有操作，则重新计时
