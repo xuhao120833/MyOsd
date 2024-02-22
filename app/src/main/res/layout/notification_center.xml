@@ -8,6 +8,58 @@
     android:focusable="true"
     android:focusableInTouchMode="false">
 
+
+    <com.color.notification.view.CustomLinearLayout
+        android:id="@+id/notification_center_item_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="3dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:layout_gravity="right"
+        android:gravity="center|right"
+        android:background="@drawable/shapetop_notification_item"
+        android:visibility="invisible"
+        android:orientation="horizontal">
+
+        <com.color.notification.view.CustomImageView
+            android:id="@+id/top"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/notification_center_top"
+            android:visibility="visible">
+
+        </com.color.notification.view.CustomImageView>
+
+        <com.color.notification.view.CustomImageView
+            android:id="@+id/delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:paddingLeft="3dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/notification_center_delete"
+            android:visibility="visible">
+
+        </com.color.notification.view.CustomImageView>
+
+        <com.color.notification.view.CustomImageView
+            android:id="@+id/settings"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/notification_center_settings"
+            android:visibility="visible">
+
+        </com.color.notification.view.CustomImageView>
+
+    </com.color.notification.view.CustomLinearLayout>
+
     <com.color.notification.view.CustomLinearLayout
         android:id="@+id/notification_center_item"
         android:layout_width="match_parent"
@@ -58,7 +110,7 @@
                 <com.color.notification.view.CustomTextView
                     android:id="@+id/time"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="right"
                     android:textColor="@color/white"
                     android:textSize="20px">

@@ -66,4 +66,7 @@ public class Notification_Item {
     //保证切换语言触发MyNotificationService时，重新加载消息中心可以正常执行onBindViewHolder
     public boolean Item_trigger_onCreate = false;
 
+    //判断是否是蓝牙Item
+    public boolean lanya = false;
+
 }

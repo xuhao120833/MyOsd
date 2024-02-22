@@ -197,7 +197,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
     }
 
-    class Center_ViewHolder extends RecyclerView.ViewHolder {
+    public class Center_ViewHolder extends RecyclerView.ViewHolder {
 
         private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -213,6 +213,13 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
         public View mynotification_center = null;
 
+        public View notification_center_item = null;
+
+        public View notification_center_item_settings = null;
+
+        //菜单是否展开的标志位
+        public boolean isSwipemenu = false;
+
 
         public Center_ViewHolder(View view) {
             super(view);
@@ -224,6 +231,11 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
             content = (TextView) view.findViewById(R.id.content);
 
             Icon = (ImageView) view.findViewById(R.id.Icon);
+
+            notification_center_item = view.findViewById(R.id.notification_center_item);
+
+            notification_center_item_settings = view.findViewById(R.id.notification_center_item_settings);
+
 
             if (mynotification_center == null) {
                 mynotification_center = view;
@@ -555,7 +567,7 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
     }
 
 
-    class Center_Title_ViewHolder extends RecyclerView.ViewHolder {
+    public class Center_Title_ViewHolder extends RecyclerView.ViewHolder {
 
         private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -1020,6 +1032,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
 
                             judgeParent(holder, mypostion);
 
+                            if(StaticVariableUtils.list.size() == 0) {
+                                STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                            }
+
 
                         } else if (holder.pendingIntent == null && !list.get(mypostion).isMultiple_Messages) {
                             list.get(mypostion).mynotification_center.clearFocus();
@@ -1031,6 +1047,10 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                             judgeParent(holder, mypostion);
 
                             Log.d(TAG, " 点击，移除通知");
+
+                            if(StaticVariableUtils.list.size() == 0) {
+                                STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                            }
 
                         }
                     } catch (Exception e) {
@@ -1239,6 +1259,14 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
         }
 
 
+    }
+
+    public void onItemLeftSwiped(int position) {
+        // 左滑操作的处理逻辑
+    }
+
+    public void onItemRightSwiped(int position) {
+        // 右滑操作的处理逻辑
     }
 
 }

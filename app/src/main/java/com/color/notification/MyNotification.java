@@ -185,9 +185,9 @@ public class MyNotification implements Instance {
             @Override
             public void onClick(View v) {
 //                notification.setVisibility(View.GONE);
-                //有蓝牙通知的话得恢复状态
+                //有蓝牙通知的话得复位标志位状态
                 if(StaticVariableUtils.notification_has_lanya) {
-                    //归位所有需要归位的值
+                    //复位所有需要复位的值
                     StaticVariableUtils.lanya_first_accept_android_text = true;
                     StaticVariableUtils.lanya_number = -1;
                     StaticVariableUtils.android_lanya_progress = -1;
@@ -200,6 +200,7 @@ public class MyNotification implements Instance {
                     StaticVariableUtils.recyclerView.getRecycledViewPool().clear();//清除缓存
                     STATIC_INSTANCE_UTILS.notificationCenterAdapter.list.clear();
                     STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyDataSetChanged();
+                    STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
                 }
 
             }

@@ -111,9 +111,6 @@ public class StaticVariableUtils {
     //判断消息中心是从左侧还是从右侧打开，init初始值，left左侧，right右侧
     public static String left_or_right = "init";
 
-    //避免自定义View循环执行
-    public static boolean shouldUpdateLayout = false;
-
     public static List<Notification_Item> list = new ArrayList<>();
 
     //判断是否是主动触发MyNotificationService的onCreate方法

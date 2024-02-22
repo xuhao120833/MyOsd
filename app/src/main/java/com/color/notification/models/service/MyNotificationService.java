@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -36,6 +37,7 @@ import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
 import com.color.notification.broadcast.BrightnessListener;
 import com.color.notification.broadcast.VolumeChangeReceiver;
+import com.color.notification.models.ItemTouchHelperCallback;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.models.Notification_Quick_Settings_Adapter;
@@ -123,6 +125,10 @@ public class MyNotificationService extends NotificationListenerService implement
     public float sNoncompatDensity = 0;
 
     public float sNoncompatScaledDensity = 0;
+
+    public ItemTouchHelper itemTouchHelper;
+
+    public ItemTouchHelperCallback itemTouchHelperCallback;
 
 
     public MyNotificationService() {
@@ -227,11 +233,17 @@ public class MyNotificationService extends NotificationListenerService implement
             //6、记录语言国籍，在改变语言时使用。
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
-            //7、解决快捷中心闪动问题
+            //7、通知中心侧滑菜单实现
+            itemTouchHelperCallback = new ItemTouchHelperCallback();
+            itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+            //解决快捷中心闪动问题
 //            recyclerView.getItemAnimator().setChangeDuration(0);
 //            recyclerView.setHasFixedSize(true);
 
-            //8、监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
+            //监听分斌率变化,下面这段代码，整体上都没用了，分辨率变化放在了MenuService中实现监听。
             //今日头条方案，只使用于Activity
 //        CustomDensityUtil.setCustomDensity(MyNotificationService.this, getApplication());
 //        //下面的逻辑用来计算density当分辨率变化的时候
@@ -439,6 +451,9 @@ public class MyNotificationService extends NotificationListenerService implement
                         notificationItem.lanya_progress = StaticVariableUtils.android_lanya_progress;
                         notificationItem.pendingIntent = contextIntent;
 
+                        //蓝牙通知标志位
+                        notificationItem.lanya = true;
+
                         Log.d("lanya", " 添加蓝牙进度通知");
 
                         StaticVariableUtils.recyclerView.getRecycledViewPool().clear();
@@ -446,7 +461,7 @@ public class MyNotificationService extends NotificationListenerService implement
                         list.add(notificationItem);
                         StaticVariableUtils.notification_item_lanya = notificationItem;
                         Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
-//                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
+                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
                         notification_center_adapter.notifyItemInserted(list.size() - 1);
 
                         StaticVariableUtils.notification_has_lanya = true;
@@ -668,6 +683,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
                 list.add(notificationItem);
                 Log.d("notification_xu_su ", "3、 i == -1  notification_center_adapter.notifyItemInserted  插入位置 " + String.valueOf(list.size() - 1));
+                STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
                 notification_center_adapter.notifyItemInserted(list.size() - 1);
             }
 

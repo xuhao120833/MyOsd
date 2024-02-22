@@ -7,6 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+
+import androidx.annotation.NonNull;
 
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.InstanceUtils;
@@ -256,6 +261,96 @@ public class AnimationManager implements Instance {
 
             exitAnimatorSet.start();
         }
+    }
+
+    public void Notification_Center_Settings_HideAnimation(@NonNull View view) {
+        // 创建一个渐变动画
+        AlphaAnimation fadeOut = new AlphaAnimation(1f, 0f);
+        fadeOut.setDuration(200); // 设置动画持续时间
+        fadeOut.setFillAfter(true); // 设置动画结束后保持最终状态
+
+       // 监听动画结束事件
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // 动画开始时的操作
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // 动画结束时的操作
+                view.setVisibility(View.INVISIBLE);
+
+                // 创建一个透明度变化动画，从0到1
+                view.setAlpha(1f);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // 动画重复时的操作
+            }
+        });
+        view.startAnimation(fadeOut);
+
+    }
+
+    public void Notification_center_item_slideright(@NonNull View view) {
+        // 获取视图当前的水平偏移量
+        float currentTranslationX = view.getTranslationX();
+
+        // 创建一个从当前位置平移到0的平移动画
+        TranslateAnimation translateAnimation = new TranslateAnimation(currentTranslationX, 0, 0, 0);
+        translateAnimation.setDuration(200); // 设置动画持续时间
+        translateAnimation.setFillAfter(true); // 设置动画结束后保持最终状态
+
+        // 设置动画监听器
+        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // 动画开始时的操作
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // 动画结束时的操作
+//                view.setTranslationX(0); // 重置水平偏移量为0
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // 动画重复时的操作
+            }
+        });
+
+        view.setTranslationX(0); // 重置水平偏移量为0
+        // 开始动画
+        view.startAnimation(translateAnimation);
+    }
+
+    public void Notification_center_item_slideleft(@NonNull View view , @NonNull View settings , int distance) {
+        // 获取视图当前的水平偏移量
+        float currentTranslationX = view.getTranslationX();
+
+        // 计算目标位置
+        float targetTranslationX = distance;
+
+        // 创建属性动画
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", currentTranslationX, targetTranslationX);
+        animator.setDuration(200); // 设置动画持续时间
+
+        // 设置动画结束监听器
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // 动画结束时让settings可见
+                settings.setVisibility(View.VISIBLE);
+            }
+        });
+
+        view.setTranslationX(distance); // 重置水平偏移量为0
+        // 开始动画
+        animator.start();
     }
 
 }

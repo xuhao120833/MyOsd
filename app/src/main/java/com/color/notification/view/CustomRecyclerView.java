@@ -6,36 +6,47 @@ import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
+import com.color.notification.models.ItemTouchHelperCallback;
+import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.utils.UiAdaptationUtils;
+import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.StaticVariableUtils;
 
-public class CustomRecyclerView extends RecyclerView {
+public class CustomRecyclerView extends RecyclerView implements Instance {
 
     private Paint paint;
     private Bitmap blurredBitmap;
 
+    private ItemTouchHelper itemTouchHelper;
+    private ItemTouchHelperCallback itemTouchHelperCallback;
+
     public CustomRecyclerView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public CustomRecyclerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public CustomRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
 
+        init();
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -100,4 +111,9 @@ public class CustomRecyclerView extends RecyclerView {
         super.onDraw(canvas);
 
     }
+
+    public void init() {
+
+    }
+
 }

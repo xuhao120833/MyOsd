@@ -7,11 +7,6 @@
     <string name="亮度" translatable="false">Brightness</string>
     <string name="音量" translatable="false">Volume</string>
 
-    <!--    <string name="截图" translatable="false">Screenshot</string>-->
-    <!--    <string name="护眼" translatable="false">Eye Care</string>-->
-    <!--    <string name="摄像头" translatable="false">Camera</string>-->
-    <!--    <string name="录屏" translatable="false">Screenrecord</string>-->
-
     <string name="截图" translatable="false">Cut</string>
     <string name="护眼" translatable="false">Eye Care</string>
     <string name="摄像头" translatable="false">Camera</string>
