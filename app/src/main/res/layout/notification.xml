@@ -104,6 +104,7 @@
                 android:layout_marginBottom="14dp">
 
                 <com.color.notification.view.CustomTextView
+                    android:id="@+id/empty_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/暂无任何通知"

@@ -80,6 +80,21 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams = null;
 
                 }
+
+                if (child.getId() == getResources().getIdentifier("notification_center_item_settings", "id", getContext().getPackageName())) {
+                    //quick_settings_frame
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+//                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
+                    layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    Log.d("CustomFrameLayout", "notification_center_item_settings 宽" + 428 * StaticVariableUtils.widthPixels / 1920);
+                    layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
+                    setPadding(8 * StaticVariableUtils.widthPixels / 1920,0,8 * StaticVariableUtils.widthPixels / 1920,0);
+                    child.setLayoutParams(layoutParams);
+                    Log.d("CustomFrameLayout", "notification_center_item_settings");
+                    layoutParams = null;
+
+                }
             }
         }
 
@@ -260,6 +275,25 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                             MeasureSpec.makeMeasureSpec(22*StaticVariableUtils.heightPixels / 1080, MeasureSpec.EXACTLY));
                     layoutParams = null;
                     Log.d("CustomFrameLayout", "quit");
+
+                }
+            }
+        }
+
+        if (getId() == getResources().getIdentifier("empty", "id", getContext().getPackageName())) {
+            int count = getChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = getChildAt(i);
+                if (child.getId() == getResources().getIdentifier("empty_text", "id", getContext().getPackageName())) {
+                    //notification_center_title
+                    layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+                    layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20*StaticVariableUtils.widthPixels / 1920);
+                    child.setLayoutParams(layoutParams);
+
+                    layoutParams = null;
+                    Log.d("CustomFrameLayout", "center_text");
 
                 }
             }

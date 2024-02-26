@@ -32,5 +32,6 @@
     <string name="个通知" translatable="false" >个通知</string>
 
     <string name="暂无任何通知" translatable="false" >暂无任何通知</string>
+    <string name="通知置顶">通知置顶</string>
 
 </resources>

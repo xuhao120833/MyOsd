@@ -33,5 +33,6 @@
     <string name="个通知" translatable="false" >notifications</string>
 
     <string name="暂无任何通知" translatable="false" >No notifications at this time</string>
+    <string name="通知置顶">Notification pinned to top</string>
 
 </resources>

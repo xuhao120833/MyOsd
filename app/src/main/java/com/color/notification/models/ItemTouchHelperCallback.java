@@ -1,5 +1,6 @@
 package com.color.notification.models;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.color.osd.R;
 import com.color.systemui.interfaces.Instance;
 import com.color.systemui.utils.StaticVariableUtils;
 
@@ -19,8 +21,12 @@ import com.color.systemui.utils.StaticVariableUtils;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback implements Instance {
 
-    public ItemTouchHelperCallback() {
+    Context mycontext;
+
+    public ItemTouchHelperCallback(Context context) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
+        mycontext = context;
     }
 
     @Override
@@ -60,12 +66,22 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback impl
                     StaticVariableUtils.android_lanya_progress = -1;
                     StaticVariableUtils.lanya_first_transmit = false;
                     StaticVariableUtils.notification_has_lanya = false;
+
+                    StaticVariableUtils.list.remove(swipedPosition);
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
+                    if (StaticVariableUtils.list.size() == 0) {
+                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                    }
+                } else {
+
+                    StaticVariableUtils.list.remove(swipedPosition);
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
+                    judgeParent((Notification_Center_Adapter.Center_ViewHolder)viewHolder);
+                    if (StaticVariableUtils.list.size() == 0) {
+                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                    }
                 }
-                StaticVariableUtils.list.remove(swipedPosition);
-                STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
-                if (StaticVariableUtils.list.size() == 0) {
-                    STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
-                }
+
             }
             if (direction == ItemTouchHelper.RIGHT) {
                 // 向右侧滑
@@ -78,12 +94,22 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback impl
                     StaticVariableUtils.android_lanya_progress = -1;
                     StaticVariableUtils.lanya_first_transmit = false;
                     StaticVariableUtils.notification_has_lanya = false;
+
+                    StaticVariableUtils.list.remove(swipedPosition);
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
+                    if (StaticVariableUtils.list.size() == 0) {
+                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                    }
+                } else {
+
+                    StaticVariableUtils.list.remove(swipedPosition);
+                    STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
+                    judgeParent((Notification_Center_Adapter.Center_ViewHolder)viewHolder);
+                    if (StaticVariableUtils.list.size() == 0) {
+                        STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
+                    }
                 }
-                StaticVariableUtils.list.remove(swipedPosition);
-                STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(swipedPosition);
-                if (StaticVariableUtils.list.size() == 0) {
-                    STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.VISIBLE);
-                }
+
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -160,6 +186,27 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback impl
     //滑动速度超过这个阈值，将Item全部移除到显示画面之外，左移dX最后停在负的RecyclerView宽度，右移dX最后停在正的RecyclerView宽度，之后触发onSwiped
     public float getSwipeEscapeVelocity(float defaultValue) {
         return Float.MAX_VALUE;
+    }
+
+    public void judgeParent (@NonNull Notification_Center_Adapter.Center_ViewHolder holder) {
+        if (holder.notification_item.parent_notification_item == null) {
+            return;
+        }
+
+        Log.d("judgeParent", " 父通知的content" + String.valueOf(holder.notification_item.parent_notification_item.content));
+        holder.notification_item.parent_notification_item.number--;
+        if (holder.notification_item.parent_notification_item.number >= 0) {
+            holder.notification_item.parent_notification_item.multiple_content.remove(holder.notification_item.parent_notification_item.number);
+            holder.notification_item.parent_notification_item.multiple_Intent.remove(holder.notification_item.parent_notification_item.number);
+            holder.notification_item.parent_ViewHolder.content.setText(holder.notification_item.parent_notification_item.number + 1 + mycontext.getString(R.string.个通知));
+
+        } else if (holder.notification_item.parent_notification_item.number < 0) {
+
+            int mypostion = StaticVariableUtils.list.indexOf(holder.notification_item.parent_notification_item);
+            StaticVariableUtils.list.remove(mypostion);
+            STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemRemoved(mypostion);
+            STATIC_INSTANCE_UTILS.notificationCenterAdapter.notifyItemChanged(0, StaticVariableUtils.list.size());
+        }
     }
 
 }

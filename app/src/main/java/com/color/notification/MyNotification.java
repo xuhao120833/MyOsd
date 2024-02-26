@@ -157,8 +157,6 @@ public class MyNotification implements Instance {
 
         STATIC_INSTANCE_UTILS.mavts.addView(notification,lp);
 
-
-
 //        notification.setBackgroundColor(Color.TRANSPARENT);
 
     }

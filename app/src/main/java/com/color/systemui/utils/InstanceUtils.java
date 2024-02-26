@@ -1,6 +1,9 @@
 package com.color.systemui.utils;
 
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.color.notification.MyNotification;
+import com.color.notification.models.CustomLayoutManager;
 import com.color.notification.models.Notification_Center_Adapter;
 import com.color.notification.models.Notification_Quick_Settings_Adapter;
 import com.color.notification.models.service.MyNotificationService;
@@ -65,6 +68,10 @@ public class InstanceUtils<T> {
     public BrightnessChangeCompute brightnessChangeCompute;
 
     public FunctionBind functionBind;
+
+    public StaggeredGridLayoutManager verticalManager;
+
+    public CustomLayoutManager notification_center_manager;
 
 
     public T getInstance(T object) {
@@ -184,6 +191,16 @@ public class InstanceUtils<T> {
         if (object instanceof FunctionBind) {
             functionBind = (FunctionBind) object;
             //Log.d("SetwhichOne", functionBind.toString() + " FunctionBind");
+        }
+
+        if (object instanceof StaggeredGridLayoutManager) {
+            verticalManager = (StaggeredGridLayoutManager) object;
+            //Log.d("SetwhichOne", verticalManager.toString() + " StaggeredGridLayoutManager");
+        }
+
+        if (object instanceof CustomLayoutManager) {
+            notification_center_manager = (CustomLayoutManager) object;
+            //Log.d("SetwhichOne", notification_center_manager.toString() + " CustomLayoutManager");
         }
 
     }

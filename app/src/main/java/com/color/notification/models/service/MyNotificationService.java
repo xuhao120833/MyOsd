@@ -37,6 +37,7 @@ import com.color.notification.Contentobserver.EyeProtectionObserver;
 import com.color.notification.MyNotification;
 import com.color.notification.broadcast.BrightnessListener;
 import com.color.notification.broadcast.VolumeChangeReceiver;
+import com.color.notification.models.CustomLayoutManager;
 import com.color.notification.models.ItemTouchHelperCallback;
 import com.color.notification.models.Notification_Item;
 import com.color.notification.models.Notification_Center_Adapter;
@@ -99,7 +100,9 @@ public class MyNotificationService extends NotificationListenerService implement
     private String lastCountry;
 
 
-    public LinearLayoutManager notification_center_manager;
+//    public LinearLayoutManager notification_center_manager;
+
+    public CustomLayoutManager notification_center_manager;
 
     //消息中心备用得manager
     public StaggeredGridLayoutManager verticalManager;
@@ -195,7 +198,7 @@ public class MyNotificationService extends NotificationListenerService implement
             } catch (PackageManager.NameNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            notification_center_manager = new LinearLayoutManager(mycontext);
+            notification_center_manager = new CustomLayoutManager(mycontext);
             quick_settings_manager = new LinearLayoutManager(mycontext);
             verticalManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -203,8 +206,10 @@ public class MyNotificationService extends NotificationListenerService implement
             notification_center_manager.setStackFromEnd(true);
             notification_center_manager.setReverseLayout(true);
             verticalManager.setReverseLayout(true);
+            setInstance(verticalManager);
+            setInstance(notification_center_manager);
             //这里使用verticalManager替代notification_center_manager 解决添加蓝牙通知到消息中心时的抖动问题
-            recyclerView.setLayoutManager(verticalManager);
+            recyclerView.setLayoutManager(notification_center_manager);
             recyclerView.setAdapter(notification_center_adapter);
             Log.d("notification_xu_su ", "1、 recyclerView.setAdapter(notification_center_adapter)");
             recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
@@ -234,7 +239,7 @@ public class MyNotificationService extends NotificationListenerService implement
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
 
             //7、通知中心侧滑菜单实现
-            itemTouchHelperCallback = new ItemTouchHelperCallback();
+            itemTouchHelperCallback = new ItemTouchHelperCallback(mycontext);
             itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
             itemTouchHelper.attachToRecyclerView(recyclerView);
 
@@ -334,7 +339,7 @@ public class MyNotificationService extends NotificationListenerService implement
                 throw new RuntimeException(e);
             }
 
-            notification_center_manager = new LinearLayoutManager(mycontext);
+            notification_center_manager = new CustomLayoutManager(mycontext);
             quick_settings_manager = new LinearLayoutManager(mycontext);
             verticalManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             notification_center_manager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -342,7 +347,9 @@ public class MyNotificationService extends NotificationListenerService implement
             notification_center_manager.setStackFromEnd(true);
             notification_center_manager.setReverseLayout(true);
             verticalManager.setReverseLayout(true);
-            recyclerView.setLayoutManager(verticalManager);
+            setInstance(verticalManager);
+            setInstance(notification_center_manager);
+            recyclerView.setLayoutManager(notification_center_manager);
             recyclerView.setAdapter(notification_center_adapter);
 
             recyclerView_quick_settings.setLayoutManager(quick_settings_manager);
@@ -364,8 +371,17 @@ public class MyNotificationService extends NotificationListenerService implement
 
             StaticVariableUtils.trigger_onCreate = false;
 
-        }
+            //侧滑菜单
+            itemTouchHelperCallback = new ItemTouchHelperCallback(mycontext);
+            itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+            itemTouchHelper.attachToRecyclerView(recyclerView);
 
+            //切换语言前有通知的话，不要显示无通知提示
+            if(list.size()>0) {
+                STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
+            }
+
+        }
 
     }
 
