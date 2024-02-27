@@ -147,9 +147,9 @@ public class Source implements Instance {
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
-                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
-                    }
+//                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
+//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//                    }
                 }
 
             }
@@ -234,9 +234,9 @@ public class Source implements Instance {
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
-                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
-                    }
+//                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
+//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//                    }
 
                 }
             }
@@ -288,9 +288,9 @@ public class Source implements Instance {
                     if(MenuService.menuState == MenuState.MENU_SOURCE) {
                         MenuService.menuState = MenuState.NULL;//二级菜单标志清空
                     }
-                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
-                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
-                    }
+//                    if(StaticVariableUtils.SettingsControlStatusBarVisible == true) {
+//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
+//                    }
                 }
             }
         });

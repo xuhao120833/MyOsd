@@ -89,7 +89,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     Log.d("CustomFrameLayout", "notification_center_item_settings 宽" + 428 * StaticVariableUtils.widthPixels / 1920);
                     layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
-                    setPadding(8 * StaticVariableUtils.widthPixels / 1920,0,8 * StaticVariableUtils.widthPixels / 1920,0);
+//                    setPadding(8 * StaticVariableUtils.widthPixels / 1920,0,8 * StaticVariableUtils.widthPixels / 1920,0);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "notification_center_item_settings");
                     layoutParams = null;

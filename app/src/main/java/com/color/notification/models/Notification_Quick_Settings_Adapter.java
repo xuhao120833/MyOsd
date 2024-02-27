@@ -190,6 +190,14 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         volume_icon = notification_quick_settings.findViewById(R.id.volume_icon);
         volumeSeekBar = (CustomSeekBar) notification_quick_settings.findViewById(R.id.volumeSeekBar);
         volumeSeekBar.setProgress(volume);
+        ImageView imageView = (ImageView) volume_icon;
+        if(volume == 0) {
+            imageView.setImageResource(R.drawable.quick_settings_volume0);
+        } else if(volume >0 && volume <8) {
+            imageView.setImageResource(R.drawable.quick_settings_volume1);
+        } else if(volume >= 8) {
+            imageView.setImageResource(R.drawable.quick_settings_volume);
+        }
         volumeSeekBar_text = (TextView) notification_quick_settings.findViewById(R.id.volumeSeekBar_text);
         volumeSeekBar_text.setText((int)(((float) volume / 15) * 100) + "%");
 
@@ -307,10 +315,13 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
                 // 更新SeekBar的进度
 //                STATIC_INSTANCE_UTILS.notification_quick_settings_adapter.volumeSeekBar.setProgress(progress);
 
+                Log.d("volumeSeekBar"," 进度条进度 " + progress);
                 ImageView imageView = (ImageView) volume_icon;
                 if(progress == 0) {
                     imageView.setImageResource(R.drawable.quick_settings_volume0);
-                } else if(progress >0) {
+                } else if(progress >0 && progress <8) {
+                    imageView.setImageResource(R.drawable.quick_settings_volume1);
+                } else if(progress >= 8) {
                     imageView.setImageResource(R.drawable.quick_settings_volume);
                 }
 

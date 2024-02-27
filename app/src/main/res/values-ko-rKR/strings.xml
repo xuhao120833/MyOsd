@@ -1,0 +1,37 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">osd</string>
+
+    <string name="soure_change">신호 소스 전환</string>
+
+    <string name="工具" translatable="false">도구</string>
+    <string name="亮度" translatable="false">명도</string>
+    <string name="音量" translatable="false">용량</string>
+
+    <string name="截图" translatable="false">스크린샷</string>
+    <string name="护眼" translatable="false">눈 보호</string>
+    <string name="摄像头" translatable="false">카메라</string>
+    <string name="录屏" translatable="false">녹화 화면</string>
+
+    <string name="蓝牙" translatable="false">블루투스</string>
+
+    <string name="消息中心" translatable="false">메시지 센터</string>
+    <string name="一分钟前" translatable="false" >몇분 전에</string>
+    <string name="一小时前" translatable="false" >한 시간 전에</string>
+    <string name="分钟前" translatable="false" >몇분 전에</string>
+    <string name="小时前" translatable="false" >한 시간 전에</string>
+
+    <string name="现在" translatable="false" >지금</string>
+    <string name="正在传输文件" translatable="false" >파일 전송 중</string>
+    <string name="传输进度" translatable="false" >전송 진행 상황</string>
+    <string name="传输完成点击查看" translatable="false" >전송 완료</string>
+    <string name="传输失败" translatable="false" >전송 실패</string>
+
+    <string name="录屏3s后开始" translatable="false" >3초 후에 화면 녹화가 시작됩니다.</string>
+    <string name="录屏已结束打开文件管理Movies目录查看" translatable="false" >화면 녹화가 종료되었습니다. 파일 관리의 영화 디렉터리를 열어서 확인하세요.</string>
+
+    <string name="个通知" translatable="false" >알림</string>
+
+    <string name="暂无任何通知" translatable="false" >아직 알림이 없습니다</string>
+    <string name="通知置顶">알림이 상단에 고정되었습니다.</string>
+
+</resources>

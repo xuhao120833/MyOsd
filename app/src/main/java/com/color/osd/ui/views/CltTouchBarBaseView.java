@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
+import com.color.osd.R;
 
 import com.color.osd.models.interfaces.MenuBrightnessAndVolumeInterface;
 import com.color.osd.utils.ConstantProperties;
@@ -147,6 +148,16 @@ public class CltTouchBarBaseView extends ViewGroup implements CltSeekBar.TouchMo
 
     private void updateUI(){
         // 调整UI
+        // add 2024-02-23 音量在1%~50%时候，喇叭是一条圆弧，音量在50%~100%，喇叭是两条圆弧
+        // 亮度暂时没说要改
+        if (baseValue == 15){
+            // 通过基底判断是音量还是亮度：音量基底15，亮度的基底是255
+            if (mProgressPercent < 50 && mProgressPercent > 0){
+                seekBar.setNormalIcon(R.drawable.volume_positive_small);
+            }else if (mProgressPercent >= 50){
+                seekBar.setNormalIcon(R.drawable.volume_positive);
+            }
+        }
         // 1 调整右侧圆的百分比文字
         circleRight.setPercent(mProgressPercent);
         // 2 调整进度条百分比

@@ -16,8 +16,13 @@ import android.app.ActivityManager;
 //import android.app.TaskStackListener;
 import android.annotation.SuppressLint;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SystemTopActivityChange implements Instance {
 
@@ -32,6 +37,8 @@ public class SystemTopActivityChange implements Instance {
     ActivityManager.RunningAppProcessInfo runningAppProcessInfo;
 
     String processName = "";
+
+    String packageName = null;
 
     public ProcessObserver processObserver;
 
@@ -94,12 +101,15 @@ public class SystemTopActivityChange implements Instance {
                 e.printStackTrace();
             }
 
+            packageName = getForegroundActivity(mycontext);
+            Log.d("SystemActivityChange"," packageName的名字 "+packageName);
+
             for (int i = 0; i < processesList.size(); i++) {
                 try {
                     runningAppProcessInfo = processesList.get(i);
                     if (runningAppProcessInfo.pid == pid) {
                         processName = runningAppProcessInfo.processName;
-                        Log.d("SystemActivityChange", "onForegroundActivitiesChanged " + processName + " " + String.valueOf(foregroundActivities));
+                        Log.d("SystemActivityChange", "onForegroundActivitiesChanged " + processName + " " + String.valueOf(foregroundActivities) + " packagename "+packageName);
                         break;
                     }
                 } catch (Exception e) {
@@ -108,34 +118,26 @@ public class SystemTopActivityChange implements Instance {
             }
 
             Log.d("SystemActivityChange : 前台活动的包名: ", processName);
-            if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName)&& !"com.android.toofifi".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false) ) {
+            if ((!"com.android.launcher3".equals(processName) && foregroundActivities == true && !"com.color.settings".equals(processName) && !"com.android.tv.settings".equals(processName) && !"com.peasun.aispeechgl".equals(processName) && !"com.color.osd".equals(processName) && !"com.android.toofifi".equals(processName) && !"android.rockchip.update.service".equals(processName)) || ("com.android.launcher3".equals(processName) && foregroundActivities == false)) {
                 STATIC_INSTANCE_UTILS.statusBar.statusbar.post(new Runnable() {
                     @Override
                     public void run() {
-//                        if(StaticVariableUtils.haveUsbDevice) {
-//                            InstanceUtils.statusBar.udisk.setVisibility(View.GONE);
-//                        }
-//                        if (StaticVariableUtils.WifiOpen) {
-//                            //Log.d("SystemActivityChange "," wifi设置不可见");
-//                            InstanceUtils.statusBar.wifi.setVisibility(View.GONE);
-//                        }
-//                        if (StaticVariableUtils.EthernetConnected) {
-//                            InstanceUtils.statusBar.ethernet.setVisibility(View.GONE);
-//                        }
-//                        if (StaticVariableUtils.HotspotOpen) {
-//                            InstanceUtils.statusBar.hotspot.setVisibility(View.GONE);
-//                        }
-//                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.GONE);
+
                         STATIC_INSTANCE_UTILS.manimationManager.statusBarHideAnimation();
                     }
                 });
                 Log.d("SystemActivityChange", "不在launcher 选择隐藏");
-            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible || ("com.color.player".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible) || ("com.color.filemanager".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible)) {
+            } else if ("com.android.launcher3".equals(processName) && foregroundActivities == true && StaticVariableUtils.SettingsControlStatusBarVisible || ("com.color.player".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible) || ("com.color.filemanager".equals(processName) && foregroundActivities == false && StaticVariableUtils.SettingsControlStatusBarVisible) ) {
+
+                if(isAppRunning(mycontext,"com.android.launcher3")) {
+                    Log.d("SystemActivityChange"," 回到了launcher3主界面 ");
+                }
+
                 STATIC_INSTANCE_UTILS.statusBar.statusbar.post(new Runnable() {
                     @Override
                     public void run() {
 //                        STATIC_INSTANCE_UTILS.statusBar.statusbar.setVisibility(View.VISIBLE);
-                        if(StaticVariableUtils.haveUsbDevice) {
+                        if (StaticVariableUtils.haveUsbDevice) {
                             STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
                         }
                         if (StaticVariableUtils.WifiOpen) {
@@ -185,6 +187,82 @@ public class SystemTopActivityChange implements Instance {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void getPackageName() {
+
+        try {
+            Log.d("SystemActivityChange", "getPackageNameXXX 进入方法 " + packageName);
+
+            ProcessBuilder builder = new ProcessBuilder("sh", "-c", "dumpsys window | grep mCurrentFocus");
+            builder.redirectErrorStream(true);
+            Process process = builder.start();
+
+            // 获取命令输出
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream())); // 新增的错误流读取器
+            StringBuilder output = new StringBuilder();
+            String line = reader.readLine();
+
+            // 打印命令输出
+            Log.d("SystemActivityChange", " 命令输出"+output.toString());
+
+//            String lines = output.toString();
+
+            // 定义正则表达式
+            String regex = "([a-zA-Z]+\\.[a-zA-Z]+\\.[a-zA-Z]+)";
+
+            // 创建 Pattern 对象
+            Pattern pattern = Pattern.compile(regex);
+
+            // 创建 Matcher 对象
+            Matcher matcher = pattern.matcher(line);
+
+            // 查找匹配
+            if (matcher.find()) {
+                // 提取匹配到的内容
+                packageName = matcher.group();
+
+                // 输出包名
+                Log.d("SystemActivityChange", " 输出包名 "+packageName);
+            } else {
+                Log.d("SystemActivityChange", " 未找到包名 ");
+            }
+
+            reader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getForegroundActivity(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            // 获取正在运行的进程列表
+            for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    // 返回前台活动的进程名称
+                    return processInfo.processName;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isAppRunning(Context context, String packageName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            // 获取正在运行的进程列表
+            for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
+                // 检查进程是否属于指定的包名
+                if (processInfo.processName.equals(packageName)) {
+                    // 检查进程的重要性，判断应用程序是否在前台运行
+                    return processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+                }
+            }
+        }
+        return false;
     }
 
 

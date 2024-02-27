@@ -233,7 +233,8 @@ public class NavigationBar implements Instance {
             @Override
             public void onClick(View v) {
 
-                setFocusableByNavibar();
+                //setFocusableByNavibar();
+                setFocus();
                 STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
@@ -404,7 +405,8 @@ public class NavigationBar implements Instance {
         rightsource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setFocusableByNavibar();
+                //setFocusableByNavibar();
+                setFocus();
                 STATIC_INSTANCE_UTILS.source.Source.setVisibility(View.VISIBLE);
 
                 //有操作，则重新计时
@@ -510,6 +512,23 @@ public class NavigationBar implements Instance {
         STATIC_INSTANCE_UTILS.source.Android.setFocusable(false);
         STATIC_INSTANCE_UTILS.source.HDMI1.setFocusable(false);
         STATIC_INSTANCE_UTILS.source.HDMI2.setFocusable(false);
+    }
+
+    public void setFocus() {
+        switch (STATIC_INSTANCE_UTILS.source.select_source) {
+            case "OPS":
+                STATIC_INSTANCE_UTILS.source.OPS.requestFocus();
+                break;
+            case "Android":
+                STATIC_INSTANCE_UTILS.source.Android.requestFocus();
+                break;
+            case "HDMI1":
+                STATIC_INSTANCE_UTILS.source.HDMI1.requestFocus();
+                break;
+            case "HDMI2":
+                STATIC_INSTANCE_UTILS.source.HDMI2.requestFocus();
+                break;
+        }
     }
 
 

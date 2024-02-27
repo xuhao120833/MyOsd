@@ -40,8 +40,11 @@ public class CltSeekBar extends View {
 
     private LinearGradient linearGradient;
 
+    private Context mContext;
+
     public CltSeekBar(Context context) {
         super(context, null);
+        mContext = context;
         mBgSeekHeight = DensityUtil.getScaledValue(ConstantProperties.BRIGHTNESS_OR_VOLUME_SEEK_BAR_BACKGROUND_HEIGHT_DP);
         mBgSeekPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBgSeekPaint.setStyle(Paint.Style.FILL);
@@ -168,5 +171,9 @@ public class CltSeekBar extends View {
 
     public interface TouchMoveEvent{
         void onMovePercent(int percent);
+    }
+
+    public void setNormalIcon(int res){
+        positiveIcon = ContextCompat.getDrawable(mContext, res);
     }
 }
