@@ -142,6 +142,8 @@ public class StaticVariableUtils {
     //消息中心有蓝牙通知，用于获取蓝牙通知坐标
     public static Notification_Item notification_item_lanya = null;
 
+    public static String lastCountry;
+
 //二、方法区
 
     /**

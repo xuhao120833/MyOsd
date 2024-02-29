@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 import android.widget.TextView;
 
-public class SourceTextView extends TextView {
+public class SourceTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     int modeWidth;
     int modeHeight;

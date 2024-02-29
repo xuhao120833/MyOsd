@@ -51,7 +51,8 @@ public class FirstLinearLayout extends LinearLayout {
                 TextView textView = (TextView) child;
                 textView.setText(R.string.soure_change);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 26 * sizeHeight / 70);
-                layoutParams.leftMargin = sizeWidth * 20 / 600;
+                layoutParams.setMarginStart(sizeWidth * 20 / 600);
+//                layoutParams.leftMargin = sizeWidth * 20 / 600;
 //                layoutParams.topMargin = sizeHeight * 16 / 70;
                 textView.setLayoutParams(layoutParams);
                 textView.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 520 / 600, MeasureSpec.EXACTLY),

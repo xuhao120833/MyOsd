@@ -121,10 +121,15 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
     @NonNull
     @Override
     public T onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        notification_quick_settings = LayoutInflater.from(mycontext).inflate(R.layout.notification_quick_settings, parent, false);
-        setQuickSettingsClick();
-        quick_settings_viewHolder = new Quick_Settings_ViewHolder(notification_quick_settings);
-        return (T) quick_settings_viewHolder;
+        try {
+            notification_quick_settings = LayoutInflater.from(mycontext).inflate(R.layout.notification_quick_settings, parent, false);
+            setQuickSettingsClick();
+            quick_settings_viewHolder = new Quick_Settings_ViewHolder(notification_quick_settings);
+            return (T) quick_settings_viewHolder;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -183,6 +188,12 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         brightness = BrightnessManager.readTemporaryBrightness(mycontext);
         brightnessSeekBar.setProgress(brightness);
         brightnessSeekBar_text.setText(Math.round(brightness/2.55)+"%");
+        Log.d("brightnessSeekBar"," 当前的语言是 " + StaticVariableUtils.lastCountry);
+//        if(StaticVariableUtils.lastCountry.contains("ar")) {
+//            brightnessSeekBar.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//        }else {
+//            brightnessSeekBar.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
 
         //音量条
         volumeTitle_text = notification_quick_settings.findViewById(R.id.volumeTitle_text);
@@ -190,6 +201,12 @@ public class Notification_Quick_Settings_Adapter<T extends RecyclerView.ViewHold
         volume_icon = notification_quick_settings.findViewById(R.id.volume_icon);
         volumeSeekBar = (CustomSeekBar) notification_quick_settings.findViewById(R.id.volumeSeekBar);
         volumeSeekBar.setProgress(volume);
+//        if(StaticVariableUtils.lastCountry.contains("ar")) {
+//            volumeSeekBar.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//        }else {
+//            volumeSeekBar.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
+
         ImageView imageView = (ImageView) volume_icon;
         if(volume == 0) {
             imageView.setImageResource(R.drawable.quick_settings_volume0);

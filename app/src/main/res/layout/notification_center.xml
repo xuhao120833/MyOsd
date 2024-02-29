@@ -13,9 +13,9 @@
         android:id="@+id/notification_center_item_settings"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="3dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="3dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
@@ -29,8 +29,8 @@
             android:id="@+id/top"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/notification_center_top"
             android:visibility="visible">
 
@@ -40,8 +40,8 @@
             android:id="@+id/delete"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/notification_center_delete"
             android:visibility="visible">
 
@@ -51,8 +51,8 @@
             android:id="@+id/settings"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/notification_center_settings"
             android:visibility="visible">
 
@@ -64,9 +64,9 @@
         android:id="@+id/notification_center_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="3dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/shapetop_notification_item"
         android:orientation="horizontal">
@@ -75,9 +75,9 @@
             android:id="@+id/Icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center">
 
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
@@ -111,7 +111,7 @@
                     android:id="@+id/time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textColor="@color/white"
                     android:textSize="20px">
 
@@ -140,7 +140,7 @@
                     android:id="@+id/Up_Or_Down"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:src="@drawable/notification_center_down"
                     android:visibility="invisible">
 

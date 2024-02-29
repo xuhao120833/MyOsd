@@ -962,7 +962,8 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                 TextView text = list.get(position).mynotification_center.findViewById(R.id.time);
                 String text_string = (String) text.getText();
                 Log.d("bindItemViewHolder ", text_string);
-                if (text_string.contains("分钟") || text_string.contains("分鐘") || text_string.contains("minute")) {
+                if (text_string.contains("分钟") || text_string.contains("分鐘") || text_string.contains("minute")
+                        || text_string.contains("몇분 전에") || text_string.contains("数分前") || text_string.contains("دقائق مضت")) {
                     Log.d("bindItemViewHolder", " text " + text.getText());
                     // 使用正则表达式提取数字
                     holder.onCreat_minutes = getNumberFromString(text_string);
@@ -972,7 +973,8 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                         holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.分钟前));
                     }
 
-                } else if (text_string.contains("小時") || text_string.contains("小时") || text_string.contains("hour")) {
+                } else if (text_string.contains("小時") || text_string.contains("小时") || text_string.contains("hour")
+                        || text_string.contains("한 시간 전에") || text_string.contains("時間前") || text_string.contains("منذ ساعة")) {
                     Log.d("bindItemViewHolder", " text " + text.getText());
                     holder.onCreat_hours = getNumberFromString(text_string);
                     if (holder.onCreat_hours == 1) {
@@ -981,7 +983,8 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                         holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.小时前));
                     }
 
-                } else if (text_string.contains("现在") || text_string.contains("現在") || text_string.contains("now")) {
+                } else if (text_string.contains("现在") || text_string.contains("現在") || text_string.contains("now")
+                        || text_string.contains("지금") || text_string.contains("今") || text_string.contains("الآن")) {
                     Log.d("bindItemViewHolder", " text " + text.getText());
                     holder.time.setText(mycontext.getString(R.string.现在));
                 }
@@ -1167,21 +1170,24 @@ public class Notification_Center_Adapter<T extends RecyclerView.ViewHolder> exte
                 CustomSeekBar lanya_seekbar = list.get(position).mynotification_center.findViewById(R.id.seekbar_lanya);
                 holder.lanya_seekbar.setProgress(lanya_seekbar.getProgress());
 
-                if (text_time.contains("分钟") || text_time.contains("分鐘") || text_time.contains("minute")) {
+                if (text_time.contains("分钟") || text_time.contains("分鐘") || text_time.contains("minute")
+                        || text_time.contains("몇분 전에") || text_time.contains("数分前") || text_time.contains("دقائق مضت")) {
                     holder.onCreat_minutes = getNumberFromString(text_time);
                     if (holder.onCreat_minutes == 1) {
                         holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.一分钟前));
                     } else {
                         holder.time.setText(holder.onCreat_minutes + mycontext.getString(R.string.分钟前));
                     }
-                } else if (text_time.contains("小時") || text_time.contains("小时") || text_time.contains("hour")) {
+                } else if (text_time.contains("小時") || text_time.contains("小时") || text_time.contains("hour")
+                        ||text_time.contains("한 시간 전에") || text_time.contains("時間前") || text_time.contains("منذ ساعة")) {
                     holder.onCreat_hours = getNumberFromString(text_time);
                     if (holder.onCreat_hours == 1) {
                         holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.一小时前));
                     } else {
                         holder.time.setText(holder.onCreat_hours + mycontext.getString(R.string.小时前));
                     }
-                } else if (text_time.contains("现在") || text_time.contains("現在") || text_time.contains("now")) {
+                } else if (text_time.contains("现在") || text_time.contains("現在") || text_time.contains("now")
+                        || text_time.contains("지금") || text_time.contains("今") || text_time.contains("الآن")) {
                     holder.time.setText(mycontext.getString(R.string.现在));
                 }
 

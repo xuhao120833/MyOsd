@@ -45,8 +45,10 @@ public class ThirdLinearLayout extends LinearLayout {
             View child = getChildAt(i);
             if (i == 0) {
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-                layoutParams.leftMargin = sizeWidth * 140 / 600;
-                layoutParams.rightMargin = sizeWidth * 60 / 600;
+                layoutParams.setMarginStart(sizeWidth * 140 / 600);
+                layoutParams.setMarginEnd(sizeWidth * 60 / 600);
+//                layoutParams.leftMargin = sizeWidth * 140 / 600;
+//                layoutParams.rightMargin = sizeWidth * 60 / 600;
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 130 / 600, MeasureSpec.EXACTLY),
                         MeasureSpec.makeMeasureSpec(sizeHeight * 130 / 230, MeasureSpec.EXACTLY));

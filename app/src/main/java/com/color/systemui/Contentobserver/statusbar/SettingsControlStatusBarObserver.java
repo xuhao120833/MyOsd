@@ -42,6 +42,7 @@ public class SettingsControlStatusBarObserver extends ContentObserver implements
             STATIC_INSTANCE_UTILS.statusBar.wifi_frame.setVisibility(View.VISIBLE);
             STATIC_INSTANCE_UTILS.statusBar.udisk_frame.setVisibility(View.VISIBLE);
             STATIC_INSTANCE_UTILS.statusBar.ethernet_frame.setVisibility(View.VISIBLE);
+            STATIC_INSTANCE_UTILS.statusBar.hotspot_frame.setVisibility(View.VISIBLE);
             STATIC_INSTANCE_UTILS.manimationManager.statusbarShowAnimation();
             StaticVariableUtils.SettingsControlStatusBarVisible = true;
         }

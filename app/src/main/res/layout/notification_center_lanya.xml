@@ -15,9 +15,9 @@
         android:id="@+id/notification_center_item_lanya2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="3dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/shapetop_notification_item"
         android:orientation="horizontal">
@@ -27,9 +27,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp">
 
         </com.color.notification.view.CustomImageView>
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
@@ -47,7 +47,7 @@
                 android:id="@+id/transmission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left|center"
+                android:gravity="start|center"
                 android:textColor="@color/white"
                 android:textSize="20px"
                 android:visibility="gone">
@@ -58,8 +58,8 @@
                 android:id="@+id/filename"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:gravity="left|center"
+                android:layout_gravity="end|center"
+                android:gravity="start|center"
                 android:textColor="@color/white"
                 android:textSize="20px">
 
@@ -73,9 +73,9 @@
         android:id="@+id/notification_center_item_lanya"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="3dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/shapetop_notification_item"
         android:orientation="horizontal">
@@ -84,9 +84,9 @@
             android:id="@+id/Icon_lanya"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center">
 
@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
@@ -120,7 +120,7 @@
                     android:id="@+id/time_lanya"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textColor="@color/white"
                     android:textSize="20px">
 
@@ -139,7 +139,7 @@
                     android:id="@+id/seekbar_lanya"
                     android:layout_width="130dp"
                     android:layout_height="5dp"
-                    android:layout_gravity="center|left"
+                    android:layout_gravity="center|start"
                     android:background="@android:color/transparent"
                     android:clickable="false"
                     android:focusable="false"
@@ -157,8 +157,8 @@
                     android:id="@+id/seekbar_lanya_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center"
-                    android:gravity="right|center"
+                    android:layout_gravity="end|center"
+                    android:gravity="end|center"
                     android:text="0%"
                     android:textColor="@color/white"
                     android:textSize="20px">

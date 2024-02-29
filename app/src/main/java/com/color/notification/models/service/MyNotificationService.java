@@ -237,11 +237,15 @@ public class MyNotificationService extends NotificationListenerService implement
 
             //6、记录语言国籍，在改变语言时使用。
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
+            StaticVariableUtils.lastCountry = lastCountry;
+            Log.d(TAG," 当前的语言是 " + lastCountry);
 
             //7、通知中心侧滑菜单实现
             itemTouchHelperCallback = new ItemTouchHelperCallback(mycontext);
             itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
             itemTouchHelper.attachToRecyclerView(recyclerView);
+
+            //8、判断是否是阿拉伯语，然后设置快捷中心进度条(音量、亮度)的方向
 
 
             //解决快捷中心闪动问题
@@ -359,6 +363,7 @@ public class MyNotificationService extends NotificationListenerService implement
 //            notification_center_adapter.notifyDataSetChanged();
 
             lastCountry = getResources().getConfiguration().locale.toLanguageTag();
+            StaticVariableUtils.lastCountry = lastCountry;
 
             //切换语言之后，恢复快捷中心的位置，及按照分辨率适配边距(左侧或者右侧)
             if ("left".equals(StaticVariableUtils.left_or_right)) {
@@ -371,7 +376,7 @@ public class MyNotificationService extends NotificationListenerService implement
 
             StaticVariableUtils.trigger_onCreate = false;
 
-            //侧滑菜单
+            //侧滑菜单实现
             itemTouchHelperCallback = new ItemTouchHelperCallback(mycontext);
             itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
             itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -380,6 +385,8 @@ public class MyNotificationService extends NotificationListenerService implement
             if(list.size()>0) {
                 STATIC_INSTANCE_UTILS.myNotification.empty.setVisibility(View.GONE);
             }
+
+            //判断是否是阿拉伯语，然后设置快捷中心进度条(音量、亮度)的方向
 
         }
 
@@ -427,7 +434,8 @@ public class MyNotificationService extends NotificationListenerService implement
         Log.d("showMsg", "appName " + appName);
 
         //蓝牙的单独拿出来处理，并从这里直接返回，后续逻辑不再执行
-        if (("蓝牙".equals(appName) || "藍牙".equals(appName) || "Bluetooth".equals(appName)) && notification.extras != null) {
+        if (("蓝牙".equals(appName) || "藍牙".equals(appName) ||
+                "Bluetooth".equals(appName) || "블루투스".equals(appName) || "بلوتوث".equals(appName)) && notification.extras != null) {
             try {
 
                 Log.d("lanya", " 消息" + String.valueOf(notification.extras));
@@ -515,7 +523,9 @@ public class MyNotificationService extends NotificationListenerService implement
 
                 if (notification.extras.containsKey("android.title") && StaticVariableUtils.notification_has_lanya) {
                     String lanya_android_title = notification.extras.getString("android.title");
-                    if (lanya_android_title.contains("正在接收") || lanya_android_title.contains("Receiving")) {
+                    if (lanya_android_title.contains("正在接收") || lanya_android_title.contains("Receiving")
+                            || lanya_android_title.contains("받는 중") || lanya_android_title.contains("を受信中")
+                            || lanya_android_title.contains("يتم استلام")) {
                         int i = -1;
                         i = traverse_list(appName);
                         TextView filename = list.get(i).mynotification_center.findViewById(R.id.filename);
@@ -871,9 +881,16 @@ public class MyNotificationService extends NotificationListenerService implement
         activityDisplayMetrics.densityDpi = targetDensityDpi;
     }
 
+    /***
+     * 屏蔽掉不需要显示的通知
+     * @param appName
+     * @return
+     */
     private boolean filterAppName(String appName) {
 
-        if ("VLC".equals(appName) || "osd".equals(appName) || "系统界面".equals(appName) || "Android 系统".equals(appName) || "蓝牙".equals(appName) || "藍牙".equals(appName) || "Bluetooth".equals(appName) || "Android System".equals(appName) || "Android 系統".equals(appName)) {
+        if ("VLC".equals(appName) || "osd".equals(appName) || "系统界面".equals(appName) || "蓝牙".equals(appName) || "藍牙".equals(appName)
+                || "Bluetooth".equals(appName) || "블루투스".equals(appName) || "بلوتوث".equals(appName) || appName.contains("Android")
+                || "Shell".equals(appName)) {
             return false;
         }
 

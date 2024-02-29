@@ -74,7 +74,11 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     Log.d("CustomFrameLayout", "notification_center_item 宽" + 428 * StaticVariableUtils.widthPixels / 1920);
-                    layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
+                    layoutParams.setMarginStart(24 * StaticVariableUtils.widthPixels / 1920);
+                    layoutParams.setMarginEnd(24 * StaticVariableUtils.widthPixels / 1920);
+                    layoutParams.topMargin = 6 * StaticVariableUtils.heightPixels / 1080;
+                    layoutParams.bottomMargin = 6 * StaticVariableUtils.heightPixels / 1080;
+//                    layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "notification_center_item");
                     layoutParams = null;
@@ -88,7 +92,11 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     Log.d("CustomFrameLayout", "notification_center_item_settings 宽" + 428 * StaticVariableUtils.widthPixels / 1920);
-                    layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
+                    layoutParams.setMarginStart(24 * StaticVariableUtils.widthPixels / 1920);
+                    layoutParams.setMarginEnd(24 * StaticVariableUtils.widthPixels / 1920);
+                    layoutParams.topMargin = 6 * StaticVariableUtils.heightPixels / 1080;
+                    layoutParams.bottomMargin = 6 * StaticVariableUtils.heightPixels / 1080;
+//                    layoutParams.setMargins(24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080, 24 * StaticVariableUtils.widthPixels / 1920, 6 * StaticVariableUtils.heightPixels / 1080);
 //                    setPadding(8 * StaticVariableUtils.widthPixels / 1920,0,8 * StaticVariableUtils.widthPixels / 1920,0);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "notification_center_item_settings");
@@ -178,7 +186,8 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 24 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 24 * StaticVariableUtils.heightPixels / 1080;
-                    layoutParams.setMargins(8 * StaticVariableUtils.widthPixels / 1920, 0, 0, 0);
+                    layoutParams.setMarginStart(8 * StaticVariableUtils.widthPixels / 1920);
+//                    layoutParams.setMargins(8 * StaticVariableUtils.widthPixels / 1920, 0, 0, 0);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "brightness_icon");
                     layoutParams = null;
@@ -190,7 +199,8 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 60 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 40 * StaticVariableUtils.heightPixels / 1080;
-                    layoutParams.setMargins(0, 0, 8 * StaticVariableUtils.widthPixels / 1920, 0);
+                    layoutParams.setMarginEnd(8 * StaticVariableUtils.widthPixels / 1920);
+//                    layoutParams.setMargins(0, 0, 8 * StaticVariableUtils.widthPixels / 1920, 0);
                     ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "brightnessSeekBar_text");
@@ -228,7 +238,8 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 24 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 24 * StaticVariableUtils.heightPixels / 1080;
-                    layoutParams.setMargins(8 * StaticVariableUtils.widthPixels / 1920, 0, 0, 0);
+                    layoutParams.setMarginStart(8 * StaticVariableUtils.widthPixels / 1920);
+//                    layoutParams.setMargins(8 * StaticVariableUtils.widthPixels / 1920, 0, 0, 0);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "volume_icon");
                     layoutParams = null;
@@ -240,7 +251,8 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 60 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 40 * StaticVariableUtils.heightPixels / 1080;
-                    layoutParams.setMargins(0, 0, 8 * StaticVariableUtils.widthPixels / 1920, 0);
+                    layoutParams.setMarginEnd(8 * StaticVariableUtils.widthPixels / 1920);
+//                    layoutParams.setMargins(0, 0, 8 * StaticVariableUtils.widthPixels / 1920, 0);
                     ((TextView) child).setTextSize(TypedValue.COMPLEX_UNIT_PX, 20 * StaticVariableUtils.widthPixels / 1920);
                     child.setLayoutParams(layoutParams);
                     Log.d("CustomFrameLayout", "volumeSeekBar_text");

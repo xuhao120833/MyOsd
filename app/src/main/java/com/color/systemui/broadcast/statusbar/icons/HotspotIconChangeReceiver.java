@@ -35,13 +35,14 @@ public class HotspotIconChangeReceiver extends BroadcastReceiver implements Inst
                     StaticVariableUtils.HotspotOpen = false;
                     break;
                 case 13:
-                    if("com.android.launcher3".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
+                    if ("com.android.launcher3".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage()) ||
                             "com.color.settings".equals(STATIC_INSTANCE_UTILS.mgetTopActivity.getPackage())) {
+
                         STATIC_INSTANCE_UTILS.statusBar.hotspot.setVisibility(View.VISIBLE);
                         STATIC_INSTANCE_UTILS.statusBar.hotspot.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_hotspot));
                         STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.hotspot_frame);
                     }
-                    StaticVariableUtils.HotspotOpen =true;
+                    StaticVariableUtils.HotspotOpen = true;
                     break;
                 default:
                     break;

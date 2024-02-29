@@ -133,6 +133,7 @@ public class StatusBar implements Instance {
             wifi_frame.setVisibility(View.GONE);
             udisk_frame.setVisibility(View.GONE);
             ethernet_frame.setVisibility(View.GONE);
+            hotspot_frame.setVisibility(View.GONE);
             statusbar.setVisibility(View.GONE);
         }
 
