@@ -7,7 +7,7 @@
 
 
 ### notification  
-&nbsp;&nbsp;&nbsp;&nbsp;代码从MyNotificationService.java开始看，该服务开机自启动。快捷中心分为两个部分：快捷设置和通知中心。快捷设置不难，就是RecyclerView填充了固定的内容；通知中心由MyNotificationService循环监听系统通知，有通知就过滤显示出来。通知中心这块代码比较复杂，过滤掉了不需要显示的通知、内容为null的通知，蓝牙通知单独处理，一般通知添加了左滑显示菜单、右滑移除通知功能。通知中心用的变量比较多，看不懂不必纠结，重点看MyNotificationService 和 Notification_Center_Adapter之间的主要关系即可。  
+&nbsp;&nbsp;&nbsp;&nbsp;代码从MyNotificationService.java开始看，该服务开机自启动。快捷中心分为两个部分：快捷设置和通知中心。快捷设置不难，就是RecyclerView填充了固定的内容；通知中心由MyNotificationService循环监听系统通知，有通知就过滤显示出来。通知中心这块代码比较复杂，过滤掉了不需要显示的通知、内容为null的通知，蓝牙通知单独处理，一般通知添加了左滑显示菜单、右滑移除通知功能。通知中心用的变量比较多，看不懂不必纠结，重点看MyNotificationService 和 Notification_Center_Adapter之间的主要代码逻辑即可。  
    
 
 
