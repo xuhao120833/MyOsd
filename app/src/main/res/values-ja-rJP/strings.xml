@@ -34,4 +34,8 @@
     <string name="暂无任何通知" translatable="false" >まだ通知はありません</string>
     <string name="通知置顶">通知を上部に固定</string>
 
+    <string name="信源">ソース</string>
+    <string name="最近">最近の</string>
+    <string name="批注">注釈</string>
+
 </resources>

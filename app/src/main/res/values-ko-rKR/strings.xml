@@ -34,4 +34,8 @@
     <string name="暂无任何通知" translatable="false" >아직 알림이 없습니다</string>
     <string name="通知置顶">알림이 상단에 고정되었습니다.</string>
 
+    <string name="信源">원천</string>
+    <string name="最近">최근의</string>
+    <string name="批注">주석</string>
+
 </resources>

@@ -33,4 +33,8 @@
     <string name="暂无任何通知" translatable="false">暫無任何通知</string>
     <string name="通知置顶">通知置頂</string>
 
+    <string name="信源">信源</string>
+    <string name="最近">最近</string>
+    <string name="批注">批註</string>
+
 </resources>

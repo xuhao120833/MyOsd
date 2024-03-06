@@ -34,4 +34,8 @@
     <string name="暂无任何通知" translatable="false" >لا يوجد إشعار حتى الآن</string>
     <string name="通知置顶">تم تثبيت الإشعار في الأعلى</string>
 
+    <string name="信源">مصدر</string>
+    <string name="最近">مؤخرًا</string>
+    <string name="批注">حاشية. ملاحظة</string>
+
 </resources>

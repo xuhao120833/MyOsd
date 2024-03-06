@@ -127,9 +127,11 @@ public class StatusBarBootCheck implements Instance {
         for (Map.Entry entry : deviceHashMap.entrySet()) {
             Log.d("StatusBarBootCheck", "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
             if(entry != null) {
-                STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.udisk_frame);
-                STATIC_INSTANCE_UTILS.statusBar.udisk.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_udisk));
-                STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
+                if(!StaticVariableUtils.isViewGroupHasView(STATIC_INSTANCE_UTILS.statusBar.statusbar,STATIC_INSTANCE_UTILS.statusBar.udisk_frame)) {
+                    STATIC_INSTANCE_UTILS.statusBar.statusbar.addView(STATIC_INSTANCE_UTILS.statusBar.udisk_frame);
+                    STATIC_INSTANCE_UTILS.statusBar.udisk.setImageDrawable(mycontext.getResources().getDrawable(R.drawable.statusbar_udisk));
+                    STATIC_INSTANCE_UTILS.statusBar.udisk.setVisibility(View.VISIBLE);
+                }
                 StaticVariableUtils.haveUsbDevice = true;
             }
         }

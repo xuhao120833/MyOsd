@@ -35,4 +35,8 @@
     <string name="暂无任何通知" translatable="false" >No notifications at this time</string>
     <string name="通知置顶">Notification pinned to top</string>
 
+    <string name="信源">Source</string>
+    <string name="最近">Recent</string>
+    <string name="批注">Comments</string>
+
 </resources>

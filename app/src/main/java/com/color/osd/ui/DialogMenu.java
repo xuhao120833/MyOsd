@@ -72,7 +72,8 @@ public class DialogMenu extends Dialog implements Instance {
         wm.requestFeature(Window.FEATURE_NO_TITLE);
 
         mydialog.setCanceledOnTouchOutside(true);
-        mydialog.setContentView(R.layout.dialog_menu);
+//        mydialog.setContentView(R.layout.dialog_menu);
+        mydialog.setContentView(R.layout.new_dialog_menu);
 
         Menu = mydialog.findViewById(R.id.Menu);
         Menu_source = mydialog.findViewById(R.id.Menu_source);

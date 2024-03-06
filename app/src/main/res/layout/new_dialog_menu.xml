@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+        android:id="@+id/Menu_linear_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shapebuttom"
+        android:orientation="horizontal">
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_source"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_source_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_source">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_source_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20px"
+                android:text="@string/信源">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_brightness"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_brightness_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_brightness">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_brightness_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/亮度"
+                android:textColor="#ffffff"
+                android:textSize="20px">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_volume"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_volume_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_volume">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_volume_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20px"
+                android:text="@string/音量">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_recent"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_recent_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_recent">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_recent_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20px"
+                android:text="@string/最近">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_screenshot"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_screenshot_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_screenshot">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_screenshot_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20px"
+                android:text="@string/截图">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+        <com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout
+            android:id="@+id/Menu_comments"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/Menu_comments_image"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/new_menu_comments">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/Menu_comments_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20px"
+                android:text="@string/批注">
+
+            </TextView>
+
+        </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+    </com.color.osd.ui.views.new_dialogmenu.NewDialogLinearLayout>
+
+</FrameLayout>
