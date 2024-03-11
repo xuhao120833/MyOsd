@@ -11,4 +11,11 @@
     <style name="SeekBarNoThumb" parent="@android:style/Widget.SeekBar">
         <item name="android:thumb">@drawable/transparent_drawable</item>
     </style>
+
+    <style name="BlurDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackgroundBlurRadius">20dp</item> <!-- 设置背景模糊处理半径 -->
+        <item name="android:windowIsTranslucent">true</item> <!-- 将窗口设置为半透明 -->
+    </style>
+
 </resources>

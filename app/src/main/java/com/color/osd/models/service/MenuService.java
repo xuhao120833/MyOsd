@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 
 //import com.color.myNotification.models.service.MyNotificationService;
 import com.blankj.utilcode.util.AdaptScreenUtils;
+import com.color.notification.models.BlurWindowHelper;
 import com.color.notification.models.Notification_Item;
 import com.color.osd.ContentObserver.BootFinishContentObserver;
 import com.color.osd.ContentObserver.WindowManagerServiceObserver;

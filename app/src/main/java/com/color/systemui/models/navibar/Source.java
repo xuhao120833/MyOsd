@@ -70,7 +70,7 @@ public class Source implements Instance {
     private void initView() {
 
         inflater = (LayoutInflater) mycontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Source = inflater.inflate(R.layout.source, null);
+        Source = inflater.inflate(R.layout.new_source, null);
         text = (TextView) Source.findViewById(R.id.text);
         X = (ImageView) Source.findViewById(R.id.X);
         OPS = (ImageView) Source.findViewById(R.id.OPS);

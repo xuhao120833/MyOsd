@@ -1,11 +1,13 @@
 package com.color.osd.ui;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -22,6 +24,8 @@ import com.color.osd.models.service.MenuService;
 import com.color.osd.utils.ConstantProperties;
 import com.color.osd.utils.DensityUtil;
 import com.color.systemui.interfaces.Instance;
+
+import java.util.function.Consumer;
 
 
 public class DialogMenu extends Dialog implements Instance {
@@ -62,7 +66,11 @@ public class DialogMenu extends Dialog implements Instance {
         //各个按钮功能绑定入口
         functionBind();
 
-
+        //高斯模糊
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            mydialog.getWindow().setDimAmount(0f);
+            mydialog.getWindow().setBackgroundBlurRadius(90);
+        }
     }
 
 
@@ -113,6 +121,9 @@ public class DialogMenu extends Dialog implements Instance {
         lp.windowAnimations = -1;
         wm.setAttributes(lp);
         wm.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            wm.setBackgroundBlurRadius(50);
+        }
 
         //setCanceledOnTouchOutside(true);
     }
@@ -134,7 +145,7 @@ public class DialogMenu extends Dialog implements Instance {
 
     public final class CustomDialog extends Dialog implements DialogInterface {
         public CustomDialog(Context context) {
-            super(context, 0);
+            super(context, R.style.BlurDialogTheme);
         }
 
         @Override

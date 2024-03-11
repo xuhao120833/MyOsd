@@ -86,8 +86,11 @@ public class MyNotification implements Instance {
         //2、初始化View对象
         initView();
 
-//        //3、给View添加Click、Touch事件监听
+        //3、给View添加Click、Touch事件监听
         setClickAndTouch();
+
+        //4、高斯模糊
+        initBlur();
 
     }
 

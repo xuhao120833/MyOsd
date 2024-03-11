@@ -63,6 +63,7 @@ public class FirstLinearLayout extends LinearLayout {
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                 layoutParams = (LayoutParams) child.getLayoutParams();
 //                layoutParams.topMargin = sizeHeight * 30 / 70;
+                layoutParams.setMarginEnd(sizeWidth * 20 / 600);
                 child.setLayoutParams(layoutParams);
                 child.measure(MeasureSpec.makeMeasureSpec(sizeWidth * 40 / 600, MeasureSpec.EXACTLY),
                         MeasureSpec.makeMeasureSpec(sizeHeight * 40 / 70, MeasureSpec.EXACTLY));

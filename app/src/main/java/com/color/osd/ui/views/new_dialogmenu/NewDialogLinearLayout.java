@@ -2,7 +2,10 @@ package com.color.osd.ui.views.new_dialogmenu;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -15,8 +18,10 @@ import com.color.systemui.utils.StaticVariableUtils;
 
 public class NewDialogLinearLayout extends LinearLayout {
 
-    private Paint paint;
-    private Bitmap blurredBitmap;
+    private boolean isFocused = false;
+    private boolean drawOverlay = false; // 是否绘制遮罩层
+    private Paint paint = new Paint();
+    private RectF rectF = new RectF();
 
     public NewDialogLinearLayout(Context context) {
         this(context, null);
@@ -29,6 +34,7 @@ public class NewDialogLinearLayout extends LinearLayout {
     public NewDialogLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 //        initView();
+        init();
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -296,6 +302,38 @@ public class NewDialogLinearLayout extends LinearLayout {
 
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    private void init() {
+        paint.setAntiAlias(true);
+        paint.setColor(0x80FFFFFF); // 白色半透明背景
+        paint.setStyle(Paint.Style.FILL);
+    }
+
+    // 设置是否绘制遮罩层
+    public void setDrawOverlay(boolean drawOverlay) {
+        this.drawOverlay = drawOverlay;
+        invalidate();
+    }
+
+    @Override
+    protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+        isFocused = gainFocus;
+        invalidate();
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        if (isFocused) {
+//            rectF.set(0, 0, getWidth(), getHeight());
+//            canvas.drawRect(rectF, paint);
+
+            int radius = 20; // 圆角半径，根据需要调整
+            rectF.set(0, 0, getWidth(), getHeight());
+            canvas.drawRoundRect(rectF, radius, radius, paint);
+        }
     }
 
 }

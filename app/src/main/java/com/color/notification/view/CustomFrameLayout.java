@@ -144,7 +144,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
                 if (child.getId() == getResources().getIdentifier("quick_settings", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //quick_settings
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 //                    layoutParams.width = 428 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -164,7 +164,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
                 if (child.getId() == getResources().getIdentifier("brightnessSeekBar", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //brightness_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 //                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -182,7 +182,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 }
 
                 if (child.getId() == getResources().getIdentifier("brightness_icon", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //brightness_icon
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 24 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 24 * StaticVariableUtils.heightPixels / 1080;
@@ -195,7 +195,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 }
 
                 if (child.getId() == getResources().getIdentifier("brightnessSeekBar_text", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //brightnessSeekBar_text
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 60 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 40 * StaticVariableUtils.heightPixels / 1080;
@@ -216,7 +216,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
                 if (child.getId() == getResources().getIdentifier("volumeSeekBar", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //volume_frame
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 //                    layoutParams.width = 380 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -234,7 +234,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 }
 
                 if (child.getId() == getResources().getIdentifier("volume_icon", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //volume_icon
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 24 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 24 * StaticVariableUtils.heightPixels / 1080;
@@ -247,7 +247,7 @@ public class CustomFrameLayout extends FrameLayout implements Instance {
                 }
 
                 if (child.getId() == getResources().getIdentifier("volumeSeekBar_text", "id", getContext().getPackageName())) {
-                    //quick_settings_frame
+                    //volumeSeekBar_text
                     layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
                     layoutParams.width = 60 * StaticVariableUtils.widthPixels / 1920;
                     layoutParams.height = 40 * StaticVariableUtils.heightPixels / 1080;
