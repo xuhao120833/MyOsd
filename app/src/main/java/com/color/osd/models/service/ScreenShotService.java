@@ -34,12 +34,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import com.color.osd.R;
 import com.color.osd.ScreenShotActivity;
 import com.color.osd.utils.ConstantProperties;
 import com.color.osd.utils.DensityUtil;
 
+import java.io.File;
 import java.util.Objects;
 
 public class ScreenShotService extends Service {
@@ -56,6 +58,8 @@ public class ScreenShotService extends Service {
    private Handler mainHandler;
 
    private WindowManager wm;
+
+   private String saveName = "screen_shot.png";
 
    private static final int CLOSE_IMAGE_VIEW = 100;
 
@@ -137,13 +141,13 @@ public class ScreenShotService extends Service {
 
       Message msg = Message.obtain();
       msg.what = CLOSE_IMAGE_VIEW;
-      mainHandler.sendMessageDelayed(msg, 1500);
+      mainHandler.sendMessageDelayed(msg, 2000);
 
       // 开个任务去保存图片
       mainHandler.post(new Runnable() {
          @Override
          public void run() {
-            String saveName = System.currentTimeMillis() + ".png";
+            saveName = System.currentTimeMillis() + ".png";
             // 1 先保存到本地
             saveBitmap(saveName, screenShotBitmap);
             // 2 通知相册
@@ -205,6 +209,30 @@ public class ScreenShotService extends Service {
                  WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
          lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
          lp.format = PixelFormat.RGBA_8888;
+
+
+         // 添加点击事件，跳转到文件管理器--图片预览界面
+         imageView.setOnClickListener(v -> {
+            Log.d(TAG, "initScreenShotResultShowView: click here");
+            String basePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String screenShotPath = basePath + "/DCIM/screen_shot/";
+            File saveFile = new File(screenShotPath, saveName);
+            Uri contentUri = FileProvider.getUriForFile(mContext, "com.color.osd.fileprovider", saveFile);
+
+            try{
+               Intent intent = new Intent();
+               intent.setAction(Intent.ACTION_VIEW);
+               intent.addCategory(Intent.CATEGORY_DEFAULT);
+               intent.setDataAndType(contentUri, "image/*");
+               intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               startActivity(intent);
+            }catch (Exception e){
+               e.printStackTrace();
+            }
+
+         });
+
       }
    }
 
